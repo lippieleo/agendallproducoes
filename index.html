@@ -113,4 +113,25 @@ photo.style.mixBlendMode='normal';photo.style.filter='none';photo.style.backgrou
 if(photo.complete&&photo.naturalWidth)removeCheckerboard();
 else photo.addEventListener('load',removeCheckerboard,{once:true});
 })();
+</script><script>
+/* Foto gerenciada no Pages CMS do site oficial, sem alterar o layout da agenda. */
+(async function(){
+const photo=document.getElementById('foto-dupla-fundo');if(!photo)return;
+try{
+const root='https://raw.githubusercontent.com/lippieleo/site-lippi-e-leo/main/';
+const res=await fetch(root+'settings/agenda-online.json?v='+Date.now(),{cache:'no-store'});
+if(!res.ok)return;
+const settings=await res.json();
+const value=typeof settings.photo==='string'?settings.photo.trim():'';
+if(!value)return;
+let url;
+if(value.startsWith('/media/'))url=root+value.slice(1).split('/').map(encodeURIComponent).join('/');
+else if(value.startsWith('media/'))url=root+value.split('/').map(encodeURIComponent).join('/');
+else if(value.startsWith('https://'))url=value;
+else return;
+const test=new Image();
+test.onload=()=>{photo.dataset.cmsPhoto='true';photo.src=url;photo.style.mixBlendMode='normal';photo.style.filter='none'};
+test.src=url;
+}catch(err){console.warn('Foto atual da agenda preservada',err)}
+})();
 </script></body></html>
