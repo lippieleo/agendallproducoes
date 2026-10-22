@@ -151,4 +151,30 @@ test.onload=()=>{photo.dataset.cmsPhoto='true';photo.src=url;photo.style.mixBlen
 test.src=url;
 }catch(err){console.warn('Foto atual da agenda preservada',err)}
 })();
+</script><script>
+/* Fundo configurado no mesmo formulario de foto da Agenda Online no Pages CMS. */
+(async function(){
+try{
+const root='https://raw.githubusercontent.com/lippieleo/site-lippi-e-leo/main/';
+const response=await fetch(root+'settings/agenda-online.json?v='+Date.now(),{cache:'no-store'});
+if(!response.ok)return;
+const settings=await response.json();
+const value=typeof settings.background==='string'?settings.background.trim():'';
+if(!value)return;
+let url;
+if(value.startsWith('/media/'))url=root+value.slice(1).split('/').map(encodeURIComponent).join('/');
+else if(value.startsWith('media/'))url=root+value.split('/').map(encodeURIComponent).join('/');
+else if(value.startsWith('https://'))url=value;
+else return;
+const test=new Image();
+test.onload=()=>{
+document.body.style.setProperty('background-image','url("'+url.replace(/"/g,'%22')+'")','important');
+document.body.style.setProperty('background-color','#100407','important');
+document.body.style.setProperty('background-size','cover','important');
+document.body.style.setProperty('background-position','center top','important');
+document.body.style.setProperty('background-repeat','no-repeat','important');
+};
+test.src=url;
+}catch(err){console.warn('Mantido fundo atual da agenda',err)}
+})();
 </script></body></html>
