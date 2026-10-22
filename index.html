@@ -93,6 +93,19 @@ if(y>0)add(i-w);if(y<h-1)add(i+w);
 }
 for(let i=0;i<tail;i++){data[queue[i]*4+3]=0}
 ctx.putImageData(frame,0,0);
+/* Apaga somente o fio solto que sai da lateral esquerda da barba do Lippi.
+   Coordenadas relativas a foto original; nao modifica rosto nem cores. */
+ctx.save();
+ctx.globalCompositeOperation='destination-out';
+ctx.beginPath();
+ctx.moveTo(w*0.184,h*0.282);
+ctx.lineTo(w*0.230,h*0.304);
+ctx.lineTo(w*0.245,h*0.330);
+ctx.lineTo(w*0.215,h*0.321);
+ctx.lineTo(w*0.181,h*0.300);
+ctx.closePath();
+ctx.fill();
+ctx.restore();
 photo.src=canvas.toDataURL('image/png');
 photo.style.mixBlendMode='normal';photo.style.filter='none';photo.style.background='transparent';
 }catch(e){console.warn('Não foi possível remover o fundo da foto',e)}
