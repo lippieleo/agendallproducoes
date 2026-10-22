@@ -37,4 +37,31 @@ async function syncShows(){
 try{const response=await fetch(SHOWS_URL+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error('Formato inesperado');shows=data.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)).map(x=>({date:x.date,city:String(x.city||''),venue:String(x.venue||''),time:String(x.time||'')}));draw()}catch(err){console.warn('Não foi possível carregar os shows neste momento.');console.error('Erro ao sincronizar agenda:',err)}
 }
 draw();syncShows();setInterval(syncShows,5*60*1000);
+</script><script>
+/* Remove o fundo preto da logomarca ORIGINAL sem redesenhar as letras. */
+(function(){
+const logo=document.querySelector('header > img[alt="Logomarca oficial Lippi & Léo"]');
+if(!logo)return;
+function removeBlackBackground(){
+try{
+const canvas=document.createElement('canvas');canvas.width=logo.naturalWidth;canvas.height=logo.naturalHeight;
+if(!canvas.width||!canvas.height)return;
+const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(logo,0,0);
+const frame=ctx.getImageData(0,0,canvas.width,canvas.height),p=frame.data;
+for(let i=0;i<p.length;i+=4){
+const brightness=Math.max(p[i],p[i+1],p[i+2]);
+const a=Math.max(0,Math.min(1,(brightness-5)/245));
+if(a<=0){p[i]=p[i+1]=p[i+2]=p[i+3]=0;continue}
+p[i]=Math.min(255,Math.round(p[i]/a));
+p[i+1]=Math.min(255,Math.round(p[i+1]/a));
+p[i+2]=Math.min(255,Math.round(p[i+2]/a));
+p[i+3]=Math.round(a*255);
+}
+ctx.putImageData(frame,0,0);
+logo.src=canvas.toDataURL('image/png');logo.style.mixBlendMode='normal';logo.style.background='transparent';
+}catch(err){console.warn('Não foi possível preparar a transparência da logomarca',err)}
+}
+if(logo.complete&&logo.naturalWidth)removeBlackBackground();
+else logo.addEventListener('load',removeBlackBackground,{once:true});
+})();
 </script></body></html>
