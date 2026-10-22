@@ -123,6 +123,23 @@ const res=await fetch(root+'settings/agenda-online.json?v='+Date.now(),{cache:'n
 if(!res.ok)return;
 const settings=await res.json();
 const value=typeof settings.photo==='string'?settings.photo.trim():'';
+const background=typeof settings.background==='string'?settings.background.trim():'';
+if(background){
+let bgUrl='';
+if(background.startsWith('/media/'))bgUrl=root+background.slice(1).split('/').map(encodeURIComponent).join('/');
+else if(background.startsWith('media/'))bgUrl=root+background.split('/').map(encodeURIComponent).join('/');
+else if(background.startsWith('https://'))bgUrl=background;
+if(bgUrl){
+const check=new Image();
+check.onload=()=>{
+document.body.style.setProperty('background-image','url("'+bgUrl.replace(/"/g,'%22')+'")','important');
+document.body.style.setProperty('background-position','center top','important');
+document.body.style.setProperty('background-size','cover','important');
+document.body.style.setProperty('background-repeat','no-repeat','important');
+};
+check.src=bgUrl;
+}
+}
 if(!value)return;
 let url;
 if(value.startsWith('/media/'))url=root+value.slice(1).split('/').map(encodeURIComponent).join('/');
