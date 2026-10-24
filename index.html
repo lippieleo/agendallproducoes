@@ -73,7 +73,7 @@ async function syncShows(){
   if(window.__refreshApprovedShows)await window.__refreshApprovedShows();
  }
 }
-draw();syncShows();setInterval(syncShows,5*60*1000);
+draw();syncShows();setInterval(()=>{if(!document.hidden)syncShows()},30*1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncShows()});window.addEventListener('focus',()=>syncShows());
 </script><script>
 /* Remove o fundo preto da logomarca ORIGINAL sem redesenhar as letras. */
 (function(){
