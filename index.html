@@ -52,7 +52,7 @@ document.getElementById('next').onclick=()=>{current.setMonth(current.getMonth()
 const AGENDA_CACHE_KEY='lippi_leo_agenda_ultima_valida_v1';
 try{
  const cached=JSON.parse(localStorage.getItem(AGENDA_CACHE_KEY)||'null');
- if(Array.isArray(cached)&&cached.every(x=>x&&/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date)))shows=cached;
+ if(Array.isArray(cached)&&cached.every(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)))shows=cached;
 }catch(e){console.warn('Cache da agenda indisponível',e)}
 let agendaRequestId=0;
 async function syncShows(){
@@ -61,7 +61,7 @@ async function syncShows(){
   const response=await fetch(SHOWS_URL+'?v='+Date.now(),{cache:'no-store'});
   if(!response.ok)throw new Error('HTTP '+response.status);
   const data=await response.json();
-  if(!Array.isArray(data)||data.some(x=>!x||!/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date)))throw new Error('Arquivo de agenda inválido');
+  if(!Array.isArray(data)||data.some(x=>!x||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)))throw new Error('Arquivo de agenda inválido');
   if(requestId!==agendaRequestId)return;
   const fresh=data.map(x=>({date:x.date,city:String(x.city||''),venue:String(x.venue||''),time:String(x.time||''),booking_id:x.booking_id||null}));
   try{localStorage.setItem(AGENDA_CACHE_KEY,JSON.stringify(fresh))}catch(e){console.warn('Não foi possível salvar cache',e)}
