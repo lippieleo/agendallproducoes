@@ -49,8 +49,29 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!modal.hidd
 function openShowDetails(daily,d,m,y){previousFocus=document.activeElement;const content=document.getElementById('show-modal-content');content.replaceChildren();const title=document.getElementById('show-modal-title');title.textContent='Shows de '+String(d).padStart(2,'0')+'/'+String(m+1).padStart(2,'0')+'/'+y;daily.forEach(show=>{const section=document.createElement('div');section.className='show-modal-event';const city=document.createElement('h4');city.textContent=show.city||'Show';section.append(city);[['Local',show.venue],['Horário',show.time]].forEach(([label,value])=>{if(value){const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=label+': ';p.append(strong,document.createTextNode(value));section.append(p)}});content.append(section)});modal.hidden=false;document.body.classList.add('modal-open');closeButton.focus()}
 document.getElementById('prev').onclick=()=>{current.setMonth(current.getMonth()-1);draw()};
 document.getElementById('next').onclick=()=>{current.setMonth(current.getMonth()+1);draw()};
+const AGENDA_CACHE_KEY='lippi_leo_agenda_ultima_valida_v1';
+try{
+ const cached=JSON.parse(localStorage.getItem(AGENDA_CACHE_KEY)||'null');
+ if(Array.isArray(cached)&&cached.every(x=>x&&/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date)))shows=cached;
+}catch(e){console.warn('Cache da agenda indisponível',e)}
+let agendaRequestId=0;
 async function syncShows(){
-try{const response=await fetch(SHOWS_URL+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error('Formato inesperado');shows=data.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)).map(x=>({date:x.date,city:String(x.city||''),venue:String(x.venue||''),time:String(x.time||''),booking_id:x.booking_id||null}));draw();if(window.__refreshApprovedShows)await window.__refreshApprovedShows()}catch(err){console.warn('Não foi possível carregar os shows neste momento.');console.error('Erro ao sincronizar agenda:',err)}
+ const requestId=++agendaRequestId;
+ try{
+  const response=await fetch(SHOWS_URL+'?v='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const data=await response.json();
+  if(!Array.isArray(data)||data.some(x=>!x||!/^\\d{4}-\\d{2}-\\d{2}$/.test(x.date)))throw new Error('Arquivo de agenda inválido');
+  if(requestId!==agendaRequestId)return;
+  const fresh=data.map(x=>({date:x.date,city:String(x.city||''),venue:String(x.venue||''),time:String(x.time||''),booking_id:x.booking_id||null}));
+  try{localStorage.setItem(AGENDA_CACHE_KEY,JSON.stringify(fresh))}catch(e){console.warn('Não foi possível salvar cache',e)}
+  shows=fresh;
+  draw();
+  if(window.__refreshApprovedShows)await window.__refreshApprovedShows();
+ }catch(err){
+  console.error('Erro ao atualizar agenda; mantendo os últimos shows válidos:',err);
+  if(window.__refreshApprovedShows)await window.__refreshApprovedShows();
+ }
 }
 draw();syncShows();setInterval(syncShows,5*60*1000);
 </script><script>
