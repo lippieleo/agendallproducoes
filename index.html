@@ -50,7 +50,7 @@ function openShowDetails(daily,d,m,y){previousFocus=document.activeElement;const
 document.getElementById('prev').onclick=()=>{current.setMonth(current.getMonth()-1);draw()};
 document.getElementById('next').onclick=()=>{current.setMonth(current.getMonth()+1);draw()};
 async function syncShows(){
-try{const response=await fetch(SHOWS_URL+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error('Formato inesperado');shows=data.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)).map(x=>({date:x.date,city:String(x.city||''),venue:String(x.venue||''),time:String(x.time||'')}));draw();if(window.__refreshApprovedShows)await window.__refreshApprovedShows()}catch(err){console.warn('Não foi possível carregar os shows neste momento.');console.error('Erro ao sincronizar agenda:',err)}
+try{const response=await fetch(SHOWS_URL+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error('Formato inesperado');shows=data.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)).map(x=>({date:x.date,city:String(x.city||''),venue:String(x.venue||''),time:String(x.time||''),booking_id:x.booking_id||null}));draw();if(window.__refreshApprovedShows)await window.__refreshApprovedShows()}catch(err){console.warn('Não foi possível carregar os shows neste momento.');console.error('Erro ao sincronizar agenda:',err)}
 }
 draw();syncShows();setInterval(syncShows,5*60*1000);
 </script><script>
@@ -224,7 +224,7 @@ form.addEventListener('submit',async e=>{
  msg.textContent='Solicitação recebida! Aguarde a confirmação da produção.';form.querySelectorAll('input').forEach(i=>i.disabled=true);send.textContent='Enviado';setTimeout(()=>{close();form.querySelectorAll('input').forEach(i=>i.disabled=false);send.disabled=false;send.textContent='Enviar solicitação'},2200);
  }catch(err){msg.textContent=err.message||'Erro ao enviar. Tente novamente.';send.disabled=false;send.textContent='Enviar solicitação'}
 });
-async function approved(){try{const res=await fetch(API+'?action=approved');if(!res.ok)return;const data=await res.json();if(!Array.isArray(data.shows))return;window.__approvedBookingShows=data.shows;const orig=window.__originalBookingShows||shows.filter(x=>!x.__approved);shows=orig.concat(data.shows.map(x=>({...x,__approved:true})));draw()}catch(err){console.warn('Agenda de reservas temporariamente indisponível',err)}}
+async function approved(){try{const res=await fetch(API+'?action=approved');if(!res.ok)return;const data=await res.json();if(!Array.isArray(data.shows))return;window.__approvedBookingShows=data.shows;const orig=shows.filter(x=>!x.__approved);const ids=new Set(orig.map(x=>x.booking_id).filter(Boolean));shows=orig.concat(data.shows.filter(x=>!ids.has(x.id)).map(x=>({...x,__approved:true})));draw()}catch(err){console.warn('Agenda de reservas temporariamente indisponível',err)}}
 window.__refreshApprovedShows=approved;
 approved();setInterval(approved,5*60*1000);
 })();
