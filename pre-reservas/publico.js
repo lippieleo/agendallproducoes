@@ -24,7 +24,7 @@ function decorate(){
  const grid=document.getElementById("calendar");if(!grid||typeof current==="undefined")return;
  const y=current.getFullYear(),m=current.getMonth();
  grid.querySelectorAll(".day").forEach(day=>{
-  const num=day.querySelector(".num");if(!num||day.querySelector(".ll-book-button"))return;
+  const num=day.querySelector(".num");if(!num)return;const old=day.querySelector(".ll-book-button");if(old)old.remove();
   const n=Number(num.textContent);if(!n)return;const date=key(y,m,n);
   if(isBlocked(date)||date<new Date().toLocaleDateString("en-CA",{timeZone:"America/Sao_Paulo"}))return;
   const b=document.createElement("button");b.type="button";b.className="ll-book-button";b.textContent="Solicitar horário";b.setAttribute("aria-label","Solicitar show para "+n+"/"+(m+1)+"/"+y);
@@ -34,7 +34,7 @@ function decorate(){
 }
 const originalDraw=typeof draw==="function"?draw:null;
 if(originalDraw){draw=function(){originalDraw();decorate()};decorate()}
-loadBlocks().then(()=>{if(typeof draw==="function")draw()});
+async function loadApproved(){try{const r=await fetch(API+"?action=approved",{cache:"no-store"});if(!r.ok)throw Error();const data=await r.json();if(typeof shows!=="undefined"&&Array.isArray(data.shows)){const known=new Set(shows.map(x=>[x.date,x.time,x.city].join("|")));for(const item of data.shows){const k=[item.date,item.time,item.city].join("|");if(!known.has(k)){shows.push(item);known.add(k)}}draw()}}catch(e){console.warn("Não foi possível sincronizar pré-reservas aprovadas")}}\nloadBlocks().then(()=>{if(typeof draw==="function")draw()});loadApproved();setInterval(loadApproved,60000);
 setInterval(()=>loadBlocks().then(()=>{if(typeof draw==="function")draw()}),300000);
 form.onsubmit=async e=>{
  e.preventDefault();submit.disabled=true;status.textContent="Enviando solicitação...";
