@@ -68,7 +68,7 @@ async function syncShows(){
    const response=await fetch(SHOWS_BACKUP_URL+'?v='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
    if(!response.ok)throw primaryError;
    const file=await response.json();
-   data=JSON.parse(decodeURIComponent(escape(atob(String(file.content).replace(/\\s/g,'')))));
+   data=JSON.parse(decodeURIComponent(escape(atob(String(file.content).replace(/\s/g,'')))));
   }
   if(!Array.isArray(data)||data.some(x=>!x||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)))throw new Error('Arquivo de agenda inválido');
   if(requestId!==agendaRequestId)return;
@@ -254,7 +254,9 @@ form.addEventListener('submit',async e=>{
  msg.textContent='Solicitação recebida! Aguarde a confirmação da produção.';form.querySelectorAll('input').forEach(i=>i.disabled=true);send.textContent='Enviado';setTimeout(()=>{close();form.querySelectorAll('input').forEach(i=>i.disabled=false);send.disabled=false;send.textContent='Enviar solicitação'},2200);
  }catch(err){msg.textContent=err.message||'Erro ao enviar. Tente novamente.';send.disabled=false;send.textContent='Enviar solicitação'}
 });
-async function approved(){try{const res=await fetch(API+'?action=approved');if(!res.ok)return;const data=await res.json();if(!Array.isArray(data.shows))return;window.__approvedBookingShows=data.shows;const orig=shows.filter(x=>!x.__approved);const sameBooking=(a,b)=>Boolean(a.booking_id&&b.id&&a.booking_id===b.id)||(a.date===b.date&&String(a.city||'').trim().toLowerCase()===String(b.city||'').trim().toLowerCase()&&String(a.time||'').match(/\d{1,2}:\d{2}/)?.[0]===String(b.time||'').match(/\d{1,2}:\d{2}/)?.[0]);shows=orig.concat(data.shows.filter(x=>!orig.some(y=>sameBooking(y,x))).map(x=>({...x,__approved:true})));draw()}catch(err){console.warn('Agenda de reservas temporariamente indisponível',err)}}
+// A agenda oficial do GitHub é a fonte única de shows publicados.
+// Não mesclar novamente reservas antigas da API, pois isso ressuscita exclusões.
+async function approved(){return;}
 window.__refreshApprovedShows=approved;
 approved();setInterval(approved,5*60*1000);
 })();
