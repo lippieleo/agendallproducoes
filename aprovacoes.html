@@ -27,6 +27,22 @@ async function manageLoad(){
  }
  }catch(e){root.textContent=e.message}
 }
+
+async function manageSave(operation,index,show){
+ let next=show;
+ if(operation==='edit'){
+  const date=prompt('Data (AAAA-MM-DD)',show.date);if(date===null)return;
+  const city=prompt('Cidade',show.city);if(city===null)return;
+  const venue=prompt('Local do evento',show.venue);if(venue===null)return;
+  const time=prompt('Horário',show.time);if(time===null)return;
+  next={date,city,venue,time};
+ }else if(!confirm('Confirma a exclusão do show de '+show.date+' em '+show.city+'?'))return;
+ try{
+  await call('manage-save',{operation,index,sha:managed.sha,original:show,show:next});
+  message(operation==='edit'?'Show atualizado.':'Show excluído.');
+  await manageLoad();
+ }catch(e){message('Não foi possível salvar: '+e.message)}
+}
 $('manage-refresh').onclick=manageLoad;
 $('logout').onclick=async()=>{await sb.auth.signOut();$('panel').hidden=true;$('login').hidden=false;message('Você saiu do painel.')};
 function node(tag,txt){const el=document.createElement(tag);el.textContent=txt;return el}
