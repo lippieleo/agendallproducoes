@@ -34,7 +34,8 @@ function decorate(){
 }
 const originalDraw=typeof draw==="function"?draw:null;
 if(originalDraw){draw=function(){originalDraw();decorate()};decorate()}
-async function loadApproved(){try{const r=await fetch(API+"?action=approved",{cache:"no-store"});if(!r.ok)throw Error();const data=await r.json();if(typeof shows!=="undefined"&&Array.isArray(data.shows)){const known=new Set(shows.map(x=>[x.date,x.time,x.city].join("|")));for(const item of data.shows){const k=[item.date,item.time,item.city].join("|");if(!known.has(k)){shows.push(item);known.add(k)}}draw()}}catch(e){console.warn("Não foi possível sincronizar pré-reservas aprovadas")}}\nloadBlocks().then(()=>{if(typeof draw==="function")draw()});loadApproved();setInterval(loadApproved,60000);
+async function loadApproved(){try{const r=await fetch(API+"?action=approved",{cache:"no-store"});if(!r.ok)throw Error();const data=await r.json();if(typeof shows!=="undefined"&&Array.isArray(data.shows)){const known=new Set(shows.map(x=>[x.date,x.time,x.city].join("|")));for(const item of data.shows){const k=[item.date,item.time,item.city].join("|");if(!known.has(k)){shows.push(item);known.add(k)}}draw()}}catch(e){console.warn("Não foi possível sincronizar pré-reservas aprovadas")}}
+loadBlocks().then(()=>{if(typeof draw==="function")draw()});loadApproved();setInterval(loadApproved,60000);
 setInterval(()=>loadBlocks().then(()=>{if(typeof draw==="function")draw()}),300000);
 form.onsubmit=async e=>{
  e.preventDefault();submit.disabled=true;status.textContent="Enviando solicitação...";
