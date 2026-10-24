@@ -177,4 +177,43 @@ document.body.style.setProperty('background-repeat','no-repeat','important');
 test.src=url;
 }catch(err){console.warn('Mantido fundo atual da agenda',err)}
 })();
+</script><style id="booking-ui-css">
+.day:not(.empty){cursor:pointer}.day:not(.empty):focus-visible{outline:2px solid #f3c66a}
+.booking-overlay[hidden]{display:none!important}.booking-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:18px}
+.booking-panel{background:#17171d;border:1px solid #9e783b;border-radius:16px;color:white;padding:22px;width:min(440px,100%);max-height:94vh;overflow:auto;box-shadow:0 12px 60px #000}
+.booking-panel h2{margin:0 0 12px;font-size:23px}.booking-panel label{display:block;margin:10px 0 4px;font-size:14px}.booking-panel input{width:100%;padding:11px;border:1px solid #68636a;border-radius:7px;background:#25252b;color:#fff;font:inherit}.booking-actions{display:flex;gap:10px;margin-top:18px}.booking-actions button{padding:11px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer}.booking-actions button[type=submit]{background:#e0b36c;color:#18110a;flex:1}.booking-actions button[type=button]{background:#41414a;color:white}.booking-hint{font-size:13px;color:#e6d5bb}.booking-message{min-height:1.5em;font-size:14px}
+</style><script id="booking-ui-script">
+(function(){
+const API='https://zcfudytghjsosnpkmgzv.supabase.co/functions/v1/pre-reservas';
+const overlay=document.createElement('div');overlay.className='booking-overlay';overlay.hidden=true;
+overlay.innerHTML='<div class="booking-panel" role="dialog" aria-modal="true" aria-labelledby="booking-title"><h2 id="booking-title">Solicitar data para show</h2><p class="booking-hint">Cada apresentação reserva 3 horas. O pedido depende da aprovação da produção.</p><form id="booking-form"><label for="booking-date">Data</label><input id="booking-date" name="date" type="date" required readonly><label for="booking-time">Horário de início</label><input id="booking-time" name="time" type="time" required><label for="booking-name">Nome do contratante</label><input id="booking-name" name="name" maxlength="150" required minlength="2"><label for="booking-venue">Local do evento</label><input id="booking-venue" name="venue" maxlength="200" required minlength="2"><label for="booking-city">Cidade</label><input id="booking-city" name="city" maxlength="150" required minlength="2"><label for="booking-whatsapp">WhatsApp com DDD</label><input id="booking-whatsapp" name="whatsapp" type="tel" maxlength="25" placeholder="(19) 99999-9999" required><p class="booking-message" id="booking-message" role="status"></p><div class="booking-actions"><button type="button" id="booking-cancel">Cancelar</button><button type="submit" id="booking-submit">Enviar solicitação</button></div></form></div>';
+document.body.append(overlay);
+const form=overlay.querySelector('#booking-form'),msg=overlay.querySelector('#booking-message'),send=overlay.querySelector('#booking-submit');
+function close(){overlay.hidden=true;document.body.classList.remove('modal-open')}
+function open(date){form.reset();form.elements.date.value=date;msg.textContent='';overlay.hidden=false;document.body.classList.add('modal-open');form.elements.time.focus()}
+overlay.querySelector('#booking-cancel').onclick=close;
+overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)close()});
+const calendar=document.getElementById('calendar');
+calendar.addEventListener('click',e=>{
+ if(e.target.closest('.show-entry'))return;
+ const day=e.target.closest('.day:not(.empty)');if(!day||!calendar.contains(day))return;
+ const n=day.querySelector('.num');if(!n)return;
+ const parts=heading.textContent; // usa o mesmo mês atualmente exibido no calendário
+ const d=Number(n.textContent);if(!Number.isInteger(d))return;
+ const date=dateKey(current.getFullYear(),current.getMonth(),d);
+ open(date);
+});
+form.addEventListener('submit',async e=>{
+ e.preventDefault();send.disabled=true;send.textContent='Enviando...';msg.textContent='';
+ const payload=Object.fromEntries(new FormData(form).entries());payload.action='request';
+ try{const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||!data.ok)throw Error(data.error||'Não foi possível enviar');
+ msg.textContent='Solicitação recebida! Aguarde a confirmação da produção.';form.querySelectorAll('input').forEach(i=>i.disabled=true);send.textContent='Enviado';setTimeout(()=>{close();form.querySelectorAll('input').forEach(i=>i.disabled=false);send.disabled=false;send.textContent='Enviar solicitação'},2200);
+ }catch(err){msg.textContent=err.message||'Erro ao enviar. Tente novamente.';send.disabled=false;send.textContent='Enviar solicitação'}
+});
+async function approved(){try{const res=await fetch(API+'?action=approved');if(!res.ok)return;const data=await res.json();if(!Array.isArray(data.shows))return;window.__approvedBookingShows=data.shows;const orig=window.__originalBookingShows||shows.filter(x=>!x.__approved);shows=orig.concat(data.shows.map(x=>({...x,__approved:true})));draw()}catch(err){console.warn('Agenda de reservas temporariamente indisponível',err)}}
+const originalSync=syncShows;
+syncShows=async function(){await originalSync();window.__originalBookingShows=shows.slice();await approved()};
+approved();setInterval(approved,5*60*1000);
+})();
 </script></body></html>
