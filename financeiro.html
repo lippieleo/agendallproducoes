@@ -1,23 +1,81 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Financeiro | Lippi & Léo</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de shows, receitas, despesas e repasses.</p><small id="versao">Integração com agenda · versão 5</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div><div id="app" class="hide"><div class="grid"><div class="card"><small>Cachês contratados no mês</small><h2 id="totalCache">R$ 0,00</h2></div><div class="card"><small>Recebimentos do mês</small><h2 id="totalRec">R$ 0,00</h2></div><div class="card"><small>Despesas do mês</small><h2 id="totalDesp">R$ 0,00</h2></div><div class="card"><small>Saldo de caixa do mês</small><h2 id="saldo">R$ 0,00</h2></div></div><div class="card"><div class="grid"><div><label>Mês do extrato</label><input type="month" id="mes"></div><div><label>&nbsp;</label><button class="secondary" id="sair">Sair</button></div></div><div id="msg" class="notice">Carregando…</div></div><section class="card"><h2>Shows integrados à Agenda Online</h2>
-<p class="muted">Escolha um show que já está na agenda para registrar ou alterar o cachê. Para um novo compromisso, escolha "Cadastrar novo show". O valor do cachê é privado e não aparece na agenda compartilhada.</p>
-<form id="showForm">
-<label for="agendaSelect">Show da agenda</label>
-<select id="agendaSelect" required><option value="">Carregando agenda…</option></select>
-<div class="grid">
-<div><label for="dataShow">Data do show</label><input id="dataShow" type="date" required></div>
-<div><label for="cidadeShow">Cidade</label><input id="cidadeShow" maxlength="150" required></div>
-<div><label for="localShow">Local do evento</label><input id="localShow" maxlength="200" required></div>
-<div><label for="horaShow">Horário de início</label><input id="horaShow" type="time"></div>
-<div><label for="cache">Cachê contratado (R$) — privado</label><input id="cache" type="number" step=".01" min="0" required></div>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de shows, receitas, despesas e repasses.</p><small id="versao">Fechamento por show · versão 6</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
+<div id="app" class="hide">
+  <section class="grid" aria-label="Resumo financeiro do mês">
+    <div class="card"><small>Cachês dos shows do mês</small><h2 id="totalCache">R$ 0,00</h2></div>
+    <div class="card"><small>Entradas registradas no mês</small><h2 id="totalRec">R$ 0,00</h2></div>
+    <div class="card"><small>Saídas registradas no mês</small><h2 id="totalDesp">R$ 0,00</h2></div>
+    <div class="card"><small>Saldo de caixa no mês</small><h2 id="saldo">R$ 0,00</h2></div>
+  </section>
+  <section class="card" id="agendaBox">
+    <h2>1. Escolher show da Agenda Online</h2>
+    <p class="muted">Selecione um show já cadastrado na agenda. Nenhuma nova data será criada e os valores ficam privados.</p>
+    <div class="grid">
+      <div><label for="mes">Mês dos shows</label><input type="month" id="mes"></div>
+      <div><label>&nbsp;</label><button type="button" class="secondary" id="recarregar">Atualizar agenda</button></div>
+      <div><label>&nbsp;</label><button type="button" class="secondary" id="sair">Sair</button></div>
+    </div>
+    <p id="msg" class="notice" role="status" aria-live="polite">Carregando…</p>
+    <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Cidade / local</th><th>Horário</th><th>Situação</th></tr></thead><tbody id="agendaBody"></tbody></table></div>
+  </section>
+  <section class="card hide" id="detalhe">
+    <h2 id="showTitulo">Financeiro do show</h2>
+    <p id="showSubtitulo" class="muted"></p>
+    <p id="showSituacao" class="notice"></p>
+    <div class="grid">
+      <div class="card"><small>Cachê combinado</small><h2 id="showCache">R$ 0,00</h2></div>
+      <div class="card"><small>Entradas recebidas</small><h2 id="showEntradas">R$ 0,00</h2></div>
+      <div class="card"><small>Despesas do show</small><h2 id="showDespesas">R$ 0,00</h2></div>
+      <div class="card"><small>Saldo a receber do cachê</small><h2 id="showAReceber">R$ 0,00</h2></div>
+      <div class="card"><small>Lucro operacional recebido</small><h2 id="showLucro">R$ 0,00</h2></div>
+      <div class="card"><small>Caixa disponível após repasses</small><h2 id="showSaldo">R$ 0,00</h2></div>
+    </div>
+    <p id="divisao" class="notice"></p>
+    <h3>2. Cachê contratado</h3>
+    <form id="cacheForm">
+      <fieldset id="cacheFieldset">
+        <div class="grid">
+          <div><label for="cache">Cachê combinado (R$)</label><input id="cache" type="number" min="0" step="0.01" required></div>
+          <div><label>&nbsp;</label><button type="submit" id="salvarCache">Salvar cachê deste show</button></div>
+        </div>
+      </fieldset>
+    </form>
+    <h3>3. Registrar entradas e saídas</h3>
+    <p class="muted">Registre cada pagamento recebido, inclusive entradas parciais, e cada despesa separadamente.</p>
+    <form id="lanForm">
+      <fieldset id="lanFieldset">
+        <div class="grid">
+          <div><label for="tipo">Movimentação</label><select id="tipo"><option value="recebimento">Entrada recebida</option><option value="despesa">Saída / despesa</option><option value="repasse">Repasse a Lippi ou Léo</option></select></div>
+          <div><label for="categoria">Categoria</label><select id="categoria"></select></div>
+          <div><label for="favorecido">Descrição / músico / favorecido</label><input id="favorecido" maxlength="200" placeholder="Ex.: sinal, sanfoneiro, gasolina…"></div>
+          <div><label for="integrante">Integrante (somente repasse)</label><select id="integrante"><option value="">Não se aplica</option><option>Lippi</option><option>Léo</option></select></div>
+          <div><label for="forma">Forma de pagamento</label><select id="forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div>
+          <div><label for="valor">Valor (R$)</label><input id="valor" type="number" step="0.01" min="0.01" required></div>
+          <div><label for="dataLan">Data do movimento</label><input id="dataLan" type="date" required></div>
+        </div>
+        <label for="obs">Observações</label><input id="obs" maxlength="400">
+        <button type="submit" id="salvarLan">Registrar movimentação</button>
+      </fieldset>
+    </form>
+    <h3>Extrato deste show</h3>
+    <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Valor</th><th></th></tr></thead><tbody id="showExtrato"></tbody></table></div>
+    <h3>4. Fechamento financeiro</h3>
+    <p class="muted">Finalizar congela o financeiro deste show, mas não remove nem altera sua apresentação na agenda. Você pode reabrir para fazer correções.</p>
+    <button type="button" id="finalizar">Finalizar financeiro deste show</button>
+    <button type="button" id="reabrir" class="secondary hide">Reabrir financeiro</button>
+    <p id="showMsg" class="notice" role="status" aria-live="polite"></p>
+  </section>
+  <section class="card">
+    <h2>Extrato geral do mês</h2>
+    <p class="muted">Considera a data de cada movimentação, mesmo que o show seja de outro mês.</p>
+    <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Show / descrição</th><th>Valor</th></tr></thead><tbody id="extrato"></tbody></table></div>
+    <div class="grid">
+      <div class="card"><small>Repasses pagos ao Lippi no mês</small><h2 id="lippi">R$ 0,00</h2></div>
+      <div class="card"><small>Repasses pagos ao Léo no mês</small><h2 id="leo">R$ 0,00</h2></div>
+    </div>
+  </section>
 </div>
-<button id="salvarShow" type="submit">Salvar show e cachê</button>
-<p id="showMsg" class="muted" role="status" aria-live="polite"></p>
-</form>
-<h2>Shows na agenda neste mês</h2><p class="muted">Selecione o mês no início do painel. Toque em "Cadastrar cachê" para escolher o show.</p>
-<div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show na agenda</th><th>Horário</th><th>Financeiro</th></tr></thead><tbody id="agendaBody"></tbody></table></div>
-<h2>Shows com financeiro registrado</h2><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show</th><th>Cachê</th></tr></thead><tbody id="showsBody"></tbody></table></div>
-</section><section class="card"><h2>Registrar recebimento, despesa ou repasse</h2><form id="lanForm"><div class="grid"><div><label>Show</label><select id="showSelect"><option value="">Despesa/receita geral</option></select></div><div><label>Tipo</label><select id="tipo"><option value="recebimento">Recebimento</option><option value="despesa">Despesa</option><option value="repasse">Repasse a integrante</option></select></div><div><label>Categoria</label><select id="categoria"><option>Cache</option><option>Musicos</option><option>Combustivel</option><option>Pedagio</option><option>Outros</option></select></div><div><label>Nome do músico / favorecido</label><input id="favorecido"></div><div><label>Integrante (para repasse)</label><select id="integrante"><option value="">Não se aplica</option><option>Lippi</option><option>Léo</option></select></div><div><label>Forma de pagamento</label><select id="forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div><div><label>Valor (R$)</label><input id="valor" type="number" min=".01" step=".01" required></div><div><label>Data do lançamento</label><input id="dataLan" type="date" required></div></div><label>Observações</label><input id="obs"><button>Registrar lançamento</button></form></section><section class="card"><h2>Extrato mensal</h2><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Categoria / favorecido</th><th>Forma</th><th class="right">Valor</th></tr></thead><tbody id="extrato"></tbody></table></div><h2>Repasses realizados no mês</h2><div class="grid"><div class="card">Lippi: <strong id="lippi">R$ 0,00</strong></div><div class="card">Léo: <strong id="leo">R$ 0,00</strong></div></div><small>O extrato mostra valores efetivamente registrados; a divisão de lucro estimada será acrescentada após validação dos critérios.</small></section></div></main><script>
+</main><script>
 const URL='https://zcfudytghjsosnpkmgzv.supabase.co', KEY='sb_publishable_2ALYNwAtD2DtRHN66Q055w__tpP-oid', LIPPI='906bad0f-9191-482d-88ec-8aea9ad44ca0';
 const $=id=>document.getElementById(id),money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db,shows=[],lanc=[],agendaShows=[],agendaError=null;
@@ -130,129 +188,233 @@ $('recuperar').onclick=async()=>{const btn=$('recuperar');btn.disabled=true;$('l
 $('salvarSenha').onclick=async()=>{const btn=$('salvarSenha');btn.disabled=true;try{const password=$('novaSenha').value;if(password.length<8)throw Error('Use uma senha com pelo menos 8 caracteres.');const r=await db.auth.updateUser({password});if(r.error)throw r.error;$('loginMsg').textContent='Senha redefinida com sucesso. Abra novamente a página para entrar.';$('recoveryForm').classList.add('hide');await db.auth.signOut();$('entrar').classList.remove('hide');$('recuperar').classList.remove('hide');$('senha').value='';}catch(e){$('loginMsg').textContent='Não foi possível salvar a senha: '+(e.message||e)}finally{btn.disabled=false}};
 $('sair').onclick=async()=>{await db.auth.signOut();location.reload()};
 
+
 const AGENDA_URL='https://api.github.com/repos/lippieleo/site-lippi-e-leo/contents/agenda/shows.json';
-const NOVO='__novo__';
 const agNorm=v=>String(v??'').trim().toLocaleLowerCase('pt-BR').replace(/\s+/g,' ');
+const diaLocal=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
+const dinheiro=n=>Math.round((Number(n)||0)*100)/100;
+const soma=(lista,tipo)=>lista.filter(x=>x.tipo===tipo).reduce((v,x)=>v+Number(x.valor),0);
+const fmtData=d=>/^\d{4}-\d{2}-\d{2}$/.test(d||'')?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):String(d||'');
+let agendaShows=[],agendaError=null,showEscolhido=null,selectedKey=null,loading=false;
 function agendaKey(s){
  if(s.booking_id)return 'booking:'+s.booking_id;
  if(s.finance_ref)return 'finance:'+s.finance_ref;
  return 'manual:'+encodeURIComponent([s.date,s.city,s.venue,s.time].map(agNorm).join('|'));
 }
-function normalizarHora(s){
- const m=String(s??'').match(/(?:^|\D)([01]?\d|2[0-3])\s*(?::|[hH])\s*([0-5]\d)?/);
- return m?m[1].padStart(2,'0')+':'+(m[2]||'00'):'';
+function financeiroDaAgenda(item){
+ if(!item)return null;
+ const key=agendaKey(item);
+ return shows.find(x=>x.agenda_ref===key||(item.booking_id&&x.solicitacao_id===item.booking_id))||null;
 }
-async function lerAgenda(){
+function movDoShow(reg){return reg?lanc.filter(x=>x.caixa_show_id===reg.id):[]}
+function calc(reg){
+ const mov=movDoShow(reg),receb=soma(mov,'recebimento'),desp=soma(mov,'despesa'),repass=soma(mov,'repasse');
+ const combinado=Number(reg?.cache_contratado||0);
+ const lucro=receb-desp;
+ return {combinado,receb,desp,repass,lucro,receber:Math.max(0,combinado-receb),saldo:lucro-repass,pagosLippi:mov.filter(x=>x.tipo==='repasse'&&x.integrante==='Lippi').reduce((a,x)=>a+Number(x.valor),0),pagosLeo:mov.filter(x=>x.tipo==='repasse'&&x.integrante==='Léo').reduce((a,x)=>a+Number(x.valor),0)};
+}
+async function carregarAgenda(){
  try{
-  const res=await fetch(AGENDA_URL+'?v='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+  const res=await fetch(AGENDA_URL+'?t='+Date.now(),{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
   if(!res.ok)throw Error('GitHub HTTP '+res.status);
   const file=await res.json();
-  const raw=atob(String(file.content||'').replace(/\s/g,''));
-  const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
-  const data=JSON.parse(new TextDecoder().decode(bytes));
-  if(!Array.isArray(data))throw Error('Formato de agenda inválido');
-  agendaShows=data.filter(s=>s?.date&&s?.city&&s?.venue).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.time||'').localeCompare(String(b.time||'')));
+  const bytes=Uint8Array.from(atob(String(file.content||'').replace(/\s/g,'')),c=>c.charCodeAt(0));
+  const arr=JSON.parse(new TextDecoder().decode(bytes));
+  if(!Array.isArray(arr))throw Error('Formato inválido da agenda');
+  agendaShows=arr.filter(x=>x&&x.date&&x.city&&x.venue).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.time||'').localeCompare(String(b.time||'')));
   agendaError=null;
- }catch(e){agendaError=e.message||String(e)}
+ }catch(err){agendaError=err.message||String(err)}
 }
-function preencherOpcoesAgenda(preferida){
- const menu=$('agendaSelect');
- menu.innerHTML='<option value="'+NOVO+'">+ Cadastrar novo show na agenda</option>'+
- agendaShows.map(s=>{
-  const key=agendaKey(s);
-  const registrado=shows.some(x=>x.agenda_ref===key||s.booking_id&&x.solicitacao_id===s.booking_id);
-  return '<option value="'+escapeHtml(key)+'">'+escapeHtml(String(s.date)+' · '+String(s.city)+' · '+String(s.venue)+(s.time?' · '+s.time:'')+(registrado?' — Cachê cadastrado':''))+'</option>';
- }).join('');
- if(preferida && [...menu.options].some(o=>o.value===preferida))menu.value=preferida;
- else menu.value=NOVO;
- aplicarSelecaoAgenda();
-}
-function aplicarSelecaoAgenda(){
- const chave=$('agendaSelect').value;
- const s=agendaShows.find(x=>agendaKey(x)===chave);
- const bloqueado=Boolean(s);
- const inputs=[['dataShow','date'],['cidadeShow','city'],['localShow','venue']];
- for(const [id,field] of inputs){
-  $(id).readOnly=bloqueado;
-  $(id).value=bloqueado?String(s[field]||''):'';
- }
- $('horaShow').readOnly=bloqueado;
- $('horaShow').required=!bloqueado;
- $('horaShow').value=bloqueado?normalizarHora(s.time):'';
- $('cache').value='';
- if(s){
-  const finance=shows.find(x=>x.agenda_ref===chave||(s.booking_id&&x.solicitacao_id===s.booking_id));
-  if(finance)$('cache').value=finance.cache_contratado;
- }
- $('salvarShow').textContent=s?'Salvar cachê deste show':'Cadastrar na agenda e salvar cachê';
- $('showMsg').textContent=agendaError?'Falha ao buscar agenda: '+agendaError:'';
-}
-$('agendaSelect').onchange=aplicarSelecaoAgenda;
 function desenharAgenda(){
  const mes=$('mes').value;
- const lista=agendaShows.filter(x=>String(x.date).startsWith(mes));
- const corpo=$('agendaBody');
- corpo.innerHTML=lista.map(s=>{
-  const chave=agendaKey(s);
-  const registro=shows.find(x=>x.agenda_ref===chave||(s.booking_id&&x.solicitacao_id===s.booking_id));
-  return '<tr><td>'+escapeHtml(s.date)+'</td><td>'+escapeHtml(String(s.city)+' · '+String(s.venue))+'</td><td>'+escapeHtml(s.time||'A definir')+'</td><td>'+(registro?'<strong>'+money(registro.cache_contratado)+'</strong>':'<button type="button" class="secondary escolherAgenda" data-ref="'+escapeHtml(chave)+'" style="width:auto;margin:0;padding:8px 10px">Cadastrar cachê</button>')+'</td></tr>';
- }).join('')||'<tr><td colspan="4">'+(agendaError?'Não foi possível carregar a agenda: '+escapeHtml(agendaError):'Nenhum show neste mês.')+'</td></tr>';
- corpo.querySelectorAll('button.escolherAgenda').forEach(botao=>botao.onclick=()=>{
-  $('agendaSelect').value=botao.dataset.ref;
-  aplicarSelecaoAgenda();
-  $('showForm').scrollIntoView({behavior:'smooth',block:'center'});
- });
+ const lista=agendaShows.filter(s=>String(s.date).startsWith(mes));
+ $('agendaBody').innerHTML=lista.map(s=>{
+  const key=agendaKey(s),reg=financeiroDaAgenda(s),fechado=Boolean(reg?.finalizado_em);
+  return '<tr><td>'+escapeHtml(fmtData(s.date))+'</td><td>'+escapeHtml(s.city+' · '+s.venue)+'</td><td>'+escapeHtml(s.time||'A definir')+'</td><td><button type="button" class="secondary mini selecionar" data-key="'+escapeHtml(key)+'">'+(fechado?'✓ Finalizado':reg?'Continuar':'Abrir')+'</button></td></tr>';
+ }).join('')||'<tr><td colspan="4">'+(agendaError?'Erro ao consultar agenda: '+escapeHtml(agendaError):'Nenhum show na agenda deste mês.')+'</td></tr>';
+ $('agendaBody').querySelectorAll('.selecionar').forEach(btn=>btn.onclick=()=>abrirShow(btn.dataset.key));
 }
-async function refresh(preferida){
- try{
-  message('Atualizando dados financeiros e agenda…');
-  shows=ensure(await db.from('caixa_shows').select('*').order('data_show',{ascending:false}));
-  lanc=ensure(await db.from('caixa_lancamentos').select('*').order('data_lancamento',{ascending:false}));
-  await lerAgenda();
-  const opts=shows.map(s=>'<option value="'+escapeHtml(s.id)+'">'+escapeHtml((s.data_show||'')+' · '+(s.descricao||'Show'))+'</option>').join('');
-  $('showSelect').innerHTML='<option value="">Geral (sem show)</option>'+opts;
-  $('showsBody').innerHTML=shows.map(s=>'<tr><td>'+escapeHtml(s.data_show)+'</td><td>'+escapeHtml(s.descricao)+'</td><td>'+money(s.cache_contratado)+'</td></tr>').join('')||'<tr><td colspan="3">Nenhum cachê cadastrado ainda.</td></tr>';
-  preencherOpcoesAgenda(preferida);
-  draw();
-  message(agendaError?'Financeiro carregado. Atenção: não foi possível atualizar a agenda ('+agendaError+').':'Dados sincronizados com a agenda.');
- }catch(e){err(e)}
+function extratoGeral(){
+ const mes=$('mes').value,ativos=lanc.filter(x=>x.data_lancamento?.startsWith(mes));
+ const mesShows=shows.filter(x=>x.data_show?.startsWith(mes));
+ $('totalCache').textContent=money(mesShows.reduce((t,x)=>t+Number(x.cache_contratado||0),0));
+ $('totalRec').textContent=money(soma(ativos,'recebimento'));
+ $('totalDesp').textContent=money(soma(ativos,'despesa'));
+ $('saldo').textContent=money(soma(ativos,'recebimento')-soma(ativos,'despesa')-soma(ativos,'repasse'));
+ $('lippi').textContent=money(ativos.filter(x=>x.tipo==='repasse'&&x.integrante==='Lippi').reduce((t,x)=>t+Number(x.valor),0));
+ $('leo').textContent=money(ativos.filter(x=>x.tipo==='repasse'&&x.integrante==='Léo').reduce((t,x)=>t+Number(x.valor),0));
+ $('extrato').innerHTML=ativos.map(x=>{
+  const r=shows.find(s=>s.id===x.caixa_show_id);
+  const sinal=x.tipo==='recebimento'?'+':'−';
+  return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml((r?.descricao||'Geral')+' · '+x.categoria+' · '+(x.favorecido||x.integrante||''))+'</td><td>'+sinal+' '+money(x.valor)+'</td></tr>';
+ }).join('')||'<tr><td colspan="4">Nenhuma movimentação neste mês.</td></tr>';
 }
-$('showForm').onsubmit=async e=>{
- e.preventDefault();
- const btn=$('salvarShow');
- btn.disabled=true;
- $('showMsg').textContent='Salvando…';
+function desenharShow(){
+ const s=showEscolhido;
+ if(!s){$('detalhe').classList.add('hide');return}
+ const reg=financeiroDaAgenda(s),fechado=Boolean(reg?.finalizado_em),k=calc(reg),mov=movDoShow(reg);
+ $('detalhe').classList.remove('hide');
+ $('showTitulo').textContent=fmtData(s.date)+' · '+s.city;
+ $('showSubtitulo').textContent='Local: '+s.venue+' | Horário: '+(s.time||'A definir');
+ $('showSituacao').textContent=fechado?'✓ Financeiro finalizado — sem alterar a agenda':'● Financeiro aberto — pronto para entradas e saídas';
+ $('showSituacao').className='notice '+(fechado?'statusFechado':'statusAberto');
+ $('showCache').textContent=money(k.combinado);
+ $('showEntradas').textContent=money(k.receb);
+ $('showDespesas').textContent=money(k.desp);
+ $('showAReceber').textContent=money(k.receber);
+ $('showLucro').textContent=money(k.lucro);
+ $('showSaldo').textContent=money(k.saldo);
+ const cota=Math.max(0,k.lucro)/2;
+ $('divisao').textContent='Divisão de referência (50% do lucro já recebido, depois das despesas): Lippi '+money(cota)+'; Léo '+money(cota)+'. Repasses já pagos: Lippi '+money(k.pagosLippi)+'; Léo '+money(k.pagosLeo)+'.';
+ $('cache').value=reg?String(reg.cache_contratado):'0';
+ $('cacheFieldset').disabled=fechado;
+ $('lanFieldset').disabled=fechado;
+ $('finalizar').classList.toggle('hide',fechado);
+ $('reabrir').classList.toggle('hide',!fechado);
+ $('finalizar').disabled=!reg;
+ $('showMsg').textContent=fechado?'Fechamento registrado. Clique em Reabrir se precisar corrigir algum valor.':(!reg?'Este show ainda não tem lançamentos. Salve o cachê ou registre uma entrada/saída para iniciar.':'Registre entradas e saídas. Quando conferir os valores, finalize o financeiro.');
+ $('showExtrato').innerHTML=mov.map(x=>{
+   const descrit=(x.categoria||'')+(x.favorecido?' · '+x.favorecido:'')+(x.integrante?' · '+x.integrante:'')+(x.observacoes?' · '+x.observacoes:'');
+   return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml(descrit)+'</td><td>'+money(x.valor)+'</td><td>'+(fechado?'':'<button class="secondary mini remover" type="button" data-id="'+escapeHtml(x.id)+'">Excluir</button>')+'</td></tr>';
+ }).join('')||'<tr><td colspan="5">Nenhuma entrada ou saída registrada.</td></tr>';
+ $('showExtrato').querySelectorAll('.remover').forEach(btn=>btn.onclick=()=>removerLancamento(btn.dataset.id));
+}
+function abrirShow(key){
+ const item=agendaShows.find(x=>agendaKey(x)===key);
+ if(!item){message('Show não encontrado na agenda atual. Atualize os dados.');return}
+ selectedKey=key;
+ showEscolhido=item;
+ $('mes').value=String(item.date).slice(0,7);
+ desenharAgenda();extratoGeral();desenharShow();
+ $('detalhe').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function refresh(){
+ if(loading)return;
+ loading=true;
  try{
-  const value=$('agendaSelect').value;
-  let item=agendaShows.find(x=>agendaKey(x)===value);
-  const valor=Number($('cache').value);
-  if(!Number.isFinite(valor)||valor<0)throw Error('Informe um cachê válido.');
-  if(!item){
-   if(value!==NOVO)throw Error('Selecione um show da agenda.');
-   const date=$('dataShow').value,city=$('cidadeShow').value.trim(),venue=$('localShow').value.trim(),time=$('horaShow').value;
-   if(!date||city.length<2||venue.length<2||!time)throw Error('Preencha data, cidade, local e horário do novo show.');
-   const created=await requisicao('/functions/v1/financeiro-agenda',{method:'POST',body:{action:'create',date,city,venue,time},auth:true});
-   if(!created?.ok||!created.show)throw Error('O show não foi confirmado na agenda.');
-   item=created.show;
-   $('showMsg').textContent='Show publicado na agenda. Salvando cachê privado…';
+  message('Consultando a agenda e atualizando o financeiro…');
+  const [reg,mov]=await Promise.all([
+   requisicao('/rest/v1/caixa_shows?select=*&order=data_show.desc',{auth:true}),
+   requisicao('/rest/v1/caixa_lancamentos?select=*&order=data_lancamento.desc,criado_em.desc',{auth:true})
+  ]);
+  shows=reg;
+  lanc=mov;
+  await carregarAgenda();
+  if(selectedKey){
+   showEscolhido=agendaShows.find(x=>agendaKey(x)===selectedKey)||null;
   }
-  const key=agendaKey(item);
-  const antigo=shows.find(s=>s.agenda_ref===key||(item.booking_id&&s.solicitacao_id===item.booking_id));
-  const payload={descricao:String(item.city)+' · '+String(item.venue),data_show:item.date,cache_contratado:valor};
-  if(antigo){
-   await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(antigo.id),{method:'PATCH',body:{...payload,agenda_ref:key},auth:true});
-  }else{
-   ensure(await db.from('caixa_shows').insert({...payload,agenda_ref:key,solicitacao_id:item.booking_id||null}));
-  }
-  $('showMsg').textContent='Show integrado e cachê salvo com sucesso. Somente Lippi pode acessar o valor.';
-  await refresh(key);
-  $('showMsg').textContent='✓ Show na agenda e cachê privado salvo com sucesso.';
- }catch(x){
-  $('showMsg').textContent='Não foi possível concluir: '+(x.message||x)+'. Se o novo show já apareceu na agenda, selecione-o na lista para terminar o cadastro financeiro.';
-  err(x);
- }finally{btn.disabled=false}
+  desenharAgenda();extratoGeral();desenharShow();
+  message(agendaError?'Financeiro atualizado, mas a consulta da agenda falhou: '+agendaError:'Financeiro atualizado. Escolha um show na lista.');
+ }catch(err){message('Erro ao atualizar dados: '+(err.message||err))}
+ finally{loading=false}
+}
+async function obterRegistro(){
+ if(!showEscolhido)throw Error('Selecione primeiro um show da agenda.');
+ let reg=financeiroDaAgenda(showEscolhido);
+ if(reg){if(reg.finalizado_em)throw Error('O financeiro foi finalizado. Reabra antes de registrar valores.');return reg}
+ const dados={agenda_ref:agendaKey(showEscolhido),descricao:showEscolhido.city+' · '+showEscolhido.venue,data_show:showEscolhido.date,cache_contratado:0};
+ // Só são criados registros financeiros, nunca uma apresentação na agenda.
+ try{await requisicao('/rest/v1/caixa_shows',{method:'POST',auth:true,body:dados})}
+ catch(err){
+  if(!String(err.message||err).toLowerCase().includes('duplicate key'))throw err;
+ }
+ const lista=await requisicao('/rest/v1/caixa_shows?select=*&agenda_ref=eq.'+encodeURIComponent(dados.agenda_ref)+'&limit=1',{auth:true});
+ if(!lista.length)throw Error('Não foi possível abrir o controle financeiro do show.');
+ reg=lista[0];
+ shows=shows.filter(x=>x.id!==reg.id).concat([reg]);
+ return reg;
+}
+async function atualizarRegistro(){
+ const reg=financeiroDaAgenda(showEscolhido);
+ if(!reg)throw Error('Nenhum controle financeiro vinculado.');
+ const rows=await requisicao('/rest/v1/caixa_shows?select=*&id=eq.'+encodeURIComponent(reg.id),{auth:true});
+ if(!rows.length)throw Error('Financeiro não encontrado.');
+ const i=shows.findIndex(x=>x.id===reg.id);
+ if(i>=0)shows[i]=rows[0];
+ else shows.push(rows[0]);
+ return rows[0];
+}
+$('cacheForm').onsubmit=async e=>{
+ e.preventDefault();const btn=$('salvarCache');btn.disabled=true;
+ try{
+  const v=$('cache').value;
+  if(v===''||!Number.isFinite(Number(v))||Number(v)<0)throw Error('Informe um cachê válido.');
+  const reg=await obterRegistro();
+  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{method:'PATCH',body:{cache_contratado:Number(v)},auth:true});
+  await refresh();
+  $('showMsg').textContent='✓ Cachê salvo para este show. Esse valor não aparece na agenda.';
+ }catch(err){$('showMsg').textContent='Erro ao salvar cachê: '+(err.message||err)}
+ finally{btn.disabled=false}
 };
-$('lanForm').onsubmit=async e=>{e.preventDefault();try{const payload={caixa_show_id:$('showSelect').value||null,tipo:$('tipo').value,categoria:$('categoria').value,favorecido:$('favorecido').value||null,integrante:$('integrante').value||null,forma:$('forma').value,valor:Number($('valor').value),data_lancamento:$('dataLan').value,observacoes:$('obs').value||null};if(payload.tipo==='repasse'&&!payload.integrante)throw Error('Escolha o integrante para o repasse');ensure(await db.from('caixa_lancamentos').insert(payload));e.target.reset();$('dataLan').value=new Date().toLocaleDateString('en-CA');await refresh()}catch(x){err(x)}};
-function draw(){desenharAgenda();const month=$('mes').value;const records=lanc.filter(x=>x.data_lancamento.startsWith(month));const caches=shows.filter(s=>s.data_show?.startsWith(month)).reduce((a,s)=>a+Number(s.cache_contratado),0);const sum=t=>records.filter(x=>x.tipo===t).reduce((a,x)=>a+Number(x.valor),0);$('totalCache').textContent=money(caches);$('totalRec').textContent=money(sum('recebimento'));$('totalDesp').textContent=money(sum('despesa'));$('saldo').textContent=money(sum('recebimento')-sum('despesa')-sum('repasse'));$('lippi').textContent=money(records.filter(x=>x.tipo==='repasse'&&x.integrante==='Lippi').reduce((a,x)=>a+Number(x.valor),0));$('leo').textContent=money(records.filter(x=>x.tipo==='repasse'&&x.integrante==='Léo').reduce((a,x)=>a+Number(x.valor),0));$('extrato').innerHTML=records.map(x=>'<tr><td>'+escapeHtml(x.data_lancamento)+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml(x.categoria)+' · '+escapeHtml(x.favorecido||x.integrante||'')+'</td><td>'+escapeHtml(x.forma)+'</td><td class="right">'+money(x.valor)+'</td></tr>').join('')||'<tr><td colspan="5">Sem lançamentos neste mês.</td></tr>'}
-$('mes').onchange=draw;$('mes').value=new Date().toISOString().slice(0,7);$('dataLan').value=new Date().toISOString().slice(0,10);start();
+function categorias(){
+ const tipo=$('tipo').value;
+ const opções=tipo==='recebimento'?['Cachê','Sinal','Parcela','Outros']:tipo==='despesa'?['Músicos','Combustível','Pedágio','Alimentação','Hospedagem','Som e iluminação','Outros']:['Repasse','Acerto','Outros'];
+ $('categoria').innerHTML=opções.map(x=>'<option>'+escapeHtml(x)+'</option>').join('');
+ $('integrante').required=tipo==='repasse';
+ $('integrante').disabled=tipo!=='repasse';
+ if(tipo!=='repasse')$('integrante').value='';
+}
+$('tipo').onchange=categorias;
+categorias();
+$('lanForm').onsubmit=async e=>{
+ e.preventDefault();const btn=$('salvarLan');btn.disabled=true;
+ try{
+  const valor=Number($('valor').value);
+  if(!(valor>0)&&!Number.isFinite(valor))throw Error('Valor inválido.');
+  if(!Number.isFinite(valor)||valor<=0)throw Error('Informe um valor positivo.');
+  const tipo=$('tipo').value;
+  if(tipo==='repasse'&&!$('integrante').value)throw Error('Selecione Lippi ou Léo para o repasse.');
+  const reg=await obterRegistro();
+  const dados={caixa_show_id:reg.id,tipo,categoria:$('categoria').value,favorecido:$('favorecido').value.trim()||null,integrante:tipo==='repasse'?$('integrante').value:null,forma:$('forma').value,valor,data_lancamento:$('dataLan').value,observacoes:$('obs').value.trim()||null};
+  await requisicao('/rest/v1/caixa_lancamentos',{method:'POST',body:dados,auth:true});
+  $('lanForm').reset();categorias();$('dataLan').value=diaLocal();
+  await refresh();
+  $('showMsg').textContent='✓ '+(tipo==='recebimento'?'Entrada':'Saída')+' registrada neste show.';
+ }catch(err){$('showMsg').textContent='Não foi possível registrar: '+(err.message||err)}
+ finally{btn.disabled=false}
+};
+async function removerLancamento(id){
+ const reg=financeiroDaAgenda(showEscolhido),lan=lanc.find(x=>x.id===id);
+ if(!reg||reg.finalizado_em||lan?.caixa_show_id!==reg.id){$('showMsg').textContent='Lançamento não disponível para exclusão.';return}
+ if(!confirm('Excluir definitivamente este lançamento de '+money(lan.valor)+'?'))return;
+ try{
+  await requisicao('/rest/v1/caixa_lancamentos?id=eq.'+encodeURIComponent(id)+'&caixa_show_id=eq.'+encodeURIComponent(reg.id),{method:'DELETE',auth:true});
+  await refresh();$('showMsg').textContent='Lançamento excluído.';
+ }catch(err){$('showMsg').textContent='Não foi possível excluir: '+(err.message||err)}
+}
+$('finalizar').onclick=async()=>{
+ const reg=financeiroDaAgenda(showEscolhido);
+ if(!reg){$('showMsg').textContent='Registre o cachê ou uma entrada/saída antes de finalizar.';return}
+ if(reg.finalizado_em)return;
+ const m=movDoShow(reg),v=calc(reg);
+ if(!m.length){$('showMsg').textContent='Registre pelo menos uma entrada ou saída antes de finalizar.';return}
+ const pendente=v.receber>0?'ATENÇÃO: ainda há '+money(v.receber)+' de cachê a receber.\n\n':'';
+ const resumo='Finalizar o financeiro do show de '+fmtData(showEscolhido.date)+' em '+showEscolhido.city+'?\n\n'+pendente+'Entradas: '+money(v.receb)+'\nDespesas: '+money(v.desp)+'\nRepasses: '+money(v.repass)+'\nSaldo após repasses: '+money(v.saldo)+'\n\nFinalizar NÃO cancela nem modifica a agenda. Os lançamentos ficarão bloqueados até reabrir.';
+ if(!confirm(resumo))return;
+ const btn=$('finalizar');btn.disabled=true;
+ try{
+  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{method:'PATCH',body:{finalizado_em:new Date().toISOString()},auth:true});
+  await refresh();
+  const atual=financeiroDaAgenda(showEscolhido);
+  if(!atual?.finalizado_em)throw Error('Não foi possível confirmar o fechamento.');
+  $('showMsg').textContent='✓ Financeiro finalizado. O show permanece na agenda normalmente.';
+ }catch(err){$('showMsg').textContent='Erro ao finalizar: '+(err.message||err)}
+ finally{btn.disabled=false}
+};
+$('reabrir').onclick=async()=>{
+ const reg=financeiroDaAgenda(showEscolhido);
+ if(!reg?.finalizado_em)return;
+ if(!confirm('Reabrir este financeiro para corrigir valores? A agenda permanecerá inalterada.'))return;
+ const btn=$('reabrir');btn.disabled=true;
+ try{
+  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{method:'PATCH',body:{finalizado_em:null},auth:true});
+  await refresh();$('showMsg').textContent='✓ Financeiro reaberto.';
+ }catch(err){$('showMsg').textContent='Não foi possível reabrir: '+(err.message||err)}
+ finally{btn.disabled=false}
+};
+$('mes').onchange=()=>{selectedKey=null;showEscolhido=null;desenharAgenda();extratoGeral();desenharShow()};
+$('recarregar').onclick=refresh;
+$('mes').value=diaLocal().slice(0,7);
+$('dataLan').value=diaLocal();
+start();
 </script></body></html>
