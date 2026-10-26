@@ -78,7 +78,7 @@
 </main><script>
 const URL='https://zcfudytghjsosnpkmgzv.supabase.co', KEY='sb_publishable_2ALYNwAtD2DtRHN66Q055w__tpP-oid', LIPPI='906bad0f-9191-482d-88ec-8aea9ad44ca0';
 const $=id=>document.getElementById(id),money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let db,shows=[],lanc=[],agendaShows=[],agendaError=null;
+let db,shows=[],lanc=[];
 function message(s){$('msg').textContent=s}function err(e){message('Erro: '+(e?.message||e))}
 function ensure(r){if(r.error)throw r.error;return r.data}
 
