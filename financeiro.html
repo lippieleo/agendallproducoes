@@ -1,5 +1,5 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Financeiro | Lippi & Léo</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de shows, receitas, despesas e repasses.</p><small id="versao">Fechamento por show · versão 6</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.musicosLista{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-top:12px}.musicoOption{display:flex;align-items:center;gap:9px;background:#282d39;border:1px solid #454a57;padding:12px;border-radius:9px;font-size:14px;cursor:pointer;margin:0;color:#eee}.musicoOption input{width:18px;height:18px;flex:none;accent-color:#d7a34d}.musicoOption:has(input:checked){border-color:#d7a34d;background:#352f29}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de cachês, músicos, entradas e despesas por show.</p><small id="versao">Controle de músicos e saídas · versão 7</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
 <div id="app" class="hide">
   <section class="grid" aria-label="Resumo financeiro do mês">
     <div class="card"><small>Cachês dos shows do mês</small><h2 id="totalCache">R$ 0,00</h2></div>
@@ -16,7 +16,7 @@
       <div><label>&nbsp;</label><button type="button" class="secondary" id="sair">Sair</button></div>
     </div>
     <p id="msg" class="notice" role="status" aria-live="polite">Carregando…</p>
-    <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Cidade / local</th><th>Horário</th><th>Situação</th></tr></thead><tbody id="agendaBody"></tbody></table></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Cidade / local</th><th>Horário</th><th>Músicos</th><th>Situação</th></tr></thead><tbody id="agendaBody"></tbody></table></div>
   </section>
   <section class="card hide" id="detalhe">
     <h2 id="showTitulo">Financeiro do show</h2>
@@ -28,9 +28,10 @@
       <div class="card"><small>Despesas do show</small><h2 id="showDespesas">R$ 0,00</h2></div>
       <div class="card"><small>Saldo a receber do cachê</small><h2 id="showAReceber">R$ 0,00</h2></div>
       <div class="card"><small>Lucro operacional recebido</small><h2 id="showLucro">R$ 0,00</h2></div>
-      <div class="card"><small>Caixa disponível após repasses</small><h2 id="showSaldo">R$ 0,00</h2></div>
+      <div class="card"><small>Saldo de caixa do show</small><h2 id="showSaldo">R$ 0,00</h2></div>
     </div>
     <p id="divisao" class="notice"></p>
+
     <h3>2. Cachê contratado</h3>
     <form id="cacheForm">
       <fieldset id="cacheFieldset">
@@ -40,21 +41,54 @@
         </div>
       </fieldset>
     </form>
-    <h3>3. Registrar entradas e saídas</h3>
-    <p class="muted">Registre cada pagamento recebido, inclusive entradas parciais, e cada despesa separadamente.</p>
+
+    <h3>Entradas recebidas do cachê</h3>
+    <p class="muted">Registre o sinal, as parcelas ou o pagamento total do show. Esta área é separada das saídas.</p>
+    <form id="entradaForm">
+      <fieldset id="entradaFieldset">
+        <div class="grid">
+          <div><label for="entradaCategoria">Tipo de entrada</label><select id="entradaCategoria"><option>Cachê</option><option>Sinal</option><option>Parcela</option><option>Outros</option></select></div>
+          <div><label for="entradaValor">Valor recebido (R$)</label><input id="entradaValor" type="number" step="0.01" min="0.01" required></div>
+          <div><label for="entradaForma">Forma de recebimento</label><select id="entradaForma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div>
+          <div><label for="entradaData">Data do recebimento</label><input id="entradaData" type="date" required></div>
+        </div>
+        <label for="entradaObs">Observações do recebimento</label><input id="entradaObs" maxlength="400" placeholder="Ex.: primeira parcela do contratante">
+        <button type="submit" id="salvarEntrada">Registrar entrada recebida</button>
+      </fieldset>
+    </form>
+
+    <h3>Músicos que tocaram neste show</h3>
+    <p class="muted">Marque quem participou da apresentação. Isso fica registrado por show, mesmo quando o pagamento foi feito em outra data ou ainda não foi lançado.</p>
+    <form id="musicosForm">
+      <fieldset id="musicosFieldset">
+        <div id="musicosLista" class="musicosLista"></div>
+        <button type="submit" id="salvarMusicos">Salvar músicos deste show</button>
+      </fieldset>
+    </form>
+    <p class="muted" id="musicosResumo">Nenhum músico registrado ainda.</p>
+
+    <h3>3. Registrar somente saídas</h3>
+    <p class="muted">Selecione a categoria. Na categoria <strong>Músicos</strong>, escolha o músico pelo nome; para as outras categorias, descreva a despesa.</p>
     <form id="lanForm">
       <fieldset id="lanFieldset">
         <div class="grid">
-          <div><label for="tipo">Movimentação</label><select id="tipo"><option value="recebimento">Entrada recebida</option><option value="despesa">Saída / despesa</option><option value="repasse">Repasse a Lippi ou Léo</option></select></div>
-          <div><label for="categoria">Categoria</label><select id="categoria"></select></div>
-          <div><label for="favorecido">Descrição / músico / favorecido</label><input id="favorecido" maxlength="200" placeholder="Ex.: sinal, sanfoneiro, gasolina…"></div>
-          <div><label for="integrante">Integrante (somente repasse)</label><select id="integrante"><option value="">Não se aplica</option><option>Lippi</option><option>Léo</option></select></div>
+          <div><label for="categoria">Categoria</label><select id="categoria"><option>Músicos</option><option>Combustível</option><option>Pedágio</option><option>Alimentação</option><option>Hospedagem</option><option>Som e iluminação</option><option>Outros</option></select></div>
+          <div id="musicoDespesaWrap">
+            <label for="musicoDespesa">Músico / favorecido</label>
+            <select id="musicoDespesa" required>
+              <option value="">Selecione o músico</option>
+              <option>André Ferreira</option><option>Bruno zebra</option><option>Caio boloos</option><option>Edilson Lúcio</option><option>Ruan augusto</option>
+              <option value="__outro__">Outro músico</option>
+            </select>
+            <input id="outroMusico" class="hide" maxlength="200" placeholder="Nome do outro músico">
+          </div>
+          <div id="descricaoDespesaWrap" class="hide"><label for="descricaoDespesa">Descrição / favorecido</label><input id="descricaoDespesa" maxlength="200" placeholder="Ex.: combustível, pedágio, restaurante"></div>
           <div><label for="forma">Forma de pagamento</label><select id="forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div>
-          <div><label for="valor">Valor (R$)</label><input id="valor" type="number" step="0.01" min="0.01" required></div>
-          <div><label for="dataLan">Data do movimento</label><input id="dataLan" type="date" required></div>
+          <div><label for="valor">Valor da saída (R$)</label><input id="valor" type="number" step="0.01" min="0.01" required></div>
+          <div><label for="dataLan">Data da saída</label><input id="dataLan" type="date" required></div>
         </div>
         <label for="obs">Observações</label><input id="obs" maxlength="400">
-        <button type="submit" id="salvarLan">Registrar movimentação</button>
+        <button type="submit" id="salvarLan">Registrar saída</button>
       </fieldset>
     </form>
     <h3>Extrato deste show</h3>
@@ -69,10 +103,6 @@
     <h2>Extrato geral do mês</h2>
     <p class="muted">Considera a data de cada movimentação, mesmo que o show seja de outro mês.</p>
     <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Show / descrição</th><th>Valor</th></tr></thead><tbody id="extrato"></tbody></table></div>
-    <div class="grid">
-      <div class="card"><small>Repasses pagos ao Lippi no mês</small><h2 id="lippi">R$ 0,00</h2></div>
-      <div class="card"><small>Repasses pagos ao Léo no mês</small><h2 id="leo">R$ 0,00</h2></div>
-    </div>
   </section>
 </div>
 </main><script>
@@ -195,6 +225,7 @@ const diaLocal=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_
 const dinheiro=n=>Math.round((Number(n)||0)*100)/100;
 const soma=(lista,tipo)=>lista.filter(x=>x.tipo===tipo).reduce((v,x)=>v+Number(x.valor),0);
 const fmtData=d=>/^\d{4}-\d{2}-\d{2}$/.test(d||'')?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):String(d||'');
+const MUSICOS=['André Ferreira','Bruno zebra','Caio boloos','Edilson Lúcio','Ruan augusto'];
 let agendaShows=[],agendaError=null,showEscolhido=null,selectedKey=null,loading=false;
 function agendaKey(s){
  if(s.booking_id)return 'booking:'+s.booking_id;
@@ -230,8 +261,8 @@ function desenharAgenda(){
  const lista=agendaShows.filter(s=>String(s.date).startsWith(mes));
  $('agendaBody').innerHTML=lista.map(s=>{
   const key=agendaKey(s),reg=financeiroDaAgenda(s),fechado=Boolean(reg?.finalizado_em);
-  return '<tr><td>'+escapeHtml(fmtData(s.date))+'</td><td>'+escapeHtml(s.city+' · '+s.venue)+'</td><td>'+escapeHtml(s.time||'A definir')+'</td><td><button type="button" class="secondary mini selecionar" data-key="'+escapeHtml(key)+'">'+(fechado?'✓ Finalizado':reg?'Continuar':'Abrir')+'</button></td></tr>';
- }).join('')||'<tr><td colspan="4">'+(agendaError?'Erro ao consultar agenda: '+escapeHtml(agendaError):'Nenhum show na agenda deste mês.')+'</td></tr>';
+  return '<tr><td>'+escapeHtml(fmtData(s.date))+'</td><td>'+escapeHtml(s.city+' · '+s.venue)+'</td><td>'+escapeHtml(s.time||'A definir')+'</td><td>'+escapeHtml((reg?.musicos_presentes||[]).join(', ')||'—')+'</td><td><button type="button" class="secondary mini selecionar" data-key="'+escapeHtml(key)+'">'+(fechado?'✓ Finalizado':reg?'Continuar':'Abrir')+'</button></td></tr>';
+ }).join('')||'<tr><td colspan="5">'+(agendaError?'Erro ao consultar agenda: '+escapeHtml(agendaError):'Nenhum show na agenda deste mês.')+'</td></tr>';
  $('agendaBody').querySelectorAll('.selecionar').forEach(btn=>btn.onclick=()=>abrirShow(btn.dataset.key));
 }
 function extratoGeral(){
@@ -241,14 +272,37 @@ function extratoGeral(){
  $('totalRec').textContent=money(soma(ativos,'recebimento'));
  $('totalDesp').textContent=money(soma(ativos,'despesa'));
  $('saldo').textContent=money(soma(ativos,'recebimento')-soma(ativos,'despesa')-soma(ativos,'repasse'));
- $('lippi').textContent=money(ativos.filter(x=>x.tipo==='repasse'&&x.integrante==='Lippi').reduce((t,x)=>t+Number(x.valor),0));
- $('leo').textContent=money(ativos.filter(x=>x.tipo==='repasse'&&x.integrante==='Léo').reduce((t,x)=>t+Number(x.valor),0));
  $('extrato').innerHTML=ativos.map(x=>{
   const r=shows.find(s=>s.id===x.caixa_show_id);
   const sinal=x.tipo==='recebimento'?'+':'−';
   return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml((r?.descricao||'Geral')+' · '+x.categoria+' · '+(x.favorecido||x.integrante||''))+'</td><td>'+sinal+' '+money(x.valor)+'</td></tr>';
  }).join('')||'<tr><td colspan="4">Nenhuma movimentação neste mês.</td></tr>';
 }
+
+function montarListaMusicos(){
+ $('musicosLista').innerHTML=MUSICOS.map(nome=>
+   '<label class="musicoOption"><input class="musicoPresente" type="checkbox" value="'+escapeHtml(nome)+'"><span>'+escapeHtml(nome)+'</span></label>'
+ ).join('');
+}
+function renderizarMusicos(reg,fechado){
+ const presentes=Array.isArray(reg?.musicos_presentes)?reg.musicos_presentes:[];
+ $('musicosLista').querySelectorAll('.musicoPresente').forEach(box=>box.checked=presentes.includes(box.value));
+ $('musicosFieldset').disabled=fechado;
+ $('musicosResumo').textContent=presentes.length?'Músicos registrados: '+presentes.join(' · '):'Nenhum músico registrado neste show.';
+}
+function ajustarCategoria(){
+ const ehMusico=$('categoria').value==='Músicos';
+ $('musicoDespesaWrap').classList.toggle('hide',!ehMusico);
+ $('descricaoDespesaWrap').classList.toggle('hide',ehMusico);
+ $('musicoDespesa').required=ehMusico;
+ $('descricaoDespesa').required=!ehMusico;
+ $('outroMusico').classList.toggle('hide',!ehMusico||$('musicoDespesa').value!=='__outro__');
+ $('outroMusico').required=ehMusico&&$('musicoDespesa').value==='__outro__';
+}
+$('categoria').onchange=ajustarCategoria;
+$('musicoDespesa').onchange=ajustarCategoria;
+montarListaMusicos();
+ajustarCategoria();
 function desenharShow(){
  const s=showEscolhido;
  if(!s){$('detalhe').classList.add('hide');return}
@@ -256,7 +310,7 @@ function desenharShow(){
  $('detalhe').classList.remove('hide');
  $('showTitulo').textContent=fmtData(s.date)+' · '+s.city;
  $('showSubtitulo').textContent='Local: '+s.venue+' | Horário: '+(s.time||'A definir');
- $('showSituacao').textContent=fechado?'✓ Financeiro finalizado — sem alterar a agenda':'● Financeiro aberto — pronto para entradas e saídas';
+ $('showSituacao').textContent=fechado?'✓ Financeiro finalizado — sem alterar a agenda':'● Financeiro aberto — acompanhe cachê, músicos e despesas';
  $('showSituacao').className='notice '+(fechado?'statusFechado':'statusAberto');
  $('showCache').textContent=money(k.combinado);
  $('showEntradas').textContent=money(k.receb);
@@ -265,14 +319,16 @@ function desenharShow(){
  $('showLucro').textContent=money(k.lucro);
  $('showSaldo').textContent=money(k.saldo);
  const cota=Math.max(0,k.lucro)/2;
- $('divisao').textContent='Divisão de referência (50% do lucro já recebido, depois das despesas): Lippi '+money(cota)+'; Léo '+money(cota)+'. Repasses já pagos: Lippi '+money(k.pagosLippi)+'; Léo '+money(k.pagosLeo)+'.';
+ $('divisao').textContent='Divisão de referência (50% do lucro já recebido, depois das despesas): Lippi '+money(cota)+'; Léo '+money(cota)+(k.repass?'. Repasses registrados anteriormente: '+money(k.repass):'')+'.';
  $('cache').value=reg?String(reg.cache_contratado):'0';
  $('cacheFieldset').disabled=fechado;
  $('lanFieldset').disabled=fechado;
+ $('entradaFieldset').disabled=fechado;
+ renderizarMusicos(reg,fechado);
  $('finalizar').classList.toggle('hide',fechado);
  $('reabrir').classList.toggle('hide',!fechado);
  $('finalizar').disabled=!reg;
- $('showMsg').textContent=fechado?'Fechamento registrado. Clique em Reabrir se precisar corrigir algum valor.':(!reg?'Este show ainda não tem lançamentos. Salve o cachê ou registre uma entrada/saída para iniciar.':'Registre entradas e saídas. Quando conferir os valores, finalize o financeiro.');
+ $('showMsg').textContent=fechado?'Fechamento registrado. Clique em Reabrir se precisar corrigir algum valor.':(!reg?'Salve o cachê, informe os músicos ou registre uma entrada/saída para iniciar.':'Confira os recebimentos, os músicos e as despesas. Depois finalize o financeiro.');
  $('showExtrato').innerHTML=mov.map(x=>{
    const descrit=(x.categoria||'')+(x.favorecido?' · '+x.favorecido:'')+(x.integrante?' · '+x.integrante:'')+(x.observacoes?' · '+x.observacoes:'');
    return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml(descrit)+'</td><td>'+money(x.valor)+'</td><td>'+(fechado?'':'<button class="secondary mini remover" type="button" data-id="'+escapeHtml(x.id)+'">Excluir</button>')+'</td></tr>';
@@ -346,31 +402,71 @@ $('cacheForm').onsubmit=async e=>{
  }catch(err){$('showMsg').textContent='Erro ao salvar cachê: '+(err.message||err)}
  finally{btn.disabled=false}
 };
-function categorias(){
- const tipo=$('tipo').value;
- const opções=tipo==='recebimento'?['Cachê','Sinal','Parcela','Outros']:tipo==='despesa'?['Músicos','Combustível','Pedágio','Alimentação','Hospedagem','Som e iluminação','Outros']:['Repasse','Acerto','Outros'];
- $('categoria').innerHTML=opções.map(x=>'<option>'+escapeHtml(x)+'</option>').join('');
- $('integrante').required=tipo==='repasse';
- $('integrante').disabled=tipo!=='repasse';
- if(tipo!=='repasse')$('integrante').value='';
-}
-$('tipo').onchange=categorias;
-categorias();
+
+$('entradaForm').onsubmit=async e=>{
+ e.preventDefault();
+ const btn=$('salvarEntrada');btn.disabled=true;
+ try{
+  const valor=Number($('entradaValor').value);
+  if(!Number.isFinite(valor)||valor<=0)throw Error('Informe um valor recebido maior que zero.');
+  const reg=await obterRegistro();
+  const dados={
+   caixa_show_id:reg.id,tipo:'recebimento',categoria:$('entradaCategoria').value,
+   favorecido:null,integrante:null,forma:$('entradaForma').value,
+   valor,data_lancamento:$('entradaData').value,observacoes:$('entradaObs').value.trim()||null
+  };
+  await requisicao('/rest/v1/caixa_lancamentos',{method:'POST',body:dados,auth:true});
+  $('entradaForm').reset();$('entradaData').value=diaLocal();
+  await refresh();
+  $('showMsg').textContent='✓ Entrada do cachê registrada neste show.';
+ }catch(err){$('showMsg').textContent='Não foi possível registrar entrada: '+(err.message||err)}
+ finally{btn.disabled=false}
+};
+$('musicosForm').onsubmit=async e=>{
+ e.preventDefault();
+ const btn=$('salvarMusicos');btn.disabled=true;
+ try{
+  const selecionados=[...$('musicosLista').querySelectorAll('.musicoPresente:checked')].map(x=>x.value);
+  const reg=await obterRegistro();
+  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{
+   method:'PATCH',auth:true,body:{musicos_presentes:selecionados}
+  });
+  await refresh();
+  $('showMsg').textContent='✓ Músicos registrados neste show: '+(selecionados.join(', ')||'nenhum');
+ }catch(err){$('showMsg').textContent='Não foi possível salvar os músicos: '+(err.message||err)}
+ finally{btn.disabled=false}
+};
 $('lanForm').onsubmit=async e=>{
  e.preventDefault();const btn=$('salvarLan');btn.disabled=true;
  try{
   const valor=Number($('valor').value);
-  if(!(valor>0)&&!Number.isFinite(valor))throw Error('Valor inválido.');
-  if(!Number.isFinite(valor)||valor<=0)throw Error('Informe um valor positivo.');
-  const tipo=$('tipo').value;
-  if(tipo==='repasse'&&!$('integrante').value)throw Error('Selecione Lippi ou Léo para o repasse.');
+  if(!Number.isFinite(valor)||valor<=0)throw Error('Informe um valor de saída maior que zero.');
+  const categoria=$('categoria').value,ehMusico=categoria==='Músicos';
+  const escolhido=$('musicoDespesa').value;
+  const favorecido=ehMusico?(escolhido==='__outro__' ? $('outroMusico').value.trim() : escolhido):$('descricaoDespesa').value.trim();
+  if(!favorecido)throw Error(ehMusico?'Selecione o músico que recebeu o pagamento.':'Descreva a despesa.');
   const reg=await obterRegistro();
-  const dados={caixa_show_id:reg.id,tipo,categoria:$('categoria').value,favorecido:$('favorecido').value.trim()||null,integrante:tipo==='repasse'?$('integrante').value:null,forma:$('forma').value,valor,data_lancamento:$('dataLan').value,observacoes:$('obs').value.trim()||null};
-  await requisicao('/rest/v1/caixa_lancamentos',{method:'POST',body:dados,auth:true});
-  $('lanForm').reset();categorias();$('dataLan').value=diaLocal();
+  await requisicao('/rest/v1/caixa_lancamentos',{method:'POST',body:{
+   caixa_show_id:reg.id,tipo:'despesa',categoria,favorecido,integrante:null,
+   forma:$('forma').value,valor,data_lancamento:$('dataLan').value,observacoes:$('obs').value.trim()||null
+  },auth:true});
+  let aviso='';
+  // O pagamento a um músico da lista também o marca como participante do show.
+  if(ehMusico&&MUSICOS.includes(favorecido)){
+   try{
+    const atual=await requisicao('/rest/v1/caixa_shows?select=id,musicos_presentes&id=eq.'+encodeURIComponent(reg.id)+'&limit=1',{auth:true});
+    const ja=Array.isArray(atual[0]?.musicos_presentes)?atual[0].musicos_presentes:[];
+    if(!ja.includes(favorecido)){
+     await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{
+      method:'PATCH',auth:true,body:{musicos_presentes:[...ja,favorecido]}
+     });
+    }
+   }catch(err){aviso=' Atenção: marque esse músico na lista de participantes para concluir o registro de presença.';}
+  }
+  $('lanForm').reset();ajustarCategoria();$('dataLan').value=diaLocal();
   await refresh();
-  $('showMsg').textContent='✓ '+(tipo==='recebimento'?'Entrada':'Saída')+' registrada neste show.';
- }catch(err){$('showMsg').textContent='Não foi possível registrar: '+(err.message||err)}
+  $('showMsg').textContent='✓ Saída registrada: '+favorecido+' — '+money(valor)+'.'+aviso;
+ }catch(err){$('showMsg').textContent='Não foi possível registrar saída: '+(err.message||err)}
  finally{btn.disabled=false}
 };
 async function removerLancamento(id){
@@ -416,5 +512,6 @@ $('mes').onchange=()=>{selectedKey=null;showEscolhido=null;desenharAgenda();extr
 $('recarregar').onclick=refresh;
 $('mes').value=diaLocal().slice(0,7);
 $('dataLan').value=diaLocal();
+$('entradaData').value=diaLocal();
 start();
 </script></body></html>
