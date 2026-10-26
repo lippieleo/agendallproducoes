@@ -1,45 +1,115 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Financeiro | Lippi & Léo</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de shows, receitas, despesas e repasses.</p><small id="versao">Atualização do login: 26/10 · versão 3</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div><div id="app" class="hide"><div class="grid"><div class="card"><small>Cachês contratados no mês</small><h2 id="totalCache">R$ 0,00</h2></div><div class="card"><small>Recebimentos do mês</small><h2 id="totalRec">R$ 0,00</h2></div><div class="card"><small>Despesas do mês</small><h2 id="totalDesp">R$ 0,00</h2></div><div class="card"><small>Saldo de caixa do mês</small><h2 id="saldo">R$ 0,00</h2></div></div><div class="card"><div class="grid"><div><label>Mês do extrato</label><input type="month" id="mes"></div><div><label>&nbsp;</label><button class="secondary" id="sair">Sair</button></div></div><div id="msg" class="notice">Carregando…</div></div><section class="card"><h2>Cadastrar financeiro do show</h2><form id="showForm"><div class="grid"><div><label>Show aprovado / solicitado</label><select id="solicitacao"><option value="">Show avulso</option></select></div><div><label>Descrição / local</label><input id="descricao" required></div><div><label>Data do show</label><input id="dataShow" type="date" required></div><div><label>Cachê contratado (R$)</label><input id="cache" type="number" step=".01" min="0" required></div></div><button>Salvar show</button></form><h2>Shows financeiros cadastrados</h2><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show</th><th>Cachê</th></tr></thead><tbody id="showsBody"></tbody></table></div></section><section class="card"><h2>Registrar recebimento, despesa ou repasse</h2><form id="lanForm"><div class="grid"><div><label>Show</label><select id="showSelect"><option value="">Despesa/receita geral</option></select></div><div><label>Tipo</label><select id="tipo"><option value="recebimento">Recebimento</option><option value="despesa">Despesa</option><option value="repasse">Repasse a integrante</option></select></div><div><label>Categoria</label><select id="categoria"><option>Cache</option><option>Musicos</option><option>Combustivel</option><option>Pedagio</option><option>Outros</option></select></div><div><label>Nome do músico / favorecido</label><input id="favorecido"></div><div><label>Integrante (para repasse)</label><select id="integrante"><option value="">Não se aplica</option><option>Lippi</option><option>Léo</option></select></div><div><label>Forma de pagamento</label><select id="forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div><div><label>Valor (R$)</label><input id="valor" type="number" min=".01" step=".01" required></div><div><label>Data do lançamento</label><input id="dataLan" type="date" required></div></div><label>Observações</label><input id="obs"><button>Registrar lançamento</button></form></section><section class="card"><h2>Extrato mensal</h2><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Categoria / favorecido</th><th>Forma</th><th class="right">Valor</th></tr></thead><tbody id="extrato"></tbody></table></div><h2>Repasses realizados no mês</h2><div class="grid"><div class="card">Lippi: <strong id="lippi">R$ 0,00</strong></div><div class="card">Léo: <strong id="leo">R$ 0,00</strong></div></div><small>O extrato mostra valores efetivamente registrados; a divisão de lucro estimada será acrescentada após validação dos critérios.</small></section></div></main><script>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de shows, receitas, despesas e repasses.</p><small id="versao">Atualização do login: 26/10 · versão 4</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div><div id="app" class="hide"><div class="grid"><div class="card"><small>Cachês contratados no mês</small><h2 id="totalCache">R$ 0,00</h2></div><div class="card"><small>Recebimentos do mês</small><h2 id="totalRec">R$ 0,00</h2></div><div class="card"><small>Despesas do mês</small><h2 id="totalDesp">R$ 0,00</h2></div><div class="card"><small>Saldo de caixa do mês</small><h2 id="saldo">R$ 0,00</h2></div></div><div class="card"><div class="grid"><div><label>Mês do extrato</label><input type="month" id="mes"></div><div><label>&nbsp;</label><button class="secondary" id="sair">Sair</button></div></div><div id="msg" class="notice">Carregando…</div></div><section class="card"><h2>Cadastrar financeiro do show</h2><form id="showForm"><div class="grid"><div><label>Show aprovado / solicitado</label><select id="solicitacao"><option value="">Show avulso</option></select></div><div><label>Descrição / local</label><input id="descricao" required></div><div><label>Data do show</label><input id="dataShow" type="date" required></div><div><label>Cachê contratado (R$)</label><input id="cache" type="number" step=".01" min="0" required></div></div><button>Salvar show</button></form><h2>Shows financeiros cadastrados</h2><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show</th><th>Cachê</th></tr></thead><tbody id="showsBody"></tbody></table></div></section><section class="card"><h2>Registrar recebimento, despesa ou repasse</h2><form id="lanForm"><div class="grid"><div><label>Show</label><select id="showSelect"><option value="">Despesa/receita geral</option></select></div><div><label>Tipo</label><select id="tipo"><option value="recebimento">Recebimento</option><option value="despesa">Despesa</option><option value="repasse">Repasse a integrante</option></select></div><div><label>Categoria</label><select id="categoria"><option>Cache</option><option>Musicos</option><option>Combustivel</option><option>Pedagio</option><option>Outros</option></select></div><div><label>Nome do músico / favorecido</label><input id="favorecido"></div><div><label>Integrante (para repasse)</label><select id="integrante"><option value="">Não se aplica</option><option>Lippi</option><option>Léo</option></select></div><div><label>Forma de pagamento</label><select id="forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="transferencia">Transferência</option><option value="cartao">Cartão</option><option value="outro">Outro</option></select></div><div><label>Valor (R$)</label><input id="valor" type="number" min=".01" step=".01" required></div><div><label>Data do lançamento</label><input id="dataLan" type="date" required></div></div><label>Observações</label><input id="obs"><button>Registrar lançamento</button></form></section><section class="card"><h2>Extrato mensal</h2><div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Tipo</th><th>Categoria / favorecido</th><th>Forma</th><th class="right">Valor</th></tr></thead><tbody id="extrato"></tbody></table></div><h2>Repasses realizados no mês</h2><div class="grid"><div class="card">Lippi: <strong id="lippi">R$ 0,00</strong></div><div class="card">Léo: <strong id="leo">R$ 0,00</strong></div></div><small>O extrato mostra valores efetivamente registrados; a divisão de lucro estimada será acrescentada após validação dos critérios.</small></section></div></main><script>
 const URL='https://zcfudytghjsosnpkmgzv.supabase.co', KEY='sb_publishable_2ALYNwAtD2DtRHN66Q055w__tpP-oid', LIPPI='906bad0f-9191-482d-88ec-8aea9ad44ca0';
 const $=id=>document.getElementById(id),money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let db,shows=[],lanc=[];
 function message(s){$('msg').textContent=s}function err(e){message('Erro: '+(e?.message||e))}
 function ensure(r){if(r.error)throw r.error;return r.data}
-function carregarBiblioteca(url){
-  return new Promise((resolve,reject)=>{
-    const tag=document.createElement('script');
-    tag.src=url;
-    tag.async=true;
-    tag.onload=()=>window.supabase?.createClient?resolve():reject(new Error('Biblioteca não inicializada'));
-    tag.onerror=()=>reject(new Error('Não foi possível acessar '+new URL(url).hostname));
-    document.head.appendChild(tag);
-  });
+
+/* Cliente direto da API do Supabase: evita scripts externos bloqueados no celular. */
+const STORAGE='lippi_caixa_session_v1';
+let session=null;
+try{session=JSON.parse(sessionStorage.getItem(STORAGE)||'null')}catch(_){}
+function guardarSessao(s){
+  session={access_token:s.access_token,refresh_token:s.refresh_token||null,expires_at:s.expires_at||Math.floor(Date.now()/1000)+(Number(s.expires_in)||3600)};
+  try{sessionStorage.setItem(STORAGE,JSON.stringify(session))}catch(_){}
+}
+function limparSessao(){session=null;try{sessionStorage.removeItem(STORAGE)}catch(_){}}
+async function requisicao(caminho,{method='GET',body,auth=false}={}){
+  if(auth && !session?.access_token)throw Error('Sessão não encontrada. Entre novamente.');
+  if(auth && session.expires_at && Date.now()/1000>=session.expires_at-60){
+    if(!session.refresh_token)throw Error('Sessão expirada. Entre novamente.');
+    const atualizada=await requisicao('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:session.refresh_token}});
+    guardarSessao(atualizada);
+  }
+  const headers={apikey:KEY,Accept:'application/json'};
+  if(auth)headers.Authorization='Bearer '+session.access_token;
+  if(body!==undefined)headers['Content-Type']='application/json';
+  let resp;
+  try{resp=await fetch(URL+caminho,{method,headers,body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'})}
+  catch(e){throw Error('Não foi possível acessar o servidor Supabase. Verifique a internet ou abra no Chrome.')}
+  const txt=await resp.text();
+  let data=null;
+  try{data=txt?JSON.parse(txt):null}catch(_){data={message:txt.slice(0,200)}}
+  if(!resp.ok)throw Error(data?.msg||data?.error_description||data?.message||data?.error||('Erro HTTP '+resp.status));
+  return data;
+}
+function clienteLocal(){
+  return {
+    auth:{
+      async getUser(){
+        if(!session?.access_token)return {data:{user:null},error:null};
+        try{const user=await requisicao('/auth/v1/user',{auth:true});return {data:{user},error:null}}
+        catch(e){return {data:{user:null},error:e}}
+      },
+      async signInWithPassword({email,password}){
+        try{const d=await requisicao('/auth/v1/token?grant_type=password',{method:'POST',body:{email,password}});guardarSessao(d);return {data:{user:d.user},error:null}}
+        catch(e){return {data:{user:null},error:e}}
+      },
+      async resetPasswordForEmail(email,{redirectTo}={}){
+        try{await requisicao('/auth/v1/recover'+(redirectTo?'?redirect_to='+encodeURIComponent(redirectTo):''),{method:'POST',body:{email}});return {data:{},error:null}}
+        catch(e){return {data:null,error:e}}
+      },
+      async updateUser({password}){
+        try{const user=await requisicao('/auth/v1/user',{method:'PUT',body:{password},auth:true});return {data:{user},error:null}}
+        catch(e){return {data:null,error:e}}
+      },
+      async signOut(){
+        try{if(session?.access_token)await requisicao('/auth/v1/logout',{method:'POST',auth:true})}
+        catch(e){console.warn('Falha no encerramento remoto da sessão',e)}
+        finally{limparSessao()}
+        return {error:null}
+      }
+    },
+    from(table){
+      const params=new URLSearchParams();
+      const query={
+        select(columns){params.set('select',columns);return query},
+        eq(col,val){params.set(col,'eq.'+val);return query},
+        order(col,{ascending=true}={}){params.set('order',col+'.'+(ascending?'asc':'desc'));return query},
+        then(resolve,reject){
+          return requisicao('/rest/v1/'+encodeURIComponent(table)+'?'+params.toString(),{auth:true})
+            .then(data=>resolve({data,error:null}),error=>resolve({data:null,error}));
+        },
+        async insert(item){
+          try{await requisicao('/rest/v1/'+encodeURIComponent(table),{method:'POST',body:item,auth:true});return {data:null,error:null}}
+          catch(error){return {data:null,error}}
+        }
+      };
+      return query;
+    }
+  };
 }
 async function start(){
-  $('loginMsg').textContent='Conectando ao sistema…';
-  try{
-    if(!window.supabase?.createClient){
-      const fontes=[
-        'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0',
-        'https://unpkg.com/@supabase/supabase-js@2.118.0'
-      ];
-      let ok=false;
-      for(const fonte of fontes){
-        try{await carregarBiblioteca(fonte);ok=true;break}
-        catch(e){console.warn('Falha no carregamento da biblioteca',e)}
-      }
-      if(!ok)throw new Error('Biblioteca bloqueada ou indisponível. Abra esta página no Google Chrome.');
+  db=clienteLocal();
+  const hash=new URLSearchParams(location.hash.slice(1));
+  if(hash.get('type')==='recovery' && hash.get('access_token')){
+    guardarSessao({access_token:hash.get('access_token'),refresh_token:hash.get('refresh_token'),expires_in:Number(hash.get('expires_in'))||3600});
+    history.replaceState(null,'',location.pathname+location.search);
+    const r=await db.auth.getUser();
+    if(r.data?.user?.id===LIPPI){
+      $('recoveryForm').classList.remove('hide');
+      $('entrar').classList.add('hide');
+      $('recuperar').classList.add('hide');
+      $('loginMsg').textContent='Link validado. Escolha uma nova senha abaixo.';
+      return;
     }
-    db=window.supabase.createClient(URL,KEY);
-    const {data}=await db.auth.getUser();
-    if(data?.user?.id===LIPPI)await enter();
-    else $('loginMsg').textContent='Conexão pronta! Digite sua senha ou toque em Esqueci minha senha.';
-  }catch(e){$('loginMsg').textContent='Falha na inicialização: '+(e.message||e)}
+    limparSessao();
+    $('loginMsg').textContent='O link de recuperação expirou ou não corresponde à conta Lippi.';
+    return;
+  }
+  if(session?.access_token){
+    const r=await db.auth.getUser();
+    if(r.data?.user?.id===LIPPI){await enter();return}
+    limparSessao();
+  }
+  $('loginMsg').textContent='Pronto para acessar. Entre com sua senha ou use Esqueci minha senha.';
 }
+
 async function enter(){$('login').classList.add('hide');$('app').classList.remove('hide');await refresh()}
 $('entrar').onclick=async()=>{const btn=$('entrar');btn.disabled=true;btn.textContent='Verificando acesso…';$('loginMsg').textContent='Tentando entrar…';try{if(!db)throw Error('Conexão indisponível. Atualize a página e tente novamente.');const email=$('email').value.trim(),password=$('senha').value;if(!email||!password)throw Error('Preencha o e-mail e a senha. Se esqueceu a senha, use o botão abaixo.');let r=await db.auth.signInWithPassword({email,password});if(r.error)throw r.error;if(r.data.user.id!==LIPPI){await db.auth.signOut();throw Error('Acesso permitido somente a Lippi')}await enter()}catch(e){$('loginMsg').textContent='Não foi possível entrar: '+(e.message||e)}finally{btn.disabled=false;btn.textContent='Entrar'}};
 $('recuperar').onclick=async()=>{const btn=$('recuperar');btn.disabled=true;$('loginMsg').textContent='Preparando recuperação…';try{if(!db)throw Error('Conexão indisponível. Atualize a página.');const email=$('email').value.trim();if(!email)throw Error('Digite seu e-mail primeiro.');if(email.toLowerCase()!=='feali.lipi@gmail.com')throw Error('Use o e-mail cadastrado de Lippi.');const r=await db.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(r.error)throw r.error;$('loginMsg').textContent='Solicitação enviada. Verifique sua caixa de entrada e spam.'}catch(e){$('loginMsg').textContent='Não foi possível solicitar a recuperação: '+(e.message||e)}finally{btn.disabled=false}};
-if(location.hash.includes('type=recovery')){window.addEventListener('load',async()=>{if(!db)return;const nova=prompt('Digite sua nova senha (mínimo de 8 caracteres):');if(!nova)return;const r=await db.auth.updateUser({password:nova});$('loginMsg').textContent=r.error?'Erro ao trocar senha: '+r.error.message:'Senha atualizada. Agora você pode entrar.'})}
+$('salvarSenha').onclick=async()=>{const btn=$('salvarSenha');btn.disabled=true;try{const password=$('novaSenha').value;if(password.length<8)throw Error('Use uma senha com pelo menos 8 caracteres.');const r=await db.auth.updateUser({password});if(r.error)throw r.error;$('loginMsg').textContent='Senha redefinida com sucesso. Abra novamente a página para entrar.';$('recoveryForm').classList.add('hide');await db.auth.signOut();$('entrar').classList.remove('hide');$('recuperar').classList.remove('hide');$('senha').value='';}catch(e){$('loginMsg').textContent='Não foi possível salvar a senha: '+(e.message||e)}finally{btn.disabled=false}};
 $('sair').onclick=async()=>{await db.auth.signOut();location.reload()};
 async function refresh(){try{message('Atualizando…');shows=ensure(await db.from('caixa_shows').select('*').order('data_show',{ascending:false}));const opts=shows.map(s=>'<option value="'+s.id+'">'+escapeHtml(s.data_show+' · '+(s.descricao||'Show'))+'</option>').join('');$('showSelect').innerHTML='<option value="">Geral (sem show)</option>'+opts;$('showsBody').innerHTML=shows.map(s=>'<tr><td>'+escapeHtml(s.data_show)+'</td><td>'+escapeHtml(s.descricao)+'</td><td>'+money(s.cache_contratado)+'</td></tr>').join('');const approved=ensure(await db.from('solicitacoes_shows').select('id,data_show,cidade,local_evento,status').eq('status','aprovado').order('data_show',{ascending:false}));$('solicitacao').innerHTML='<option value="">Show avulso</option>'+approved.filter(s=>!shows.some(x=>x.solicitacao_id===s.id)).map(s=>'<option value="'+s.id+'" data-date="'+s.data_show+'" data-desc="'+escapeHtml(s.cidade+' · '+s.local_evento)+'">'+escapeHtml(s.data_show+' · '+s.cidade)+'</option>').join('');lanc=ensure(await db.from('caixa_lancamentos').select('*').order('data_lancamento',{ascending:false}));draw();message('Dados atualizados.')}catch(e){err(e)}}
 $('solicitacao').onchange=()=>{const o=$('solicitacao').selectedOptions[0];if(o?.dataset.date)$('dataShow').value=o.dataset.date;if(o?.dataset.desc)$('descricao').value=o.dataset.desc};
