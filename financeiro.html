@@ -57,16 +57,6 @@
       </fieldset>
     </form>
 
-    <h3>Músicos que tocaram neste show</h3>
-    <p class="muted">Marque quem participou da apresentação. Isso fica registrado por show, mesmo quando o pagamento foi feito em outra data ou ainda não foi lançado.</p>
-    <form id="musicosForm">
-      <fieldset id="musicosFieldset">
-        <div id="musicosLista" class="musicosLista"></div>
-        <button type="submit" id="salvarMusicos">Salvar músicos deste show</button>
-      </fieldset>
-    </form>
-    <p class="muted" id="musicosResumo">Nenhum músico registrado ainda.</p>
-
     <h3>3. Registrar somente saídas</h3>
     <p class="muted">Selecione a categoria. Na categoria <strong>Músicos</strong>, escolha o músico pelo nome; para as outras categorias, descreva a despesa.</p>
     <form id="lanForm">
@@ -279,17 +269,6 @@ function extratoGeral(){
  }).join('')||'<tr><td colspan="4">Nenhuma movimentação neste mês.</td></tr>';
 }
 
-function montarListaMusicos(){
- $('musicosLista').innerHTML=MUSICOS.map(nome=>
-   '<label class="musicoOption"><input class="musicoPresente" type="checkbox" value="'+escapeHtml(nome)+'"><span>'+escapeHtml(nome)+'</span></label>'
- ).join('');
-}
-function renderizarMusicos(reg,fechado){
- const presentes=Array.isArray(reg?.musicos_presentes)?reg.musicos_presentes:[];
- $('musicosLista').querySelectorAll('.musicoPresente').forEach(box=>box.checked=presentes.includes(box.value));
- $('musicosFieldset').disabled=fechado;
- $('musicosResumo').textContent=presentes.length?'Músicos registrados: '+presentes.join(' · '):'Nenhum músico registrado neste show.';
-}
 function ajustarCategoria(){
  const ehMusico=$('categoria').value==='Músicos';
  $('musicoDespesaWrap').classList.toggle('hide',!ehMusico);
@@ -301,7 +280,6 @@ function ajustarCategoria(){
 }
 $('categoria').onchange=ajustarCategoria;
 $('musicoDespesa').onchange=ajustarCategoria;
-montarListaMusicos();
 ajustarCategoria();
 function desenharShow(){
  const s=showEscolhido;
@@ -324,7 +302,6 @@ function desenharShow(){
  $('cacheFieldset').disabled=fechado;
  $('lanFieldset').disabled=fechado;
  $('entradaFieldset').disabled=fechado;
- renderizarMusicos(reg,fechado);
  $('finalizar').classList.toggle('hide',fechado);
  $('reabrir').classList.toggle('hide',!fechado);
  $('finalizar').disabled=!reg;
@@ -420,20 +397,6 @@ $('entradaForm').onsubmit=async e=>{
   await refresh();
   $('showMsg').textContent='✓ Entrada do cachê registrada neste show.';
  }catch(err){$('showMsg').textContent='Não foi possível registrar entrada: '+(err.message||err)}
- finally{btn.disabled=false}
-};
-$('musicosForm').onsubmit=async e=>{
- e.preventDefault();
- const btn=$('salvarMusicos');btn.disabled=true;
- try{
-  const selecionados=[...$('musicosLista').querySelectorAll('.musicoPresente:checked')].map(x=>x.value);
-  const reg=await obterRegistro();
-  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{
-   method:'PATCH',auth:true,body:{musicos_presentes:selecionados}
-  });
-  await refresh();
-  $('showMsg').textContent='✓ Músicos registrados neste show: '+(selecionados.join(', ')||'nenhum');
- }catch(err){$('showMsg').textContent='Não foi possível salvar os músicos: '+(err.message||err)}
  finally{btn.disabled=false}
 };
 $('lanForm').onsubmit=async e=>{
