@@ -218,16 +218,46 @@ test.src=url;
 .day:not(.empty){cursor:pointer}.day:not(.empty):focus-visible{outline:2px solid #f3c66a}
 .booking-overlay[hidden]{display:none!important}.booking-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:18px}
 .booking-panel{background:#17171d;border:1px solid #9e783b;border-radius:16px;color:white;padding:22px;width:min(440px,100%);max-height:94vh;overflow:auto;box-shadow:0 12px 60px #000}
-.booking-panel h2{margin:0 0 12px;font-size:23px}.booking-panel label{display:block;margin:10px 0 4px;font-size:14px}.booking-panel input{width:100%;padding:11px;border:1px solid #68636a;border-radius:7px;background:#25252b;color:#fff;font:inherit}.booking-actions{display:flex;gap:10px;margin-top:18px}.booking-actions button{padding:11px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer}.booking-actions button[type=submit]{background:#e0b36c;color:#18110a;flex:1}.booking-actions button[type=button]{background:#41414a;color:white}.booking-hint{font-size:13px;color:#e6d5bb}.booking-message{min-height:1.5em;font-size:14px}
+.booking-panel h2{margin:0 0 12px;font-size:23px}.booking-panel label{display:block;margin:10px 0 4px;font-size:14px}.booking-panel input,.booking-panel #booking-time{width:100%;padding:11px;border:1px solid #68636a;border-radius:7px;background:#25252b;color:#fff;font:inherit}.booking-actions{display:flex;gap:10px;margin-top:18px}.booking-actions button{padding:11px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer}.booking-actions button[type=submit]{background:#e0b36c;color:#18110a;flex:1}.booking-actions button[type=button]{background:#41414a;color:white}.booking-hint{font-size:13px;color:#e6d5bb}.booking-message{min-height:1.5em;font-size:14px}
 </style><script id="booking-ui-script">
 (function(){
 const API='https://zcfudytghjsosnpkmgzv.supabase.co/functions/v1/pre-reservas';
 const overlay=document.createElement('div');overlay.className='booking-overlay';overlay.hidden=true;
-overlay.innerHTML='<div class="booking-panel" role="dialog" aria-modal="true" aria-labelledby="booking-title"><h2 id="booking-title">Solicitar data para show</h2><p class="booking-hint">Cada apresentação reserva 3 horas. O pedido depende da aprovação da produção.</p><form id="booking-form"><label for="booking-date">Data</label><input id="booking-date" name="date" type="date" required readonly><label for="booking-time">Horário de início</label><input id="booking-time" name="time" type="time" required><label for="booking-name">Nome do contratante</label><input id="booking-name" name="name" maxlength="150" required minlength="2"><label for="booking-venue">Local do evento</label><input id="booking-venue" name="venue" maxlength="200" required minlength="2"><label for="booking-event-type">Tipo de evento</label><select id="booking-event-type" name="event_type" required style="box-sizing:border-box;width:100%;padding:12px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;color:#111;font:inherit;margin:7px 0 12px"><option value="" selected disabled>Selecione o tipo de evento</option><option value="Aniversário">Aniversário</option><option value="Casamento">Casamento</option><option value="Casa de show">Casa de show</option><option value="Bar ou pub">Bar ou pub</option><option value="Festa particular">Festa particular</option><option value="Formatura">Formatura</option><option value="Festa de 15 anos">Festa de 15 anos</option><option value="Evento corporativo">Evento corporativo</option><option value="Confraternização">Confraternização</option><option value="Rodeio">Rodeio</option><option value="Feira agropecuária">Feira agropecuária</option><option value="Festa de prefeitura">Festa de prefeitura</option><option value="Festival">Festival</option><option value="Inauguração">Inauguração</option><option value="Evento beneficente">Evento beneficente</option><option value="Outros">Outros</option></select><label for="booking-city">Cidade</label><input id="booking-city" name="city" maxlength="150" required minlength="2"><label for="booking-whatsapp">WhatsApp com DDD</label><input id="booking-whatsapp" name="whatsapp" type="tel" maxlength="25" placeholder="(19) 99999-9999" required><p class="booking-message" id="booking-message" role="status"></p><div class="booking-actions"><button type="button" id="booking-cancel">Cancelar</button><button type="submit" id="booking-submit">Enviar solicitação</button></div></form></div>';
+overlay.innerHTML='<div class="booking-panel" role="dialog" aria-modal="true" aria-labelledby="booking-title"><h2 id="booking-title">Solicitar data para show</h2><p class="booking-hint">Cada apresentação reserva 3 horas. O pedido depende da aprovação da produção.</p><form id="booking-form"><label for="booking-date">Data</label><input id="booking-date" name="date" type="date" required readonly><label for="booking-time">Horário de início</label><select id="booking-time" name="time" required aria-describedby="booking-time-hint"></select><p class="booking-hint" id="booking-time-hint">Os horários ocupados estarão bloqueados.</p><label for="booking-name">Nome do contratante</label><input id="booking-name" name="name" maxlength="150" required minlength="2"><label for="booking-venue">Local do evento</label><input id="booking-venue" name="venue" maxlength="200" required minlength="2"><label for="booking-event-type">Tipo de evento</label><select id="booking-event-type" name="event_type" required style="box-sizing:border-box;width:100%;padding:12px;border:1px solid #8a8a8a;border-radius:8px;background:#fff;color:#111;font:inherit;margin:7px 0 12px"><option value="" selected disabled>Selecione o tipo de evento</option><option value="Aniversário">Aniversário</option><option value="Casamento">Casamento</option><option value="Casa de show">Casa de show</option><option value="Bar ou pub">Bar ou pub</option><option value="Festa particular">Festa particular</option><option value="Formatura">Formatura</option><option value="Festa de 15 anos">Festa de 15 anos</option><option value="Evento corporativo">Evento corporativo</option><option value="Confraternização">Confraternização</option><option value="Rodeio">Rodeio</option><option value="Feira agropecuária">Feira agropecuária</option><option value="Festa de prefeitura">Festa de prefeitura</option><option value="Festival">Festival</option><option value="Inauguração">Inauguração</option><option value="Evento beneficente">Evento beneficente</option><option value="Outros">Outros</option></select><label for="booking-city">Cidade</label><input id="booking-city" name="city" maxlength="150" required minlength="2"><label for="booking-whatsapp">WhatsApp com DDD</label><input id="booking-whatsapp" name="whatsapp" type="tel" maxlength="25" placeholder="(19) 99999-9999" required><p class="booking-message" id="booking-message" role="status"></p><div class="booking-actions"><button type="button" id="booking-cancel">Cancelar</button><button type="submit" id="booking-submit">Enviar solicitação</button></div></form></div>';
 document.body.append(overlay);
 const form=overlay.querySelector('#booking-form'),msg=overlay.querySelector('#booking-message'),send=overlay.querySelector('#booking-submit');
 function close(){overlay.hidden=true;document.body.classList.remove('modal-open')}
-function open(date){form.reset();form.elements.date.value=date;msg.textContent='';overlay.hidden=false;document.body.classList.add('modal-open');form.elements.time.focus()}
+function normalizeShowTime(raw){
+ const match=String(raw||'').match(/(?:^|\D)([01]?\d|2[0-3])\s*(?:[:hH])\s*([0-5]\d)?/);
+ return match?match[1].padStart(2,'0')+':'+(match[2]||'00'):null;
+}
+function timestamp(date,time){return Date.parse(date+'T'+time+':00-03:00')}
+function isTimeBooked(date,time){
+ const candidate=timestamp(date,time);
+ return shows.some(show=>{
+  if(!show.date)return false;
+  const confirmedTime=normalizeShowTime(show.time||show.horario);
+  if(!confirmedTime)return show.date===date; // Sem horário cadastrado: proteger a data toda
+  const booked=timestamp(show.date,confirmedTime);
+  return candidate<booked+10800000&&booked<candidate+10800000;
+ });
+}
+function loadTimeSlots(date){
+ const select=form.elements.time,hint=overlay.querySelector('#booking-time-hint');
+ select.replaceChildren();
+ const placeholder=new Option('Selecione um horário disponível','');placeholder.disabled=true;placeholder.selected=true;select.add(placeholder);
+ let free=0,occupied=0;
+ for(let minutes=0;minutes<1440;minutes+=15){
+  const time=String(Math.floor(minutes/60)).padStart(2,'0')+':'+String(minutes%60).padStart(2,'0');
+  if(timestamp(date,time)<Date.now())continue;
+  const busy=isTimeBooked(date,time);
+  const option=new Option(time+(busy?' — ocupado':''),time);option.disabled=busy;select.add(option);
+  if(busy)occupied++;else free++;
+ }
+ select.disabled=free===0;send.disabled=free===0;
+ hint.textContent=!free?'Não há horários disponíveis nesta data. Selecione outro dia.':occupied?'Horários que coincidem com shows confirmados estão bloqueados.':'Selecione o horário desejado. A solicitação depende da aprovação.';
+}
+function open(date){form.reset();form.elements.date.value=date;msg.textContent='';loadTimeSlots(date);overlay.hidden=false;document.body.classList.add('modal-open');if(!form.elements.time.disabled)form.elements.time.focus()}
 overlay.querySelector('#booking-cancel').onclick=close;
 overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)close()});
@@ -245,7 +275,8 @@ calendar.addEventListener('click',e=>{
  open(date);
 });
 form.addEventListener('submit',async e=>{
- e.preventDefault();send.disabled=true;send.textContent='Enviando...';msg.textContent='';
+ e.preventDefault();if(isTimeBooked(form.elements.date.value,form.elements.time.value)){msg.textContent='Esse horário está ocupado por outro show. Escolha um horário livre.';loadTimeSlots(form.elements.date.value);return}
+ send.disabled=true;send.textContent='Enviando...';msg.textContent='';
  const payload=Object.fromEntries(new FormData(form).entries());payload.action='request';
  try{const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||!data.ok)throw Error(data.error||'Não foi possível enviar');
  msg.textContent='Solicitação recebida! Aguarde a confirmação da produção.';form.querySelectorAll('input').forEach(i=>i.disabled=true);send.textContent='Enviado';setTimeout(()=>{close();form.querySelectorAll('input').forEach(i=>i.disabled=false);send.disabled=false;send.textContent='Enviar solicitação'},2200);
