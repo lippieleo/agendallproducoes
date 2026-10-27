@@ -158,9 +158,9 @@
       <p class="muted">Os valores PF/PJ seguem a classificação escolhida no show. O lucro é dividido entre Lippi e Léo independentemente de o faturamento ter sido pessoal ou pela empresa.</p>
       <h3>Quanto entrou por semana</h3>
       <p class="muted">Semanas de segunda a domingo, pelas datas dos recebimentos. A semana pode atravessar dois meses; entram nos totais apenas os lançamentos dentro do período escolhido.</p>
-      <div style="overflow-x:auto"><table><thead><tr><th>Semana</th><th>Pessoa física (PF)</th><th>Empresa (PJ)</th><th>Não classificado</th><th>Total recebido</th><th>Despesas</th><th>Repasses antigos</th><th>Saldo de caixa</th></tr></thead><tbody id="relSemanasTabela"></tbody></table></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Semana</th><th>Pessoa física (PF)</th><th>Empresa (PJ)</th><th>Não classificado</th><th>Total recebido</th><th>Despesas</th><th>Repasses antigos</th><th>Saldo de caixa</th><th>50% resultado (por cantor)</th></tr></thead><tbody id="relSemanasTabela"></tbody></table></div>
       <h3>Quanto entrou por mês</h3>
-      <div style="overflow-x:auto"><table><thead><tr><th>Mês</th><th>Pessoa física (PF)</th><th>Empresa (PJ)</th><th>Não classificado</th><th>Total recebido</th><th>Despesas</th><th>Repasses antigos</th><th>Saldo de caixa</th></tr></thead><tbody id="relMesesTabela"></tbody></table></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Mês</th><th>Pessoa física (PF)</th><th>Empresa (PJ)</th><th>Não classificado</th><th>Total recebido</th><th>Despesas</th><th>Repasses antigos</th><th>Saldo de caixa</th><th>50% resultado (por cantor)</th></tr></thead><tbody id="relMesesTabela"></tbody></table></div>
       <h3>Fluxo de caixa pelas datas dos pagamentos</h3>
       <p class="muted">Esta parte considera entradas e saídas efetivamente lançadas no período escolhido, mesmo que o show tenha ocorrido fora dele.</p>
       <p id="relMovResumo" class="notice"></p>
@@ -402,7 +402,7 @@ function periodoGrupo(g,tipo){
  const [ano,mes]=g.key.split('-');return mes+'/'+ano;
 }
 function linhasPeriodos(grupos,tipo){
- return grupos.map(g=>'<tr><td>'+escapeHtml(periodoGrupo(g,tipo))+'</td><td>'+money(g.pf)+'</td><td>'+money(g.pj)+'</td><td>'+money(g.sem)+'</td><td>'+money(g.recebido)+'</td><td>'+money(g.despesas)+'</td><td>'+money(g.repasses)+'</td><td>'+money(g.saldo)+'</td></tr>').join('')||'<tr><td colspan="8">Nenhum lançamento neste período.</td></tr>';
+ return grupos.map(g=>'<tr><td>'+escapeHtml(periodoGrupo(g,tipo))+'</td><td>'+money(g.pf)+'</td><td>'+money(g.pj)+'</td><td>'+money(g.sem)+'</td><td>'+money(g.recebido)+'</td><td>'+money(g.despesas)+'</td><td>'+money(g.repasses)+'</td><td>'+money(g.saldo)+'</td><td>'+money((g.recebido-g.despesas)/2)+'</td></tr>').join('')||'<tr><td colspan="9">Nenhum lançamento neste período.</td></tr>';
 }
 
 function origem(r){return ['pessoal','empresa'].includes(r?.origem_faturamento)?r.origem_faturamento:'nao_classificado'}
@@ -496,7 +496,7 @@ function gerarRelatorio(){
    return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(s?.descricao||'Sem show vinculado')+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml(descrit)+'</td><td>'+money(x.valor)+'</td></tr>';
   }).join('')||'<tr><td colspan="6">Nenhuma movimentação no período.</td></tr>';
   $('relMovResumo').textContent='Entradas no período: '+money(r.fluxo.recebido)+' · Despesas: '+money(r.fluxo.despesa)+' · Repasses históricos: '+money(r.fluxo.repasse)+' · Variação líquida de caixa: '+money(r.fluxo.saldo);
-  $('relMsg').textContent='Extrato preparado: '+fmtData(r.ini)+' a '+fmtData(r.fim)+' · '+nomeRelatorio(r.canal)+'. Shows são agrupados pela data da apresentação; entradas semanais e mensais, pela data do recebimento.';
+  $('relMsg').textContent='Extrato preparado: '+fmtData(r.ini)+' a '+fmtData(r.fim)+' · '+nomeRelatorio(r.canal)+'. Valor por show usa a data da apresentação; tabelas semanais e mensais mostram entradas pelas datas de recebimento.';
   $('baixarPdf').disabled=false;
   $('baixarCsv').disabled=false;
  }catch(err){
@@ -515,7 +515,10 @@ function fazerCsv(r){
  const linhas=[];
  const add=(...campos)=>linhas.push(campos.map(csvCelula).join(';'));
  add('LIPPI & LÉO — EXTRATO GERENCIAL');
- add('Período',fmtData(r.ini)+' a '+fmtData(r.fim),'Canal',r.canal==='todos'?'Todos':nomeCanal(r.canal));
+ add('Período',fmtData(r.ini)+' a '+fmtData(r.fim),'Extrato de',nomeRelatorio(r.canal));
+ const focoLabel=r.canal==='lippi'?'Lippi (50% resultado)':r.canal==='leo'?'Léo (50% resultado)':r.canal==='empresa'?'Empresa PJ (recebido)':r.canal==='pessoal'?'Pessoal PF (recebido)':r.canal==='nao_classificado'?'Não classificado (recebido)':'Todos (recebido)';
+ const valorFoco=r.canal==='lippi'?r.totais.lippi:r.canal==='leo'?r.totais.leo:r.totais.recebido;
+ add('Resumo selecionado',focoLabel,numeroCsv(valorFoco));
  linhas.push('');
  add('RESUMO POR DATA DO SHOW');
  add('Contratado',numeroCsv(r.totais.contratado),'Recebido',numeroCsv(r.totais.recebido),'Despesas',numeroCsv(r.totais.despesas),'Resultado',numeroCsv(r.totais.lucro),'Lippi 50%',numeroCsv(r.totais.lippi),'Léo 50%',numeroCsv(r.totais.leo),'A receber',numeroCsv(r.totais.pendente));
@@ -527,7 +530,15 @@ function fazerCsv(r){
   add(nomeCanal(tipo),numeroCsv(d.contratado),numeroCsv(d.recebido),numeroCsv(d.despesas),numeroCsv(d.lucro),numeroCsv(d.lippi),numeroCsv(d.leo),numeroCsv(d.pendente));
  }
  linhas.push('');
- add('SHOWS POR DATA DA APRESENTAÇÃO');
+ add('RECEBIMENTOS SEMANAIS POR DATA DE ENTRADA');
+ add('Semana (segunda a domingo)','Pessoal PF (R$)','Empresa PJ (R$)','Sem classificação (R$)','Entrou no total (R$)','Despesas pagas (R$)','Repasses antigos (R$)','Saldo de caixa (R$)','50% resultado por cantor (R$)');
+ for(const g of r.semanas)add(periodoGrupo(g,'semana'),numeroCsv(g.pf),numeroCsv(g.pj),numeroCsv(g.sem),numeroCsv(g.recebido),numeroCsv(g.despesas),numeroCsv(g.repasses),numeroCsv(g.saldo),numeroCsv((g.recebido-g.despesas)/2));
+ linhas.push('');
+ add('RECEBIMENTOS MENSAIS POR DATA DE ENTRADA');
+ add('Mês','Pessoal PF (R$)','Empresa PJ (R$)','Sem classificação (R$)','Entrou no total (R$)','Despesas pagas (R$)','Repasses antigos (R$)','Saldo de caixa (R$)','50% resultado por cantor (R$)');
+ for(const g of r.meses)add(periodoGrupo(g,'mes'),numeroCsv(g.pf),numeroCsv(g.pj),numeroCsv(g.sem),numeroCsv(g.recebido),numeroCsv(g.despesas),numeroCsv(g.repasses),numeroCsv(g.saldo),numeroCsv((g.recebido-g.despesas)/2));
+ linhas.push('');
+  add('SHOWS POR DATA DA APRESENTAÇÃO');
  add('Data','Show','Canal','Cachê contratado (R$)','Recebido (R$)','Despesas (R$)','Lucro/prejuízo (R$)','Lippi 50% (R$)','Léo 50% (R$)','A receber (R$)','Situação');
  for(const s of r.showRows){
   const k=calc(s),quota=participacao(k);
@@ -599,8 +610,11 @@ function fazerPdf(r){
  novaPagina();
  titulo('EXTRATO FINANCEIRO - LIPPI & LEO');
  linha('Periodo: '+fmtData(r.ini)+' a '+fmtData(r.fim));
- linha('Canal: '+(r.canal==='todos'?'Todos os canais':nomeCanal(r.canal)));
+ linha('Extrato: '+nomeRelatorio(r.canal));
  linha('Gerado em: '+r.geradoEm.toLocaleString('pt-BR'));
+ const destaqueValor=r.canal==='lippi'?r.totais.lippi:r.canal==='leo'?r.totais.leo:r.totais.recebido;
+ const destaqueTexto=r.canal==='lippi'?'Parte calculada Lippi (50% lucro/prejuizo)':r.canal==='leo'?'Parte calculada Leo (50% lucro/prejuizo)':r.canal==='empresa'?'Recebido na empresa (PJ)':r.canal==='pessoal'?'Recebido em shows PF':'Recebido nos shows selecionados';
+ titulo(destaqueTexto+': '+money(destaqueValor));
  titulo('1. RESULTADOS DOS SHOWS POR DATA DA APRESENTACAO');
  linha('Cachês contratados: '+money(r.totais.contratado));
  linha('Recebido: '+money(r.totais.recebido)+'   Despesas: '+money(r.totais.despesas));
@@ -623,7 +637,24 @@ function fazerPdf(r){
   linha('Resultado '+money(k.lucro)+' | Lippi '+money(cota)+' | Leo '+money(cota)+' | Pendente '+money(k.receber));
   espaco(4);
  }
- titulo('2. MOVIMENTACOES POR DATA DO PAGAMENTO');
+
+ titulo('2. RECEBIMENTOS POR SEMANA - SEGUNDA A DOMINGO');
+ if(!r.semanas.length)linha('Nenhum recebimento ou despesa registrada no periodo.');
+ for(const g of r.semanas){
+  linha(periodoGrupo(g,'semana')+' - TOTAL RECEBIDO '+money(g.recebido),true);
+  linha('PF '+money(g.pf)+' | PJ '+money(g.pj)+' | Sem classif. '+money(g.sem));
+  linha('Despesas '+money(g.despesas)+' | Repasses '+money(g.repasses)+' | Caixa '+money(g.saldo));
+  linha('Parte referencial 50% por cantor sobre resultado semanal: '+money((g.recebido-g.despesas)/2));
+ }
+ titulo('3. RECEBIMENTOS POR MES');
+ if(!r.meses.length)linha('Nenhum recebimento ou despesa registrada no periodo.');
+ for(const g of r.meses){
+  linha(periodoGrupo(g,'mes')+' - TOTAL RECEBIDO '+money(g.recebido),true);
+  linha('Pessoa fisica '+money(g.pf)+' | Empresa PJ '+money(g.pj)+' | Sem classif. '+money(g.sem));
+  linha('Despesas '+money(g.despesas)+' | Repasses '+money(g.repasses)+' | Caixa '+money(g.saldo));
+  linha('Participacao referencial 50% por cantor: '+money((g.recebido-g.despesas)/2));
+ }
+ titulo('4. MOVIMENTACOES POR DATA DO PAGAMENTO');
  linha('Entradas: '+money(r.fluxo.recebido)+'   Despesas: '+money(r.fluxo.despesa));
  linha('Repasses anteriores registrados: '+money(r.fluxo.repasse));
  linha('Saldo liquido de caixa no periodo: '+money(r.fluxo.saldo));
