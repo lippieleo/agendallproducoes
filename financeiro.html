@@ -481,6 +481,112 @@ function baixarBlob(nome,tipo,conteudo){
 function arquivoNome(r,ext){
  return 'extrato_lippi_leo_'+r.ini+'_a_'+r.fim+'_'+r.canal+'.'+ext;
 }
+
+/* PDF A4 gerado localmente: nenhum arquivo financeiro é enviado a servidores terceiros. */
+function fazerPdf(r){
+ const paginas=[];
+ const pdfSeguro=s=>String(s??'').replace(/[\r\n\t]/g,' ').replace(/[\u2010-\u2015]/g,'-').replace(/[\u2022]/g,'-').replace(/[^\x20-\xff]/g,'?');
+ const escapar=s=>pdfSeguro(s).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+ function quebrar(texto,limite=100){
+  const palavras=pdfSeguro(texto).split(/\s+/).filter(Boolean);
+  const linhas=[];let atual='';
+  for(let palavra of palavras){
+   while(palavra.length>limite){
+    if(atual){linhas.push(atual);atual=''}
+    linhas.push(palavra.slice(0,limite));palavra=palavra.slice(limite);
+   }
+   if(!palavra)continue;
+   if(atual && atual.length+palavra.length+1>limite){linhas.push(atual);atual=palavra}
+   else atual+=(atual?' ':'')+palavra;
+  }
+  if(atual||!linhas.length)linhas.push(atual);
+  return linhas;
+ }
+ let pagina=null,y=0;
+ function novaPagina(){
+  pagina={comandos:[]};paginas.push(pagina);y=778;
+  pagina.comandos.push('0.72 0.52 0.27 rg 46 807 503 2 re f\n');
+  pagina.comandos.push('0 0 0 rg\n');
+  escreverTexto('LIPPI & LEO - FINANCEIRO PRIVADO',46,813,13,true);
+  escreverTexto('Relatorio gerencial - uso exclusivo do administrador',46,796,8,false);
+ }
+ function escreverTexto(texto,x,altura,tamanho=9,forte=false){
+  pagina.comandos.push('BT /'+(forte?'F2':'F1')+' '+tamanho+' Tf 1 0 0 1 '+x+' '+altura+' Tm ('+escapar(texto)+') Tj ET\n');
+ }
+ function linha(texto,forte=false){
+  for(const trecho of quebrar(texto,forte?88:102)){
+   if(y<65)novaPagina();
+   escreverTexto(trecho,46,y,forte?10:9,forte);
+   y-=forte?18:14;
+  }
+ }
+ function espaco(n=8){y-=n;if(y<65)novaPagina()}
+ function titulo(texto){espaco(10);linha(texto,true);espaco(3)}
+ novaPagina();
+ titulo('EXTRATO FINANCEIRO - LIPPI & LEO');
+ linha('Periodo: '+fmtData(r.ini)+' a '+fmtData(r.fim));
+ linha('Canal: '+(r.canal==='todos'?'Todos os canais':nomeCanal(r.canal)));
+ linha('Gerado em: '+r.geradoEm.toLocaleString('pt-BR'));
+ titulo('1. RESULTADOS DOS SHOWS POR DATA DA APRESENTACAO');
+ linha('Cachês contratados: '+money(r.totais.contratado));
+ linha('Recebido: '+money(r.totais.recebido)+'   Despesas: '+money(r.totais.despesas));
+ linha('Lucro / prejuizo operacional: '+money(r.totais.lucro));
+ linha('Parte Lippi (50%): '+money(r.totais.lippi)+'   Parte Leo (50%): '+money(r.totais.leo));
+ linha('Cachês pendentes a receber: '+money(r.totais.pendente));
+ linha('Os 50% sao participacoes no resultado. Nao comprovam pagamento ou retirada.');
+ titulo('SHOWS');
+ if(!r.showRows.length)linha('Nenhum show com financeiro registrado no periodo.');
+ for(const s of r.showRows){
+  const k=calc(s),cota=participacao(k);
+  linha(fmtData(s.data_show)+' - '+(s.descricao||'Show')+' ['+nomeCanal(origem(s))+']',true);
+  linha('Contratado '+money(k.combinado)+' | Recebido '+money(k.receb)+' | Despesa '+money(k.desp));
+  linha('Resultado '+money(k.lucro)+' | Lippi '+money(cota)+' | Leo '+money(cota)+' | Pendente '+money(k.receber));
+  espaco(4);
+ }
+ titulo('2. MOVIMENTACOES POR DATA DO PAGAMENTO');
+ linha('Entradas: '+money(r.fluxo.recebido)+'   Despesas: '+money(r.fluxo.despesa));
+ linha('Repasses anteriores registrados: '+money(r.fluxo.repasse));
+ linha('Saldo liquido de caixa no periodo: '+money(r.fluxo.saldo));
+ if(!r.movimentos.length)linha('Nenhuma movimentacao registrada no periodo.');
+ for(const m of r.movimentos){
+  const s=shows.find(x=>x.id===m.caixa_show_id);
+  const descricao=(m.categoria||'')+(m.favorecido?' - '+m.favorecido:'')+(m.integrante?' - '+m.integrante:'');
+  linha(fmtData(m.data_lancamento)+' - '+(m.tipo==='recebimento'?'ENTRADA':m.tipo==='despesa'?'DESPESA':'REPASSE')+' - '+money(m.valor),true);
+  linha((s?.descricao||'Sem show vinculado')+' ['+nomeCanal(origem(s))+'] - '+descricao);
+ }
+ titulo('OBSERVACOES');
+ linha('Relatorio gerencial privado. Shows sao agrupados pela data da apresentacao; o fluxo de caixa usa a data do lancamento.');
+ linha('Faturamento pessoal (PF) e empresa (PJ) sao classificacoes informadas pelo usuario e nao substituem comprovantes, notas fiscais ou escrituracao contabil.');
+ for(let i=0;i<paginas.length;i++){
+  pagina=paginas[i];
+  escreverTexto('Lippi & Leo - controle interno | Pagina '+(i+1)+' de '+paginas.length,46,36,8,false);
+ }
+ const objs=[
+  '<< /Type /Catalog /Pages 2 0 R >>',
+  '',
+  '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
+  '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'
+ ];
+ const kids=[];
+ for(let i=0;i<paginas.length;i++){
+  const pageId=5+i*2,contentId=6+i*2,k=paginas[i].comandos.join('');
+  kids.push(pageId+' 0 R');
+  objs.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+contentId+' 0 R >>');
+  objs.push('<< /Length '+k.length+' >>\nstream\n'+k+'endstream');
+ }
+ objs[1]='<< /Type /Pages /Kids [ '+kids.join(' ')+' ] /Count '+paginas.length+' >>';
+ let pdf='%PDF-1.4\n%\xE2\xE3\xCF\xD3\n',offsets=[0];
+ for(let i=0;i<objs.length;i++){offsets.push(pdf.length);pdf+=(i+1)+' 0 obj\n'+objs[i]+'\nendobj\n'}
+ const startXref=pdf.length;
+ pdf+='xref\n0 '+(objs.length+1)+'\n0000000000 65535 f \n';
+ for(let i=1;i<offsets.length;i++)pdf+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';
+ pdf+='trailer\n<< /Size '+(objs.length+1)+' /Root 1 0 R >>\nstartxref\n'+startXref+'\n%%EOF\n';
+ const bytes=new Uint8Array(pdf.length);
+ for(let i=0;i<pdf.length;i++)bytes[i]=pdf.charCodeAt(i)&255;
+ return bytes;
+}
+$('baixarPdf').onclick=()=>{if(!relSnapshot)return;try{baixarBlob(arquivoNome(relSnapshot,'pdf'),'application/pdf',fazerPdf(relSnapshot));$('relMsg').textContent='PDF gerado no dispositivo. Se não visualizar o arquivo, procure em Downloads.'}catch(err){$('relMsg').textContent='Falha ao gerar PDF: '+(err.message||err)}};
+
 $('gerarRelatorio').onclick=gerarRelatorio;
 $('relCanal').onchange=gerarRelatorio;
 $('relInicio').onchange=()=>{relSnapshot=null;$('baixarPdf').disabled=true;$('baixarCsv').disabled=true;$('relMsg').textContent='Período alterado. Gere o extrato novamente.'};
