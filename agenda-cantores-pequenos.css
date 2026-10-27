@@ -29,3 +29,12 @@
    z-index:1 !important;
  }
 }
+
+/* Desktop 2026-10-27: ampliar a dupla sem modificar o enquadramento mobile ou o calendario. */
+@media (min-width: 701px) {
+  #agenda-mini-cantores {
+    width: clamp(310px, 34vw, 410px) !important;
+    top: 8px !important;
+    z-index: 1 !important;
+  }
+}
