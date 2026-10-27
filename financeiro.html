@@ -149,8 +149,8 @@
         <div class="card"><small>Recebimentos vinculados</small><h2 id="relRecebido">R$ 0,00</h2></div>
         <div class="card"><small>Despesas vinculadas</small><h2 id="relDespesas">R$ 0,00</h2></div>
         <div class="card"><small>Resultado operacional</small><h2 id="relLucro">R$ 0,00</h2></div>
-        <div class="card"><small>Parte Lippi (50% do resultado)</small><h2 id="relLippi">R$ 0,00</h2></div>
-        <div class="card"><small>Parte Léo (50% do resultado)</small><h2 id="relLeo">R$ 0,00</h2></div>
+        <div class="card" id="relLippiCard"><small>Parte Lippi (50% do resultado)</small><h2 id="relLippi">R$ 0,00</h2></div>
+        <div class="card" id="relLeoCard"><small>Parte Léo (50% do resultado)</small><h2 id="relLeo">R$ 0,00</h2></div>
       </div>
       <div style="overflow-x:auto"><table><thead><tr><th>Show</th><th>Canal</th><th>Contratado</th><th>Recebido</th><th>Despesa</th><th>Lucro</th><th>Lippi 50%</th><th>Léo 50%</th><th>A receber</th></tr></thead><tbody id="relShowsTabela"></tbody></table></div>
       <h3>Consolidado — pessoal e empresa</h3>
@@ -165,7 +165,7 @@
       <p class="muted">Esta parte considera entradas e saídas efetivamente lançadas no período escolhido, mesmo que o show tenha ocorrido fora dele.</p>
       <p id="relMovResumo" class="notice"></p>
       <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show</th><th>Canal</th><th>Tipo</th><th>Descrição</th><th>Valor</th></tr></thead><tbody id="relMovTabela"></tbody></table></div>
-      <p class="muted">Demonstrativo gerencial para controle interno. Para emissão de documentos fiscais ou cálculo de tributos, valide os valores com sua contabilidade.</p>
+      <p class="muted">Nos extratos individuais, Lippi e Léo recebem uma projeção de 50% do resultado dos shows selecionados (inclusive shows faturados pela empresa), não dinheiro comprovadamente depositado no CPF. A classificação PF/PJ se refere ao faturamento de cada show. Relatório gerencial; valide documentos fiscais com a contabilidade.</p>
     </div>
   </section>
   <section class="card">
@@ -474,6 +474,8 @@ function gerarRelatorio(){
   const r=relSnapshot;
   $('relResultado').classList.remove('hide');
   $('relDestaque').classList.remove('hide');
+  $('relLippiCard').classList.toggle('hide',r.canal==='leo');
+  $('relLeoCard').classList.toggle('hide',r.canal==='lippi');
   const foco=r.canal==='lippi'?'Parte calculada do Lippi: '+money(r.totais.lippi):r.canal==='leo'?'Parte calculada do Léo: '+money(r.totais.leo):r.canal==='empresa'?'Total recebido pela empresa (PJ), nos shows do período: '+money(r.totais.recebido):r.canal==='pessoal'?'Total recebido nos shows PF: '+money(r.totais.recebido):r.canal==='nao_classificado'?'Total recebido sem classificação: '+money(r.totais.recebido):'Total recebido nos shows do período: '+money(r.totais.recebido);
   $('relDestaque').textContent=foco+'. As participações pessoais são 50% do resultado recebido menos despesas, e não comprovam transferência para a conta de cada um.';
   for(const [id,valor] of [
@@ -483,11 +485,11 @@ function gerarRelatorio(){
   ])$(id).textContent=money(valor);
   $('relShowsTabela').innerHTML=r.showRows.map(s=>{
    const k=calc(s),q=participacao(k);
-   return '<tr><td>'+escapeHtml(fmtData(s.data_show)+' · '+(s.descricao||'Show'))+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+money(k.combinado)+'</td><td>'+money(k.receb)+'</td><td>'+money(k.desp)+'</td><td>'+money(k.lucro)+'</td><td>'+money(q)+'</td><td>'+money(q)+'</td><td>'+money(k.receber)+'</td></tr>';
+   return '<tr><td>'+escapeHtml(fmtData(s.data_show)+' · '+(s.descricao||'Show'))+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+money(k.combinado)+'</td><td>'+money(k.receb)+'</td><td>'+money(k.desp)+'</td><td>'+money(k.lucro)+'</td><td>'+(r.canal==='leo'?'—':money(q))+'</td><td>'+(r.canal==='lippi'?'—':money(q))+'</td><td>'+money(k.receber)+'</td></tr>';
   }).join('')||'<tr><td colspan="9">Nenhum show com financeiro registrado no período.</td></tr>';
   $('relCanaisTabela').innerHTML=['pessoal','empresa','nao_classificado'].map(tipo=>{
    const d=r.canais[tipo];
-   return '<tr><td>'+escapeHtml(nomeCanal(tipo))+'</td><td>'+money(d.contratado)+'</td><td>'+money(d.recebido)+'</td><td>'+money(d.despesas)+'</td><td>'+money(d.lucro)+'</td><td>'+money(d.lippi)+'</td><td>'+money(d.leo)+'</td><td>'+money(d.pendente)+'</td></tr>';
+   return '<tr><td>'+escapeHtml(nomeCanal(tipo))+'</td><td>'+money(d.contratado)+'</td><td>'+money(d.recebido)+'</td><td>'+money(d.despesas)+'</td><td>'+money(d.lucro)+'</td><td>'+(r.canal==='leo'?'—':money(d.lippi))+'</td><td>'+(r.canal==='lippi'?'—':money(d.leo))+'</td><td>'+money(d.pendente)+'</td></tr>';
   }).join('');
   $('relSemanasTabela').innerHTML=linhasPeriodos(r.semanas,'semana');
   $('relMesesTabela').innerHTML=linhasPeriodos(r.meses,'mes');
@@ -521,13 +523,13 @@ function fazerCsv(r){
  add('Resumo selecionado',focoLabel,numeroCsv(valorFoco));
  linhas.push('');
  add('RESUMO POR DATA DO SHOW');
- add('Contratado',numeroCsv(r.totais.contratado),'Recebido',numeroCsv(r.totais.recebido),'Despesas',numeroCsv(r.totais.despesas),'Resultado',numeroCsv(r.totais.lucro),'Lippi 50%',numeroCsv(r.totais.lippi),'Léo 50%',numeroCsv(r.totais.leo),'A receber',numeroCsv(r.totais.pendente));
+ add('Contratado',numeroCsv(r.totais.contratado),'Recebido',numeroCsv(r.totais.recebido),'Despesas',numeroCsv(r.totais.despesas),'Resultado',numeroCsv(r.totais.lucro),'Lippi 50%',r.canal==='leo'?'':numeroCsv(r.totais.lippi),'Léo 50%',r.canal==='lippi'?'':numeroCsv(r.totais.leo),'A receber',numeroCsv(r.totais.pendente));
  linhas.push('');
  add('CONSOLIDADO POR CANAL');
  add('Canal','Contratado (R$)','Recebido (R$)','Despesas (R$)','Resultado (R$)','Lippi 50% (R$)','Léo 50% (R$)','A receber (R$)');
  for(const tipo of ['pessoal','empresa','nao_classificado']){
   const d=r.canais[tipo];
-  add(nomeCanal(tipo),numeroCsv(d.contratado),numeroCsv(d.recebido),numeroCsv(d.despesas),numeroCsv(d.lucro),numeroCsv(d.lippi),numeroCsv(d.leo),numeroCsv(d.pendente));
+  add(nomeCanal(tipo),numeroCsv(d.contratado),numeroCsv(d.recebido),numeroCsv(d.despesas),numeroCsv(d.lucro),r.canal==='leo'?'':numeroCsv(d.lippi),r.canal==='lippi'?'':numeroCsv(d.leo),numeroCsv(d.pendente));
  }
  linhas.push('');
  add('RECEBIMENTOS SEMANAIS POR DATA DE ENTRADA');
@@ -542,7 +544,7 @@ function fazerCsv(r){
  add('Data','Show','Canal','Cachê contratado (R$)','Recebido (R$)','Despesas (R$)','Lucro/prejuízo (R$)','Lippi 50% (R$)','Léo 50% (R$)','A receber (R$)','Situação');
  for(const s of r.showRows){
   const k=calc(s),quota=participacao(k);
-  add(fmtData(s.data_show),s.descricao||'Show',nomeCanal(origem(s)),numeroCsv(k.combinado),numeroCsv(k.receb),numeroCsv(k.desp),numeroCsv(k.lucro),numeroCsv(quota),numeroCsv(quota),numeroCsv(k.receber),s.finalizado_em?'Finalizado':'Aberto');
+  add(fmtData(s.data_show),s.descricao||'Show',nomeCanal(origem(s)),numeroCsv(k.combinado),numeroCsv(k.receb),numeroCsv(k.desp),numeroCsv(k.lucro),r.canal==='leo'?'':numeroCsv(quota),r.canal==='lippi'?'':numeroCsv(quota),numeroCsv(k.receber),s.finalizado_em?'Finalizado':'Aberto');
  }
  linhas.push('');
  add('MOVIMENTAÇÕES POR DATA DE PAGAMENTO');
@@ -608,7 +610,7 @@ function fazerPdf(r){
  function espaco(n=8){y-=n;if(y<65)novaPagina()}
  function titulo(texto){espaco(10);linha(texto,true);espaco(3)}
  novaPagina();
- titulo('EXTRATO FINANCEIRO - LIPPI & LEO');
+ titulo(r.canal==='lippi'?'EXTRATO PESSOAL - LIPPI':r.canal==='leo'?'EXTRATO PESSOAL - LEO':r.canal==='empresa'?'EXTRATO - EMPRESA PJ':'EXTRATO FINANCEIRO - LIPPI & LEO');
  linha('Periodo: '+fmtData(r.ini)+' a '+fmtData(r.fim));
  linha('Extrato: '+nomeRelatorio(r.canal));
  linha('Gerado em: '+r.geradoEm.toLocaleString('pt-BR'));
@@ -619,14 +621,16 @@ function fazerPdf(r){
  linha('Cachês contratados: '+money(r.totais.contratado));
  linha('Recebido: '+money(r.totais.recebido)+'   Despesas: '+money(r.totais.despesas));
  linha('Lucro / prejuizo operacional: '+money(r.totais.lucro));
- linha('Parte Lippi (50%): '+money(r.totais.lippi)+'   Parte Leo (50%): '+money(r.totais.leo));
+ if(r.canal==='lippi')linha('Parte calculada somente para Lippi (50%): '+money(r.totais.lippi));
+ else if(r.canal==='leo')linha('Parte calculada somente para Leo (50%): '+money(r.totais.leo));
+ else linha('Parte Lippi (50%): '+money(r.totais.lippi)+'   Parte Leo (50%): '+money(r.totais.leo));
  linha('Cachês pendentes a receber: '+money(r.totais.pendente));
  linha('Os 50% sao participacoes no resultado. Nao comprovam pagamento ou retirada.');
  titulo('CONSOLIDADO POR CANAL');
  for(const tipo of ['pessoal','empresa','nao_classificado']){
   const d=r.canais[tipo];
   linha(nomeCanal(tipo)+': contratado '+money(d.contratado)+'; recebido '+money(d.recebido)+'; despesas '+money(d.despesas));
-  linha('Resultado '+money(d.lucro)+'; Lippi '+money(d.lippi)+'; Leo '+money(d.leo)+'; a receber '+money(d.pendente));
+  linha('Resultado '+money(d.lucro)+'; '+(r.canal==='lippi'?'Lippi '+money(d.lippi):r.canal==='leo'?'Leo '+money(d.leo):'Lippi '+money(d.lippi)+'; Leo '+money(d.leo))+'; a receber '+money(d.pendente));
  }
  titulo('SHOWS');
  if(!r.showRows.length)linha('Nenhum show com financeiro registrado no periodo.');
@@ -634,7 +638,7 @@ function fazerPdf(r){
   const k=calc(s),cota=participacao(k);
   linha(fmtData(s.data_show)+' - '+(s.descricao||'Show')+' ['+nomeCanal(origem(s))+']',true);
   linha('Contratado '+money(k.combinado)+' | Recebido '+money(k.receb)+' | Despesa '+money(k.desp));
-  linha('Resultado '+money(k.lucro)+' | Lippi '+money(cota)+' | Leo '+money(cota)+' | Pendente '+money(k.receber));
+  linha('Resultado '+money(k.lucro)+' | '+(r.canal==='lippi'?'Lippi '+money(cota):r.canal==='leo'?'Leo '+money(cota):'Lippi '+money(cota)+' | Leo '+money(cota))+' | Pendente '+money(k.receber));
   espaco(4);
  }
 
