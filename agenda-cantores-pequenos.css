@@ -14,9 +14,18 @@
  pointer-events:none !important;
  z-index:5 !important;
 }
+/* Celular: dupla inteira e centralizada, como na referencia, atras do calendario. */
 @media(max-width:700px){
  #agenda-mini-cantores{
-   width:min(184px,48vw) !important;
-   top:162px !important;
+   width:min(94vw,460px) !important;
+   max-width:94vw !important;
+   top:clamp(138px,38vw,165px) !important;
+   left:50% !important;
+   transform:translateX(-50%) !important;
+   background-size:contain !important;
+   background-position:center top !important;
+   background-repeat:no-repeat !important;
+   pointer-events:none !important;
+   z-index:1 !important;
  }
 }
