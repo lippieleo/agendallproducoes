@@ -334,6 +334,7 @@ function extratoGeral(){
   const sinal=x.tipo==='recebimento'?'+':'−';
   return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml((r?.descricao||'Geral')+' · '+x.categoria+' · '+(x.favorecido||x.integrante||''))+'</td><td>'+sinal+' '+money(x.valor)+'</td></tr>';
  }).join('')||'<tr><td colspan="4">Nenhuma movimentação neste mês.</td></tr>';
+ pintarPainel();
 }
 
 function ajustarCategoria(){
@@ -348,6 +349,144 @@ function ajustarCategoria(){
 $('categoria').onchange=ajustarCategoria;
 $('musicoDespesa').onchange=ajustarCategoria;
 ajustarCategoria();
+
+function nomeCanal(v){return v==='pessoal'?'Pessoal (PF)':v==='empresa'?'Empresa (PJ)':'Não classificado'}
+function origem(r){return ['pessoal','empresa'].includes(r?.origem_faturamento)?r.origem_faturamento:'nao_classificado'}
+function participacao(k){return Number(k.lucro)/2}
+function calcularGrupo(lista){
+ const z={contratado:0,recebido:0,despesas:0,lucro:0,pendente:0,lippi:0,leo:0,repasse:0};
+ for(const reg of lista){
+  const k=calc(reg);z.contratado+=k.combinado;z.recebido+=k.receb;z.despesas+=k.desp;z.lucro+=k.lucro;
+  z.pendente+=k.receber;z.lippi+=participacao(k);z.leo+=participacao(k);z.repasse+=k.repass;
+ }
+ return z;
+}
+function pintarPainel(){
+ const doMes=shows.filter(x=>x.data_show&&x.data_show.startsWith($('mes').value));
+ const totais=calcularGrupo(doMes);
+ $('dashLucro').textContent=money(totais.lucro);
+ $('dashLippi').textContent=money(totais.lippi);
+ $('dashLeo').textContent=money(totais.leo);
+ $('dashPendente').textContent=money(totais.pendente);
+ for(const [tipo,valorId,infoId] of [
+  ['pessoal','dashPessoal','dashPessoalInfo'],
+  ['empresa','dashEmpresa','dashEmpresaInfo'],
+  ['nao_classificado','dashIndefinido','dashIndefinidoInfo']
+ ]){
+  const d=calcularGrupo(doMes.filter(x=>origem(x)===tipo));
+  $(valorId).textContent=money(d.recebido);
+  $(infoId).textContent='Contratado '+money(d.contratado)+' · Lucro '+money(d.lucro);
+ }
+ $('resultadoShows').innerHTML=doMes.map(s=>{
+  const k=calc(s),q=participacao(k),nome=s.descricao||'Show';
+  return '<tr><td>'+escapeHtml(fmtData(s.data_show))+'</td><td>'+escapeHtml(nome)+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+money(k.receb)+'</td><td>'+money(k.desp)+'</td><td>'+money(k.lucro)+'</td><td>'+money(q)+'</td><td>'+money(q)+'</td></tr>';
+ }).join('')||'<tr><td colspan="8">Sem shows com cachê registrado neste mês. Abra um show da agenda para começar.</td></tr>';
+}
+function preencherPeriodoMes(){
+ const mes=$('mes').value;
+ if(!/^\d{4}-\d{2}$/.test(mes))return;
+ const [ano,m]=mes.split('-').map(Number);
+ const ultimo=String(new Date(ano,m,0).getDate()).padStart(2,'0');
+ $('relInicio').value=mes+'-01';
+ $('relFim').value=mes+'-'+ultimo;
+}
+let relSnapshot=null;
+function relatorioAtual(){
+ const ini=$('relInicio').value,fim=$('relFim').value,canal=$('relCanal').value;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(ini)||!/^\d{4}-\d{2}-\d{2}$/.test(fim)||ini>fim)throw Error('Confira as datas: o início precisa ser igual ou anterior ao fim.');
+ const inclui=reg=>canal==='todos'||origem(reg)===canal;
+ const showRows=shows.filter(s=>s.data_show>=ini&&s.data_show<=fim&&inclui(s))
+   .sort((a,b)=>String(a.data_show).localeCompare(String(b.data_show)));
+ const movimentos=lanc.filter(x=>{
+  const reg=shows.find(s=>s.id===x.caixa_show_id);
+  return x.data_lancamento>=ini&&x.data_lancamento<=fim&&inclui(reg);
+ }).sort((a,b)=>String(a.data_lancamento).localeCompare(String(b.data_lancamento)));
+ const totais=calcularGrupo(showRows);
+ const fluxo={
+  recebido:soma(movimentos,'recebimento'),
+  despesa:soma(movimentos,'despesa'),
+  repasse:soma(movimentos,'repasse')
+ };
+ fluxo.saldo=fluxo.recebido-fluxo.despesa-fluxo.repasse;
+ return {ini,fim,canal,showRows,movimentos,totais,fluxo,geradoEm:new Date()};
+}
+function gerarRelatorio(){
+ try{
+  relSnapshot=relatorioAtual();
+  const r=relSnapshot;
+  $('relResultado').classList.remove('hide');
+  for(const [id,valor] of [
+   ['relContratado',r.totais.contratado],['relRecebido',r.totais.recebido],
+   ['relDespesas',r.totais.despesas],['relLucro',r.totais.lucro],
+   ['relLippi',r.totais.lippi],['relLeo',r.totais.leo]
+  ])$(id).textContent=money(valor);
+  $('relShowsTabela').innerHTML=r.showRows.map(s=>{
+   const k=calc(s),q=participacao(k);
+   return '<tr><td>'+escapeHtml(fmtData(s.data_show)+' · '+(s.descricao||'Show'))+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+money(k.combinado)+'</td><td>'+money(k.receb)+'</td><td>'+money(k.desp)+'</td><td>'+money(k.lucro)+'</td><td>'+money(q)+'</td><td>'+money(q)+'</td></tr>';
+  }).join('')||'<tr><td colspan="8">Nenhum show com financeiro registrado no período.</td></tr>';
+  $('relMovTabela').innerHTML=r.movimentos.map(x=>{
+   const s=shows.find(y=>y.id===x.caixa_show_id),descrit=(x.categoria||'')+(x.favorecido?' · '+x.favorecido:'')+(x.integrante?' · '+x.integrante:'');
+   return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(s?.descricao||'Sem show vinculado')+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml(descrit)+'</td><td>'+money(x.valor)+'</td></tr>';
+  }).join('')||'<tr><td colspan="6">Nenhuma movimentação no período.</td></tr>';
+  $('relMovResumo').textContent='Entradas no período: '+money(r.fluxo.recebido)+' · Despesas: '+money(r.fluxo.despesa)+' · Repasses históricos: '+money(r.fluxo.repasse)+' · Variação líquida de caixa: '+money(r.fluxo.saldo);
+  $('relMsg').textContent='Extrato preparado: '+fmtData(r.ini)+' a '+fmtData(r.fim)+' · '+(r.canal==='todos'?'Todos os canais':nomeCanal(r.canal))+'. Os valores por show usam a data da apresentação; o fluxo de caixa usa a data do movimento.';
+  $('baixarPdf').disabled=false;
+  $('baixarCsv').disabled=false;
+ }catch(err){
+  relSnapshot=null;$('relResultado').classList.add('hide');
+  $('baixarPdf').disabled=true;$('baixarCsv').disabled=true;
+  $('relMsg').textContent='Não foi possível gerar o extrato: '+(err.message||err);
+ }
+}
+function numeroCsv(n){return Number(n||0).toFixed(2).replace('.',',')}
+function csvCelula(v){
+ let s=String(v??'').replace(/\r?\n/g,' ').trim();
+ if(/^[=+\-@\t]/.test(s))s="'"+s;
+ return '"'+s.replace(/"/g,'""')+'"';
+}
+function fazerCsv(r){
+ const linhas=[];
+ const add=(...campos)=>linhas.push(campos.map(csvCelula).join(';'));
+ add('LIPPI & LÉO — EXTRATO GERENCIAL');
+ add('Período',fmtData(r.ini)+' a '+fmtData(r.fim),'Canal',r.canal==='todos'?'Todos':nomeCanal(r.canal));
+ linhas.push('');
+ add('RESUMO POR DATA DO SHOW');
+ add('Contratado',numeroCsv(r.totais.contratado),'Recebido',numeroCsv(r.totais.recebido),'Despesas',numeroCsv(r.totais.despesas),'Resultado',numeroCsv(r.totais.lucro),'Lippi 50%',numeroCsv(r.totais.lippi),'Léo 50%',numeroCsv(r.totais.leo),'A receber',numeroCsv(r.totais.pendente));
+ linhas.push('');
+ add('SHOWS POR DATA DA APRESENTAÇÃO');
+ add('Data','Show','Canal','Cachê contratado (R$)','Recebido (R$)','Despesas (R$)','Lucro/prejuízo (R$)','Lippi 50% (R$)','Léo 50% (R$)','A receber (R$)','Situação');
+ for(const s of r.showRows){
+  const k=calc(s),quota=participacao(k);
+  add(fmtData(s.data_show),s.descricao||'Show',nomeCanal(origem(s)),numeroCsv(k.combinado),numeroCsv(k.receb),numeroCsv(k.desp),numeroCsv(k.lucro),numeroCsv(quota),numeroCsv(quota),numeroCsv(k.receber),s.finalizado_em?'Finalizado':'Aberto');
+ }
+ linhas.push('');
+ add('MOVIMENTAÇÕES POR DATA DE PAGAMENTO');
+ add('Data','Show','Canal','Tipo','Categoria','Favorecido','Forma','Valor (R$)','Observação');
+ for(const x of r.movimentos){
+  const s=shows.find(y=>y.id===x.caixa_show_id);
+  add(fmtData(x.data_lancamento),s?.descricao||'Sem show vinculado',nomeCanal(origem(s)),x.tipo,x.categoria,x.favorecido||x.integrante||'',x.forma||'',numeroCsv(x.valor),x.observacoes||'');
+ }
+ linhas.push('');
+ add('FLUXO DE CAIXA DO PERÍODO');
+ add('Entradas',numeroCsv(r.fluxo.recebido),'Despesas',numeroCsv(r.fluxo.despesa),'Repasses históricos',numeroCsv(r.fluxo.repasse),'Saldo de caixa',numeroCsv(r.fluxo.saldo));
+ linhas.push('');
+ add('Obs.','Gerencial. Ganhos pessoais representam 50% do lucro operacional e não comprovam retirada paga. Classificação PF/PJ informada para controle, sujeita à validação contábil.');
+ return '\uFEFF'+linhas.join('\r\n')+'\r\n';
+}
+function baixarBlob(nome,tipo,conteudo){
+ const arquivo=new Blob([conteudo],{type:tipo}),href=window.URL.createObjectURL(arquivo);
+ const a=document.createElement('a');a.href=href;a.download=nome;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>window.URL.revokeObjectURL(href),40000);
+}
+function arquivoNome(r,ext){
+ return 'extrato_lippi_leo_'+r.ini+'_a_'+r.fim+'_'+r.canal+'.'+ext;
+}
+$('gerarRelatorio').onclick=gerarRelatorio;
+$('relCanal').onchange=gerarRelatorio;
+$('relInicio').onchange=()=>{relSnapshot=null;$('baixarPdf').disabled=true;$('baixarCsv').disabled=true;$('relMsg').textContent='Período alterado. Gere o extrato novamente.'};
+$('relFim').onchange=()=>{relSnapshot=null;$('baixarPdf').disabled=true;$('baixarCsv').disabled=true;$('relMsg').textContent='Período alterado. Gere o extrato novamente.'};
+$('baixarCsv').onclick=()=>{if(!relSnapshot)return;baixarBlob(arquivoNome(relSnapshot,'csv'),'text/csv;charset=utf-8',fazerCsv(relSnapshot))};
+
 function desenharShow(){
  const s=showEscolhido;
  if(!s){$('detalhe').classList.add('hide');return}
@@ -405,6 +544,7 @@ async function refresh(){
    showEscolhido=agendaShows.find(x=>agendaKey(x)===selectedKey)||null;
   }
   desenharAgenda();extratoGeral();desenharShow();
+  if(relSnapshot)gerarRelatorio();
   message(agendaError?'Financeiro atualizado, mas a consulta da agenda falhou: '+agendaError:'Financeiro atualizado. Escolha um show na lista.');
  }catch(err){message('Erro ao atualizar dados: '+(err.message||err))}
  finally{loading=false}
@@ -539,10 +679,11 @@ $('reabrir').onclick=async()=>{
  }catch(err){$('showMsg').textContent='Não foi possível reabrir: '+(err.message||err)}
  finally{btn.disabled=false}
 };
-$('mes').onchange=()=>{selectedKey=null;showEscolhido=null;desenharAgenda();extratoGeral();desenharShow()};
+$('mes').onchange=()=>{selectedKey=null;showEscolhido=null;desenharAgenda();extratoGeral();desenharShow();preencherPeriodoMes();gerarRelatorio()};
 $('recarregar').onclick=refresh;
 $('mes').value=diaLocal().slice(0,7);
 $('dataLan').value=diaLocal();
 $('entradaData').value=diaLocal();
+preencherPeriodoMes();
 start();
 </script></body></html>
