@@ -1,5 +1,5 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Financeiro | Lippi & Léo</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.musicosLista{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-top:12px}.musicoOption{display:flex;align-items:center;gap:9px;background:#282d39;border:1px solid #454a57;padding:12px;border-radius:9px;font-size:14px;cursor:pointer;margin:0;color:#eee}.musicoOption input{width:18px;height:18px;flex:none;accent-color:#d7a34d}.musicoOption:has(input:checked){border-color:#d7a34d;background:#352f29}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}#dashboard td,#geradorExtrato td{font-variant-numeric:tabular-nums}#geradorExtrato button{min-height:44px}#relResultado .card{margin:3px 0}#relResultado h2{font-size:20px}#relResultado th{font-size:12px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de cachês, músicos, entradas e despesas por show.</p><small id="versao">Painel e extratos · versão 8</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.musicosLista{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-top:12px}.musicoOption{display:flex;align-items:center;gap:9px;background:#282d39;border:1px solid #454a57;padding:12px;border-radius:9px;font-size:14px;cursor:pointer;margin:0;color:#eee}.musicoOption input{width:18px;height:18px;flex:none;accent-color:#d7a34d}.musicoOption:has(input:checked){border-color:#d7a34d;background:#352f29}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}#dashboard td,#geradorExtrato td{font-variant-numeric:tabular-nums}#geradorExtrato button{min-height:44px}#relResultado .card{margin:3px 0}#relResultado h2{font-size:20px}#relResultado th{font-size:12px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de cachês, músicos, entradas e despesas por show.</p><small id="versao">Extratos por pessoa, semana e mês · versão 9</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
 <div id="app" class="hide">
   <section class="grid" aria-label="Resumo financeiro do mês">
     <div class="card"><small>Cachês dos shows do mês</small><h2 id="totalCache">R$ 0,00</h2></div>
@@ -120,16 +120,18 @@
 
   <section class="card" id="geradorExtrato">
     <h2>Gerador de extrato financeiro</h2>
-    <p class="muted">Escolha um período e o canal (todos, pessoal ou empresa). O relatório mostra o resultado por show e as movimentações por data, sem misturar cachê contratado com pagamento recebido.</p>
+    <p class="muted">Consulte a parte do Lippi ou do Léo, o faturamento da empresa e os recebimentos por semana, mês e show. Entradas são dinheiro recebido; a parte dos cantores é um cálculo de 50% do resultado, não uma retirada já paga.</p>
     <div class="grid">
       <div><label for="relInicio">Data inicial</label><input type="date" id="relInicio" required></div>
       <div><label for="relFim">Data final</label><input type="date" id="relFim" required></div>
-      <div><label for="relCanal">Faturamento</label>
+      <div><label for="relCanal">Extrato de</label>
         <select id="relCanal">
-          <option value="todos">Todos</option>
-          <option value="pessoal">Pessoal (PF)</option>
-          <option value="empresa">Empresa (PJ)</option>
-          <option value="nao_classificado">Sem classificação</option>
+          <option value="todos">Todos — pessoal + empresa</option>
+          <option value="lippi">Lippi — minha parte (50% da sobra)</option>
+          <option value="leo">Léo — parte dele (50% da sobra)</option>
+          <option value="empresa">Empresa — faturamento PJ</option>
+          <option value="pessoal">Pessoa física — shows PF</option>
+          <option value="nao_classificado">Shows ainda sem classificação</option>
         </select>
       </div>
     </div>
@@ -139,6 +141,7 @@
       <button type="button" class="secondary" id="baixarCsv" disabled>Baixar CSV / Excel</button>
     </div>
     <p id="relMsg" class="notice" role="status" aria-live="polite">Selecione o período e clique em Gerar extrato.</p>
+    <p id="relDestaque" class="notice hide"></p>
     <div id="relResultado" class="hide">
       <h3>Resumo dos shows pela data da apresentação</h3>
       <div class="grid">
@@ -146,13 +149,18 @@
         <div class="card"><small>Recebimentos vinculados</small><h2 id="relRecebido">R$ 0,00</h2></div>
         <div class="card"><small>Despesas vinculadas</small><h2 id="relDespesas">R$ 0,00</h2></div>
         <div class="card"><small>Resultado operacional</small><h2 id="relLucro">R$ 0,00</h2></div>
-        <div class="card"><small>Lippi (50% do lucro positivo)</small><h2 id="relLippi">R$ 0,00</h2></div>
-        <div class="card"><small>Léo (50% do lucro positivo)</small><h2 id="relLeo">R$ 0,00</h2></div>
+        <div class="card"><small>Parte Lippi (50% do resultado)</small><h2 id="relLippi">R$ 0,00</h2></div>
+        <div class="card"><small>Parte Léo (50% do resultado)</small><h2 id="relLeo">R$ 0,00</h2></div>
       </div>
-      <div style="overflow-x:auto"><table><thead><tr><th>Show</th><th>Canal</th><th>Contratado</th><th>Recebido</th><th>Despesa</th><th>Lucro</th><th>50% Lippi</th><th>50% Léo</th></tr></thead><tbody id="relShowsTabela"></tbody></table></div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Show</th><th>Canal</th><th>Contratado</th><th>Recebido</th><th>Despesa</th><th>Lucro</th><th>Lippi 50%</th><th>Léo 50%</th><th>A receber</th></tr></thead><tbody id="relShowsTabela"></tbody></table></div>
       <h3>Consolidado — pessoal e empresa</h3>
       <div style="overflow-x:auto"><table><thead><tr><th>Canal</th><th>Contratado</th><th>Recebido</th><th>Despesas</th><th>Resultado</th><th>Lippi</th><th>Léo</th><th>A receber</th></tr></thead><tbody id="relCanaisTabela"></tbody></table></div>
       <p class="muted">Os valores PF/PJ seguem a classificação escolhida no show. O lucro é dividido entre Lippi e Léo independentemente de o faturamento ter sido pessoal ou pela empresa.</p>
+      <h3>Quanto entrou por semana</h3>
+      <p class="muted">Semanas de segunda a domingo, pelas datas dos recebimentos. A semana pode atravessar dois meses; entram nos totais apenas os lançamentos dentro do período escolhido.</p>
+      <div style="overflow-x:auto"><table><thead><tr><th>Semana</th><th>Pessoa física (PF)</th><th>Empresa (PJ)</th><th>Não classificado</th><th>Total recebido</th><th>Despesas</th><th>Repasses antigos</th><th>Saldo de caixa</th></tr></thead><tbody id="relSemanasTabela"></tbody></table></div>
+      <h3>Quanto entrou por mês</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Mês</th><th>Pessoa física (PF)</th><th>Empresa (PJ)</th><th>Não classificado</th><th>Total recebido</th><th>Despesas</th><th>Repasses antigos</th><th>Saldo de caixa</th></tr></thead><tbody id="relMesesTabela"></tbody></table></div>
       <h3>Fluxo de caixa pelas datas dos pagamentos</h3>
       <p class="muted">Esta parte considera entradas e saídas efetivamente lançadas no período escolhido, mesmo que o show tenha ocorrido fora dele.</p>
       <p id="relMovResumo" class="notice"></p>
@@ -355,6 +363,48 @@ $('musicoDespesa').onchange=ajustarCategoria;
 ajustarCategoria();
 
 function nomeCanal(v){return v==='pessoal'?'Pessoal (PF)':v==='empresa'?'Empresa (PJ)':'Não classificado'}
+function nomeRelatorio(v){
+ return ({todos:'Todos — PF, PJ e não classificados',lippi:'Lippi — participação pessoal de 50% do resultado',leo:'Léo — participação pessoal de 50% do resultado',empresa:'Empresa — faturamento PJ',pessoal:'Pessoa física — faturamento PF',nao_classificado:'Sem classificação'})[v]||v;
+}
+function weekStart(iso){
+ const [y,m,d]=iso.split('-').map(Number);
+ const date=new Date(Date.UTC(y,m-1,d));
+ const deslocamento=(date.getUTCDay()+6)%7;
+ date.setUTCDate(date.getUTCDate()-deslocamento);
+ return date.toISOString().slice(0,10);
+}
+function shiftUTCDate(iso,n){
+ const [y,m,d]=iso.split('-').map(Number);
+ const v=new Date(Date.UTC(y,m-1,d));
+ v.setUTCDate(v.getUTCDate()+n);
+ return v.toISOString().slice(0,10);
+}
+function agruparRecebimentos(movimentos,por){
+ const grupos=new Map();
+ for(const mov of movimentos){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(mov.data_lancamento||''))continue;
+  const key=por==='semana'?weekStart(mov.data_lancamento):mov.data_lancamento.slice(0,7);
+  if(!grupos.has(key))grupos.set(key,{key,pf:0,pj:0,sem:0,recebido:0,despesas:0,repasses:0,saldo:0});
+  const g=grupos.get(key),valor=Number(mov.valor||0);
+  const reg=shows.find(s=>s.id===mov.caixa_show_id);
+  if(mov.tipo==='recebimento'){
+   g.recebido+=valor;
+   if(origem(reg)==='pessoal')g.pf+=valor;
+   else if(origem(reg)==='empresa')g.pj+=valor;
+   else g.sem+=valor;
+  }else if(mov.tipo==='despesa')g.despesas+=valor;
+  else if(mov.tipo==='repasse')g.repasses+=valor;
+ }
+ return [...grupos.values()].sort((a,b)=>a.key.localeCompare(b.key)).map(g=>({...g,saldo:g.recebido-g.despesas-g.repasses}));
+}
+function periodoGrupo(g,tipo){
+ if(tipo==='semana')return fmtData(g.key)+' a '+fmtData(shiftUTCDate(g.key,6));
+ const [ano,mes]=g.key.split('-');return mes+'/'+ano;
+}
+function linhasPeriodos(grupos,tipo){
+ return grupos.map(g=>'<tr><td>'+escapeHtml(periodoGrupo(g,tipo))+'</td><td>'+money(g.pf)+'</td><td>'+money(g.pj)+'</td><td>'+money(g.sem)+'</td><td>'+money(g.recebido)+'</td><td>'+money(g.despesas)+'</td><td>'+money(g.repasses)+'</td><td>'+money(g.saldo)+'</td></tr>').join('')||'<tr><td colspan="8">Nenhum lançamento neste período.</td></tr>';
+}
+
 function origem(r){return ['pessoal','empresa'].includes(r?.origem_faturamento)?r.origem_faturamento:'nao_classificado'}
 function participacao(k){return Number(k.lucro)/2}
 function calcularGrupo(lista){
@@ -398,7 +448,7 @@ let relSnapshot=null;
 function relatorioAtual(){
  const ini=$('relInicio').value,fim=$('relFim').value,canal=$('relCanal').value;
  if(!/^\d{4}-\d{2}-\d{2}$/.test(ini)||!/^\d{4}-\d{2}-\d{2}$/.test(fim)||ini>fim)throw Error('Confira as datas: o início precisa ser igual ou anterior ao fim.');
- const inclui=reg=>canal==='todos'||origem(reg)===canal;
+ const inclui=reg=>['todos','lippi','leo'].includes(canal)||origem(reg)===canal;
  const showRows=shows.filter(s=>s.data_show>=ini&&s.data_show<=fim&&inclui(s))
    .sort((a,b)=>String(a.data_show).localeCompare(String(b.data_show)));
  const movimentos=lanc.filter(x=>{
@@ -406,6 +456,8 @@ function relatorioAtual(){
   return x.data_lancamento>=ini&&x.data_lancamento<=fim&&inclui(reg);
  }).sort((a,b)=>String(a.data_lancamento).localeCompare(String(b.data_lancamento)));
  const totais=calcularGrupo(showRows);
+ const semanas=agruparRecebimentos(movimentos,'semana');
+ const meses=agruparRecebimentos(movimentos,'mes');
  const canais={};
  for(const tipo of ['pessoal','empresa','nao_classificado'])canais[tipo]=calcularGrupo(showRows.filter(x=>origem(x)===tipo));
  const fluxo={
@@ -414,13 +466,16 @@ function relatorioAtual(){
   repasse:soma(movimentos,'repasse')
  };
  fluxo.saldo=fluxo.recebido-fluxo.despesa-fluxo.repasse;
- return {ini,fim,canal,showRows,movimentos,totais,canais,fluxo,geradoEm:new Date()};
+ return {ini,fim,canal,showRows,movimentos,totais,canais,semanas,meses,fluxo,geradoEm:new Date()};
 }
 function gerarRelatorio(){
  try{
   relSnapshot=relatorioAtual();
   const r=relSnapshot;
   $('relResultado').classList.remove('hide');
+  $('relDestaque').classList.remove('hide');
+  const foco=r.canal==='lippi'?'Parte calculada do Lippi: '+money(r.totais.lippi):r.canal==='leo'?'Parte calculada do Léo: '+money(r.totais.leo):r.canal==='empresa'?'Total recebido pela empresa (PJ), nos shows do período: '+money(r.totais.recebido):r.canal==='pessoal'?'Total recebido nos shows PF: '+money(r.totais.recebido):r.canal==='nao_classificado'?'Total recebido sem classificação: '+money(r.totais.recebido):'Total recebido nos shows do período: '+money(r.totais.recebido);
+  $('relDestaque').textContent=foco+'. As participações pessoais são 50% do resultado recebido menos despesas, e não comprovam transferência para a conta de cada um.';
   for(const [id,valor] of [
    ['relContratado',r.totais.contratado],['relRecebido',r.totais.recebido],
    ['relDespesas',r.totais.despesas],['relLucro',r.totais.lucro],
@@ -428,22 +483,24 @@ function gerarRelatorio(){
   ])$(id).textContent=money(valor);
   $('relShowsTabela').innerHTML=r.showRows.map(s=>{
    const k=calc(s),q=participacao(k);
-   return '<tr><td>'+escapeHtml(fmtData(s.data_show)+' · '+(s.descricao||'Show'))+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+money(k.combinado)+'</td><td>'+money(k.receb)+'</td><td>'+money(k.desp)+'</td><td>'+money(k.lucro)+'</td><td>'+money(q)+'</td><td>'+money(q)+'</td></tr>';
-  }).join('')||'<tr><td colspan="8">Nenhum show com financeiro registrado no período.</td></tr>';
+   return '<tr><td>'+escapeHtml(fmtData(s.data_show)+' · '+(s.descricao||'Show'))+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+money(k.combinado)+'</td><td>'+money(k.receb)+'</td><td>'+money(k.desp)+'</td><td>'+money(k.lucro)+'</td><td>'+money(q)+'</td><td>'+money(q)+'</td><td>'+money(k.receber)+'</td></tr>';
+  }).join('')||'<tr><td colspan="9">Nenhum show com financeiro registrado no período.</td></tr>';
   $('relCanaisTabela').innerHTML=['pessoal','empresa','nao_classificado'].map(tipo=>{
    const d=r.canais[tipo];
    return '<tr><td>'+escapeHtml(nomeCanal(tipo))+'</td><td>'+money(d.contratado)+'</td><td>'+money(d.recebido)+'</td><td>'+money(d.despesas)+'</td><td>'+money(d.lucro)+'</td><td>'+money(d.lippi)+'</td><td>'+money(d.leo)+'</td><td>'+money(d.pendente)+'</td></tr>';
   }).join('');
+  $('relSemanasTabela').innerHTML=linhasPeriodos(r.semanas,'semana');
+  $('relMesesTabela').innerHTML=linhasPeriodos(r.meses,'mes');
   $('relMovTabela').innerHTML=r.movimentos.map(x=>{
    const s=shows.find(y=>y.id===x.caixa_show_id),descrit=(x.categoria||'')+(x.favorecido?' · '+x.favorecido:'')+(x.integrante?' · '+x.integrante:'');
    return '<tr><td>'+escapeHtml(fmtData(x.data_lancamento))+'</td><td>'+escapeHtml(s?.descricao||'Sem show vinculado')+'</td><td>'+escapeHtml(nomeCanal(origem(s)))+'</td><td>'+escapeHtml(x.tipo)+'</td><td>'+escapeHtml(descrit)+'</td><td>'+money(x.valor)+'</td></tr>';
   }).join('')||'<tr><td colspan="6">Nenhuma movimentação no período.</td></tr>';
   $('relMovResumo').textContent='Entradas no período: '+money(r.fluxo.recebido)+' · Despesas: '+money(r.fluxo.despesa)+' · Repasses históricos: '+money(r.fluxo.repasse)+' · Variação líquida de caixa: '+money(r.fluxo.saldo);
-  $('relMsg').textContent='Extrato preparado: '+fmtData(r.ini)+' a '+fmtData(r.fim)+' · '+(r.canal==='todos'?'Todos os canais':nomeCanal(r.canal))+'. Os valores por show usam a data da apresentação; o fluxo de caixa usa a data do movimento.';
+  $('relMsg').textContent='Extrato preparado: '+fmtData(r.ini)+' a '+fmtData(r.fim)+' · '+nomeRelatorio(r.canal)+'. Shows são agrupados pela data da apresentação; entradas semanais e mensais, pela data do recebimento.';
   $('baixarPdf').disabled=false;
   $('baixarCsv').disabled=false;
  }catch(err){
-  relSnapshot=null;$('relResultado').classList.add('hide');
+  relSnapshot=null;$('relResultado').classList.add('hide');$('relDestaque').classList.add('hide');
   $('baixarPdf').disabled=true;$('baixarCsv').disabled=true;
   $('relMsg').textContent='Não foi possível gerar o extrato: '+(err.message||err);
  }
