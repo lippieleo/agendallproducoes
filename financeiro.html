@@ -64,11 +64,12 @@
               <option value="empresa">Empresa — pessoa jurídica (PJ)</option>
             </select>
           </div>
-          <div><label>&nbsp;</label><button type="submit" id="salvarCache">Salvar cachê deste show</button></div>
+          <div><label>&nbsp;</label><button type="submit" id="salvarCache">Salvar cachê e classificação</button></div>
         </div>
       </fieldset>
     </form>
 
+<p class="muted">Em um show já finalizado, use “Reabrir financeiro” para alterar a classificação PF/PJ. Isso não altera a Agenda Online.</p>
     <h3>Entradas recebidas do cachê</h3>
     <p class="muted">Registre o sinal, as parcelas ou o pagamento total do show. Esta área é separada das saídas.</p>
     <form id="entradaForm">
@@ -630,8 +631,8 @@ function desenharShow(){
  $('showAReceber').textContent=money(k.receber);
  $('showLucro').textContent=money(k.lucro);
  $('showSaldo').textContent=money(k.saldo);
- const cota=Math.max(0,k.lucro)/2;
- $('divisao').textContent='Divisão de referência (50% do lucro já recebido, depois das despesas): Lippi '+money(cota)+'; Léo '+money(cota)+(k.repass?'. Repasses registrados anteriormente: '+money(k.repass):'')+'.';
+ const cota=participacao(k);
+ $('divisao').textContent='Participação gerencial de 50% no resultado recebido (entradas menos despesas): Lippi '+money(cota)+'; Léo '+money(cota)+(k.repass?'. Repasses registrados anteriormente: '+money(k.repass):'')+'. Valores negativos indicam prejuízo; isso não comprova retirada paga.';
  $('cache').value=reg?String(reg.cache_contratado):'0';
  $('origemFaturamento').value=reg?.origem_faturamento||'nao_classificado';
  $('cacheFieldset').disabled=fechado;
