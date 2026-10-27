@@ -1,11 +1,31 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Financeiro | Lippi & Léo</title><style>
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.musicosLista{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-top:12px}.musicoOption{display:flex;align-items:center;gap:9px;background:#282d39;border:1px solid #454a57;padding:12px;border-radius:9px;font-size:14px;cursor:pointer;margin:0;color:#eee}.musicoOption input{width:18px;height:18px;flex:none;accent-color:#d7a34d}.musicoOption:has(input:checked){border-color:#d7a34d;background:#352f29}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de cachês, músicos, entradas e despesas por show.</p><small id="versao">Controle de músicos e saídas · versão 7</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101217;color:#eef0f4;font:15px system-ui,Arial}main{max-width:1080px;margin:auto;padding:24px}h1{margin:0 0 6px}h2{font-size:18px}p,.muted{color:#a8acb6}.card{background:#1c2029;border:1px solid #343946;border-radius:14px;padding:18px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}label{display:block;font-size:12px;color:#b7bdc8;margin:8px 0 4px}input,select,button{width:100%;border-radius:9px;padding:11px;border:1px solid #424858;background:#11151d;color:#fff;font:inherit}button{background:#d7a34d;color:#161616;font-weight:700;cursor:pointer;border:0;margin-top:12px}button.secondary{background:#313746;color:#fff}.hide{display:none!important}table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #353a44}th{color:#b5bac5}small{color:#b5bac5}.right{text-align:right}.notice{padding:10px;border-radius:9px;background:#2b303c;margin:10px 0}a{color:#efc783}.musicosLista{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-top:12px}.musicoOption{display:flex;align-items:center;gap:9px;background:#282d39;border:1px solid #454a57;padding:12px;border-radius:9px;font-size:14px;cursor:pointer;margin:0;color:#eee}.musicoOption input{width:18px;height:18px;flex:none;accent-color:#d7a34d}.musicoOption:has(input:checked){border-color:#d7a34d;background:#352f29}fieldset{border:0;padding:0;margin:0;min-width:0}fieldset:disabled{opacity:.53}button:disabled{cursor:not-allowed;opacity:.58}button.mini{width:auto;padding:8px 10px;margin:0}#agendaBody button{white-space:nowrap}#showSituacao{font-weight:700}.statusFechado{color:#bde6c2}.statusAberto{color:#ffdc97}tr td:last-child{min-width:100px}#dashboard td,#geradorExtrato td{font-variant-numeric:tabular-nums}#geradorExtrato button{min-height:44px}#relResultado .card{margin:3px 0}#relResultado h2{font-size:20px}#relResultado th{font-size:12px}.danger{color:#ffb3b3}</style></head><body><main><h1>Financeiro · Lippi & Léo</h1><p>Painel privado de controle de cachês, músicos, entradas e despesas por show.</p><small id="versao">Painel e extratos · versão 8</small><div id="login" class="card"><h2>Acesso exclusivo Lippi</h2><label>E-mail</label><input id="email" type="email" autocomplete="username"><label>Senha</label><input id="senha" type="password" autocomplete="current-password"><button id="entrar" type="button">Entrar</button><button id="recuperar" type="button" class="secondary">Esqueci minha senha</button><div id="recoveryForm" class="hide"><label>Escolha a nova senha (mínimo 8 caracteres)</label><input id="novaSenha" type="password" autocomplete="new-password" minlength="8"><button id="salvarSenha" type="button">Salvar nova senha</button></div><p id="loginMsg" role="status" aria-live="polite">Informe seu e-mail e senha para entrar.</p></div>
 <div id="app" class="hide">
   <section class="grid" aria-label="Resumo financeiro do mês">
     <div class="card"><small>Cachês dos shows do mês</small><h2 id="totalCache">R$ 0,00</h2></div>
     <div class="card"><small>Entradas registradas no mês</small><h2 id="totalRec">R$ 0,00</h2></div>
     <div class="card"><small>Saídas registradas no mês</small><h2 id="totalDesp">R$ 0,00</h2></div>
     <div class="card"><small>Saldo de caixa no mês</small><h2 id="saldo">R$ 0,00</h2></div>
+  </section>
+
+  <section class="card" id="dashboard" aria-labelledby="dashboardTitulo">
+    <h2 id="dashboardTitulo">Painel de resultados — Lippi &amp; Léo</h2>
+    <p class="muted">Resultados agrupados pela <strong>data do show</strong> no mês selecionado. Os recebimentos e despesas de cada show entram na conta mesmo quando lançados em outro mês.</p>
+    <div class="grid" id="resultadosCards">
+      <div class="card"><small>Lucro operacional recebido</small><h2 id="dashLucro">R$ 0,00</h2></div>
+      <div class="card"><small>Parte do Lippi (50%)</small><h2 id="dashLippi">R$ 0,00</h2></div>
+      <div class="card"><small>Parte do Léo (50%)</small><h2 id="dashLeo">R$ 0,00</h2></div>
+      <div class="card"><small>Cachês ainda a receber</small><h2 id="dashPendente">R$ 0,00</h2></div>
+    </div>
+    <h3>Faturamento por canal — shows do mês</h3>
+    <div class="grid">
+      <div class="card"><small>Pessoal (PF) — recebido</small><h2 id="dashPessoal">R$ 0,00</h2><small id="dashPessoalInfo">Contratado R$ 0,00</small></div>
+      <div class="card"><small>Empresa (PJ) — recebido</small><h2 id="dashEmpresa">R$ 0,00</h2><small id="dashEmpresaInfo">Contratado R$ 0,00</small></div>
+      <div class="card"><small>Ainda sem classificação — recebido</small><h2 id="dashIndefinido">R$ 0,00</h2><small id="dashIndefinidoInfo">Contratado R$ 0,00</small></div>
+    </div>
+    <p class="muted">A divisão é uma estimativa de 50% para cada integrante sobre o lucro operacional positivo (valores recebidos menos despesas). Não representa retirada já paga. Prejuízos aparecem no resultado e não são distribuídos. A separação PF/PJ é gerencial, não substitui contabilidade ou emissão de nota fiscal.</p>
+    <h3>Resultado de cada show</h3>
+    <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show</th><th>Canal</th><th>Recebido</th><th>Despesas</th><th>Lucro / prejuízo</th><th>Lippi</th><th>Léo</th></tr></thead><tbody id="resultadoShows"></tbody></table></div>
   </section>
   <section class="card" id="agendaBox">
     <h2>1. Escolher show da Agenda Online</h2>
@@ -37,6 +57,13 @@
       <fieldset id="cacheFieldset">
         <div class="grid">
           <div><label for="cache">Cachê combinado (R$)</label><input id="cache" type="number" min="0" step="0.01" required></div>
+          <div><label for="origemFaturamento">Faturamento deste show</label>
+            <select id="origemFaturamento">
+              <option value="nao_classificado">Não classificado — selecionar</option>
+              <option value="pessoal">Pessoal — pessoa física (PF)</option>
+              <option value="empresa">Empresa — pessoa jurídica (PJ)</option>
+            </select>
+          </div>
           <div><label>&nbsp;</label><button type="submit" id="salvarCache">Salvar cachê deste show</button></div>
         </div>
       </fieldset>
@@ -88,6 +115,46 @@
     <button type="button" id="finalizar">Finalizar financeiro deste show</button>
     <button type="button" id="reabrir" class="secondary hide">Reabrir financeiro</button>
     <p id="showMsg" class="notice" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="card" id="geradorExtrato">
+    <h2>Gerador de extrato financeiro</h2>
+    <p class="muted">Escolha um período e o canal (todos, pessoal ou empresa). O relatório mostra o resultado por show e as movimentações por data, sem misturar cachê contratado com pagamento recebido.</p>
+    <div class="grid">
+      <div><label for="relInicio">Data inicial</label><input type="date" id="relInicio" required></div>
+      <div><label for="relFim">Data final</label><input type="date" id="relFim" required></div>
+      <div><label for="relCanal">Faturamento</label>
+        <select id="relCanal">
+          <option value="todos">Todos</option>
+          <option value="pessoal">Pessoal (PF)</option>
+          <option value="empresa">Empresa (PJ)</option>
+          <option value="nao_classificado">Sem classificação</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid">
+      <button type="button" id="gerarRelatorio">Gerar extrato</button>
+      <button type="button" class="secondary" id="baixarPdf" disabled>Baixar PDF</button>
+      <button type="button" class="secondary" id="baixarCsv" disabled>Baixar CSV / Excel</button>
+    </div>
+    <p id="relMsg" class="notice" role="status" aria-live="polite">Selecione o período e clique em Gerar extrato.</p>
+    <div id="relResultado" class="hide">
+      <h3>Resumo dos shows pela data da apresentação</h3>
+      <div class="grid">
+        <div class="card"><small>Cachês contratados</small><h2 id="relContratado">R$ 0,00</h2></div>
+        <div class="card"><small>Recebimentos vinculados</small><h2 id="relRecebido">R$ 0,00</h2></div>
+        <div class="card"><small>Despesas vinculadas</small><h2 id="relDespesas">R$ 0,00</h2></div>
+        <div class="card"><small>Resultado operacional</small><h2 id="relLucro">R$ 0,00</h2></div>
+        <div class="card"><small>Lippi (50% do lucro positivo)</small><h2 id="relLippi">R$ 0,00</h2></div>
+        <div class="card"><small>Léo (50% do lucro positivo)</small><h2 id="relLeo">R$ 0,00</h2></div>
+      </div>
+      <div style="overflow-x:auto"><table><thead><tr><th>Show</th><th>Canal</th><th>Contratado</th><th>Recebido</th><th>Despesa</th><th>Lucro</th><th>50% Lippi</th><th>50% Léo</th></tr></thead><tbody id="relShowsTabela"></tbody></table></div>
+      <h3>Fluxo de caixa pelas datas dos pagamentos</h3>
+      <p class="muted">Esta parte considera entradas e saídas efetivamente lançadas no período escolhido, mesmo que o show tenha ocorrido fora dele.</p>
+      <p id="relMovResumo" class="notice"></p>
+      <div style="overflow-x:auto"><table><thead><tr><th>Data</th><th>Show</th><th>Canal</th><th>Tipo</th><th>Descrição</th><th>Valor</th></tr></thead><tbody id="relMovTabela"></tbody></table></div>
+      <p class="muted">Demonstrativo gerencial para controle interno. Para emissão de documentos fiscais ou cálculo de tributos, valide os valores com sua contabilidade.</p>
+    </div>
   </section>
   <section class="card">
     <h2>Extrato geral do mês</h2>
@@ -299,6 +366,7 @@ function desenharShow(){
  const cota=Math.max(0,k.lucro)/2;
  $('divisao').textContent='Divisão de referência (50% do lucro já recebido, depois das despesas): Lippi '+money(cota)+'; Léo '+money(cota)+(k.repass?'. Repasses registrados anteriormente: '+money(k.repass):'')+'.';
  $('cache').value=reg?String(reg.cache_contratado):'0';
+ $('origemFaturamento').value=reg?.origem_faturamento||'nao_classificado';
  $('cacheFieldset').disabled=fechado;
  $('lanFieldset').disabled=fechado;
  $('entradaFieldset').disabled=fechado;
@@ -373,9 +441,9 @@ $('cacheForm').onsubmit=async e=>{
   const v=$('cache').value;
   if(v===''||!Number.isFinite(Number(v))||Number(v)<0)throw Error('Informe um cachê válido.');
   const reg=await obterRegistro();
-  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{method:'PATCH',body:{cache_contratado:Number(v)},auth:true});
+  await requisicao('/rest/v1/caixa_shows?id=eq.'+encodeURIComponent(reg.id),{method:'PATCH',body:{cache_contratado:Number(v),origem_faturamento:$('origemFaturamento').value},auth:true});
   await refresh();
-  $('showMsg').textContent='✓ Cachê salvo para este show. Esse valor não aparece na agenda.';
+  $('showMsg').textContent='✓ Cachê e origem do faturamento salvos. Essa informação é privada.';
  }catch(err){$('showMsg').textContent='Erro ao salvar cachê: '+(err.message||err)}
  finally{btn.disabled=false}
 };
