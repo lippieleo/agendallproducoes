@@ -1,0 +1,48 @@
+/* Correções acessíveis no resumo e nos lançamentos — layout adaptado a celulares. */
+#dashboard .fin-card-interativo{cursor:pointer;transition:transform .14s,border-color .14s,background .14s;position:relative;user-select:none}
+#dashboard .fin-card-interativo:hover{border-color:#d9b778!important;background:#263345!important;transform:translateY(-1px)}
+#dashboard .fin-card-interativo:focus-visible{outline:3px solid #e9bd76;outline-offset:3px}
+#dashboard .fin-card-interativo .fin-card-aviso{display:block;margin-top:13px;color:#eccc92;font-weight:760;font-size:12px;text-align:left}
+#fin-correcao{background:#111925;border:1px solid #8d7249;border-radius:15px;padding:20px;margin:22px 0 12px;scroll-margin-top:18px}
+#fin-correcao[hidden]{display:none!important}
+#fin-correcao .fin-cor-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 12px}
+#fin-correcao .fin-cor-topo h3{margin:0 0 5px!important;font-size:19px!important;color:#f4d7a4}
+#fin-correcao .fin-cor-topo p{font-size:12px;margin:0}
+#fin-correcao .fin-cor-topo button{white-space:nowrap;min-height:38px;padding:8px 12px}
+#fin-correcao .fin-cor-ajuda{font-size:12px;color:#b8c4d4;background:#202b3c;border-radius:10px;padding:12px;margin:10px 0}
+#fin-correcao .fin-cor-quantidade{font-size:12px;font-weight:770;color:#ebc98a;margin:14px 0 8px}
+#fin-correcao .fin-cor-linha{display:flex;gap:14px;align-items:center;justify-content:space-between;background:#1a2432;border:1px solid #374557;border-radius:12px;padding:14px;margin:9px 0}
+#fin-correcao .fin-cor-dados{min-width:0;flex:1}
+#fin-correcao .fin-cor-dados strong{display:block;font-size:14px;font-weight:760}
+#fin-correcao .fin-cor-canal{font-size:11px;color:#dbc291;font-weight:650;margin-top:3px}
+#fin-correcao .fin-cor-valores{margin-top:9px;font-size:12px;color:#bac8d8;line-height:1.7}
+#fin-correcao .fin-cor-abrir{white-space:nowrap;min-height:42px;font-size:12px;padding:10px 14px}
+#fin-correcao .fin-cor-abrir:disabled{white-space:normal;max-width:130px}
+#showExtrato td:last-child{white-space:nowrap}
+#showExtrato .fin-editar{margin-right:6px!important;background:#54462e!important;color:#f9d8a2!important;border:1px solid #a98547!important}
+dialog.fin-editor{box-sizing:border-box;width:min(94vw,560px);max-height:min(90vh,900px);overflow:auto;background:#1b2230;color:#f5f7fb;border:1px solid #b28c51;border-radius:18px;box-shadow:0 25px 95px #000b;padding:24px}
+dialog.fin-editor::backdrop{background:rgba(2,5,9,.8);backdrop-filter:blur(4px)}
+.fin-editor form{margin:0}
+.fin-editor h2{font-size:22px;margin:0 0 6px;color:#f1cd94}
+.fin-editor .fin-editor-cab p{font-size:13px;margin:0 0 18px}
+.fin-editor .fin-edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fin-editor label{display:block;margin:10px 0 6px;font-size:12px;font-weight:740;color:#c7d3e2}
+.fin-editor input,.fin-editor select{box-sizing:border-box;min-height:46px;width:100%;border:1px solid #46556c;border-radius:9px;background:#0f1724;color:#f5f7fb;padding:11px;font-size:15px}
+.fin-editor input:focus-visible,.fin-editor select:focus-visible{outline:2px solid #dcb372;outline-offset:2px}
+.fin-editor .fin-edit-msg{font-size:12px;color:#dce5f2;margin:18px 0 10px;min-height:26px}
+.fin-editor .fin-edit-botoes{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.fin-editor .fin-edit-botoes button{width:auto;min-height:44px;padding:12px 16px;border:0;border-radius:9px;margin:0;font-size:14px;font-weight:730;background:#e9bd76;color:#191612;cursor:pointer}
+.fin-editor .fin-edit-botoes button.secondary{background:#344156;color:#f5f7fb}
+.fin-editor .fin-edit-botoes button:disabled{opacity:.6;cursor:not-allowed}
+@media(max-width:650px){
+  #fin-correcao{padding:14px 11px}
+  #fin-correcao .fin-cor-topo{gap:8px}
+  #fin-correcao .fin-cor-topo h3{font-size:17px!important}
+  #fin-correcao .fin-cor-topo button{padding:7px 10px}
+  #fin-correcao .fin-cor-linha{align-items:stretch;flex-direction:column;gap:11px;padding:12px}
+  #fin-correcao .fin-cor-abrir{width:100%;max-width:none}
+  dialog.fin-editor{width:calc(100vw - 18px);padding:18px 14px}
+  .fin-editor .fin-edit-grid{grid-template-columns:1fr}
+  .fin-editor .fin-edit-botoes button{flex:1}
+}
+@media(prefers-reduced-motion:reduce){#dashboard .fin-card-interativo{transition:none}}
