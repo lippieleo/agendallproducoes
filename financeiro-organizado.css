@@ -1,0 +1,142 @@
+/* Financeiro Lippi & Léo — organização visual v10; não altera dados nem cálculos. */
+:root{color-scheme:dark;--fin-bg:#0d1017;--fin-panel:#191e29;--fin-border:#313b4c;--fin-text:#f4f6fb;--fin-muted:#adb7c8;--fin-gold:#e9bd76;--fin-red:#d65767}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 12% -14%,#352330 0%,#141922 37%,#0d1017 78%)!important;color:var(--fin-text)}
+main{max-width:1300px!important;padding:26px clamp(12px,3vw,42px) 65px!important}
+main>h1{font-size:clamp(25px,3vw,37px);letter-spacing:-.7px;font-weight:850;margin-bottom:5px}
+main>p:first-of-type{font-size:14px;margin:0 0 9px}
+main>#versao{display:block;margin:0 0 20px;color:#7f8ca0;font-size:11px}
+.card{background:var(--fin-panel)!important;border:1px solid var(--fin-border)!important;border-radius:16px!important;box-shadow:0 5px 25px #080b1222}
+#app>.fin-view>.card{padding:clamp(16px,2vw,26px);margin:0 0 16px}
+#app .card h2{color:#f7f8fb}
+#app h2{font-size:20px;font-weight:760;letter-spacing:-.3px}
+#app h3{font-size:16px;line-height:1.45;margin:25px 0 10px;color:#e6e9f1}
+p,.muted,small{line-height:1.55}
+.muted{color:var(--fin-muted)}
+#app button{width:auto;margin:0;padding:11px 17px;line-height:1.25;min-height:44px;border-radius:10px;background:var(--fin-gold);color:#171512;transition:background .12s,border-color .12s,transform .12s;font-weight:720}
+#app button.secondary{background:#293345;color:#f6f7fa;border:1px solid #45536a}
+#app button:hover:not(:disabled){filter:brightness(1.10)}
+#app button:focus-visible,#app input:focus-visible,#app select:focus-visible{outline:2px solid #f6c87c;outline-offset:2px}
+#app input,#app select{min-height:44px;background:#101722;border-color:#3e4a5d}
+#app .grid{gap:12px}
+#app label{font-size:13px;font-weight:620;color:#bfc9d9}
+#app .card .card{margin:0;background:#131925!important;border-color:#2d3949!important;min-width:0;padding:17px}
+#app .card .card h2{font-size:clamp(19px,2.1vw,26px);font-weight:780;color:#fff;word-break:break-word;margin:8px 0 0}
+#app .card .card small{font-size:12px;letter-spacing:.04px}
+#app .fin-overview-summary{grid-template-columns:repeat(4,minmax(0,1fr));margin:4px 0 15px}
+#app .fin-overview-summary>.card{margin:0}
+#app .fin-overview-summary>.card h2{font-size:clamp(22px,2.1vw,28px);margin-top:12px}
+#app .fin-overview-summary>.card:last-child{border-color:#856c43!important;background:linear-gradient(150deg,#35301f,#222731)!important}
+.fin-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:17px 20px;background:#181f2c;border:1px solid #384558;border-radius:16px;margin-bottom:15px}
+.fin-toolbar .fin-month{min-width:180px;max-width:280px;flex:1}
+.fin-toolbar .fin-month label{display:block;margin:0 0 6px;font-size:12px}
+.fin-toolbar #mes{background:#101722;border-color:#4b5c70;font-weight:700}
+.fin-toolbar .fin-toolbar-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.fin-toolbar #sair{background:transparent;color:#b6c0ce;border:1px solid #576073}
+.fin-nav{display:flex;gap:9px;align-items:center;overflow-x:auto;padding:0 0 14px;margin:0 0 9px;scrollbar-width:thin}
+#app .fin-nav button{flex:0 0 auto;background:#1c2432;color:#c3ccda;border:1px solid #384456;font-size:14px;padding:11px 19px}
+#app .fin-nav button[aria-selected="true"]{background:var(--fin-gold);border-color:var(--fin-gold);color:#171512;box-shadow:0 2px 15px #e9bd7623}
+.fin-view[hidden],.fin-step[hidden],.fin-report-group[hidden]{display:none!important}
+.fin-view{animation:fin-in .16s ease-out}
+@keyframes fin-in{from{opacity:.6;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.fin-page-intro{margin:0 0 16px;padding:2px 2px 0}
+.fin-page-intro h2{margin:0 0 5px;font-size:22px}
+.fin-page-intro p{margin:0;color:var(--fin-muted);font-size:13px}
+.fin-jump-links{display:flex;flex-wrap:wrap;gap:9px;margin:3px 0 17px}
+#app .fin-jump-links button{background:#283243;border:1px solid #435167;color:#f0d6ac;font-size:13px;padding:8px 13px;min-height:39px}
+#dashboard{margin-top:0}
+#dashboard>p.muted{font-size:12px}
+#dashboard #resultadosCards{grid-template-columns:repeat(4,minmax(0,1fr))}
+#dashboard #resultadosCards .card:nth-child(1){border-color:#456a5a!important}
+#dashboard #resultadosCards .card:nth-child(4){border-color:#7b5e3a!important}
+.fin-table-wrap{overflow-x:auto;max-width:100%;border:1px solid #354151;border-radius:12px;margin:12px 0 7px}
+.fin-table-wrap table{min-width:560px;width:100%;border-collapse:separate;border-spacing:0}
+.fin-table-wrap th{position:relative;white-space:nowrap;background:#111927;font-size:12px;text-transform:none;color:#c2cbd8;font-weight:720;border-bottom:1px solid #3e4b5d;padding:12px 13px}
+.fin-table-wrap td{color:#e8ecf4;font-size:13px;border-bottom:1px solid #293342;padding:12px 13px;vertical-align:middle}
+.fin-table-wrap tbody tr:last-child td{border-bottom:0}
+.fin-table-wrap tbody tr:nth-child(even){background:#1d26321f}
+.fin-table-wrap tbody tr:hover{background:#2b344230}
+.fin-table-wrap td:has(>button){white-space:nowrap}
+#agendaBox>.grid{display:none!important}
+#agendaBox h2{margin:0 0 4px}
+#agendaBox #msg{margin:12px 0}
+.fin-show-search{margin:14px 0 3px}
+.fin-show-search label{margin:0 0 5px}
+.fin-show-search input{max-width:420px}
+#agendaBody .selecionar{min-height:36px;padding:7px 12px;background:#2c3b4e;border:1px solid #6d7d94;font-size:12px}
+#detalhe{scroll-margin-top:15px;border-color:#816744!important;box-shadow:0 0 0 1px #594c3229}
+#detalhe #showTitulo{font-size:23px;color:var(--fin-gold)}
+#detalhe #showSituacao{font-size:13px}
+#detalhe>div.grid{grid-template-columns:repeat(3,minmax(0,1fr));margin:15px 0}
+#detalhe>div.grid .card{padding:15px}
+#detalhe>div.grid .card h2{font-size:21px}
+#detalhe #divisao{font-size:12px;line-height:1.6}
+.fin-step-nav{display:flex;gap:8px;overflow-x:auto;padding:5px 0 15px;margin:14px 0 9px;border-bottom:1px solid #384254}
+#app .fin-step-nav button{flex:0 0 auto;white-space:nowrap;background:#273142;border:1px solid #405068;color:#d7e0ed;font-size:13px;min-height:42px;padding:9px 15px}
+#app .fin-step-nav button[aria-selected="true"]{background:#b78744;border-color:#b78744;color:#120e09}
+.fin-step{padding:0 2px 10px}
+.fin-step h3{margin-top:10px!important;font-size:18px!important}
+.fin-step>p.muted{font-size:13px}
+.fin-step form{margin:15px 0 18px}
+.fin-step form>.grid{margin-bottom:12px}
+.fin-step button[type=submit]{min-height:45px}
+.fin-step #salvarCache,.fin-step #salvarEntrada,.fin-step #salvarLan{margin-top:12px}
+#detalhe #showMsg{margin:16px 0 10px;font-size:13px}
+.fin-report-details{margin:13px 0;border:1px solid #3b4659;border-radius:12px;background:#151d29;overflow:hidden}
+.fin-report-details>summary{cursor:pointer;padding:16px 18px;font-weight:750;color:#edce99;font-size:14px;list-style-position:inside}
+.fin-report-details>summary:hover{background:#202938}
+.fin-report-details[open]>summary{border-bottom:1px solid #364253}
+.fin-report-details>*:not(summary){margin-left:16px!important;margin-right:16px!important}
+.fin-report-details>p:last-child{margin-bottom:17px}
+#geradorExtrato #relResultado h3{font-size:15px}
+#geradorExtrato #relResultado .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#geradorExtrato>div.grid:has(#gerarRelatorio){grid-template-columns:repeat(3,minmax(0,1fr))}
+#geradorExtrato>div.grid:has(#gerarRelatorio) button{width:100%}
+.notice{background:#222e3d!important;border:1px solid #3a495c;color:#dce5f2;line-height:1.5}
+#app .danger{color:#ffb4b4}
+#login{max-width:480px;margin:28px auto;padding:26px}
+#login input{min-height:46px}
+#login button{min-height:45px}
+@media(max-width:950px){
+ #app .fin-overview-summary,#dashboard #resultadosCards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #detalhe>div.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #geradorExtrato #relResultado .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+ main{padding:16px 10px 55px!important}
+ main>h1{font-size:27px}
+ #app>.fin-view>.card{padding:16px 12px}
+ #app .card .card{padding:13px 12px}
+ .fin-toolbar{padding:14px;gap:11px;align-items:stretch}
+ .fin-toolbar .fin-month{max-width:none;width:100%;flex-basis:100%}
+ .fin-toolbar .fin-toolbar-actions{display:grid;grid-template-columns:1fr auto;gap:8px}
+ .fin-toolbar #recarregar{min-width:0}
+ .fin-toolbar #sair{padding:10px 13px}
+ .fin-nav{gap:6px;margin-bottom:1px}
+ #app .fin-nav button{min-height:41px;padding:8px 12px;font-size:12px}
+ #app .fin-overview-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #app .fin-overview-summary>.card h2{font-size:clamp(16px,4.5vw,22px)}
+ #app .fin-overview-summary>.card small{font-size:11px}
+ #dashboard #resultadosCards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #dashboard .grid:not(#resultadosCards){grid-template-columns:1fr}
+ #detalhe>div.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #detalhe>div.grid .card h2{font-size:18px}
+ .fin-step-nav{gap:5px}
+ #app .fin-step-nav button{font-size:12px;padding:9px 11px}
+ #geradorExtrato #relResultado .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #geradorExtrato>div.grid:has(#gerarRelatorio){grid-template-columns:1fr}
+ #agendaBox .fin-table-wrap{border:0;background:transparent;overflow:visible}
+ #agendaBox .fin-table-wrap table{min-width:0}
+ #agendaBox .fin-table-wrap thead{display:none}
+ #agendaBody{display:grid;gap:9px}
+ #agendaBody tr{display:grid;grid-template-columns:1fr auto;gap:3px 8px;border:1px solid #3c4a5e;border-radius:12px;background:#151d29;padding:12px}
+ #agendaBody td{border:0!important;padding:2px 0!important;font-size:12px;min-width:0!important}
+ #agendaBody td:nth-child(2){grid-column:1/-1;grid-row:1;font-size:14px;font-weight:740;color:#fff}
+ #agendaBody td:nth-child(1){grid-column:1;grid-row:2;color:#ecc994;font-weight:720}
+ #agendaBody td:nth-child(3){grid-column:1;grid-row:3;color:#c0cede}
+ #agendaBody td:nth-child(4){grid-column:1;grid-row:4;color:#a9b8cc}
+ #agendaBody td:nth-child(5){grid-column:2;grid-row:2/span 3;align-self:center}
+ #agendaBody td[colspan]{grid-column:1/-1;grid-row:1}
+ #agendaBody .selecionar{white-space:nowrap}
+}
+@media(prefers-reduced-motion:reduce){.fin-view{animation:none}html{scroll-behavior:auto}}
